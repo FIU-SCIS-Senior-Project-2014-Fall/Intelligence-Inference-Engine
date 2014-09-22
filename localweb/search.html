@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Intelligence Inference Engine</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+
+	<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+	
+    <!-- Custom CSS for the 'Heroic Features' Template -->
+    <link href="css/heroic-features.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <nav class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Intelligence Inference Engine</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav">
+				<li><a href="submit.html">Contribute Now!</a>
+                    </li>
+                    <li><a href="search.html">Search Now!</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <div class="container">
+
+        <div class="jumbotron hero-spacer">
+            <h1 align="center">Intelligence Engine Data Extraction</h1>
+            <div class="container" style="margin-top:30px">
+			<div class="col-md-8 col-md-offset-2">
+				<div class="panel panel-default">
+					<div class="panel-heading"><h3 class="panel-title"><strong>Data Search Form</strong></h3></div>
+						<div class="panel-body">
+							<form method = "post" class="form-horizontal" action="search_results.php" role="form">
+								<div class="form-group">
+									<div class="col-md-8 col-md-offset-2" align = "center">
+										<button id="submit" name="submit" value="Submit" type="submit" class="btn btn-sm btn-success">Search Database</button>
+										<button type="button" class="btn btn-sm btn-success" id="custom-search">Custom Search</button>
+									</div>
+								</div>
+								<div class="form-group" id="holder">
+									<div class="col-md-4">
+										<select class="form-control">
+											<option value="targets">Targets</option>
+											<option value="related to">Related To</option>
+											<option value="originating">Originating</option>
+											<option value="exploits">Exploits</option>
+											<option value="evidence">Evidence</option>
+										</select>
+									</div>
+									<div class="col-md-5">
+										<input type="text" class="form-control" style="border-radius:0px" name="data-1" placeholder="free-form text">
+									</div>
+									<button id="plus" type="button" class="col-md-1 btn btn-sm btn-success">
+										<span class="glyphicon glyphicon-plus"></span>
+									</button>
+									<button id="minus" type="button" class="col-md-1 btn btn-sm btn-success">
+										<span class="glyphicon glyphicon-minus"></span>
+									</button>
+									<script type="text/javascript">
+									$(document).ready(
+										function() 
+										{
+											$( "#plus" ).click(
+												function()
+												{
+													$("#holder").append('<div id="xtra-select" class="col-md-4"><select class="form-control"><option value="targets">Targets</option><option value="related to">Related To</option><option value="originating">Originating</option><option value="exploits">Exploits</option><option value="evidence">Evidence</option></select></div><div id="xtra-text-input" class="col-md-5"><input type="text" class="form-control" style="border-radius:0px" name="data-1" placeholder="free-form text"></div>');
+												}
+											);
+											
+											$( "#minus" ).click(
+												function()
+												{
+													$("#xtra-select").last().remove()
+													$("#xtra-text-input").last().remove();
+												}
+											);
+											
+											$( "#custom-search" ).click(
+												function()
+												{
+													window.open("custom_search.html", '_self');
+												}
+											);
+										}
+									);
+									</script>
+								</div>
+							</form>
+						</div>
+				</div>
+			</div>
+		</div>
+        </div>
+
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright&copy; Team Can't Find A Better Name 2014</p>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+    <!-- /.container -->
+
+    <!-- JavaScript -->
+    <script src="js/jquery-1.10.2.js"></script>
+    <script src="js/bootstrap.js"></script>
+
+</body>
+
+</html>
