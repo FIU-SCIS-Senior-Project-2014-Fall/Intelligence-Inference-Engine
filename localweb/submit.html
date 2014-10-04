@@ -13,6 +13,8 @@
     <link href="css/bootstrap.css" rel="stylesheet">
 	
 	<script src="js/jquery-1.11.1.min.js"></script>
+	<script src="js/raphael.2.1.0.min.js"></script>
+	<script src="js/justgage.1.0.1.min.js"></script>
 
     <!-- Custom CSS for the 'Heroic Features' Template -->
     <link href="css/heroic-features.css" rel="stylesheet">
@@ -81,7 +83,6 @@
 											<option value="related to">Related To</option>
 											<option value="originating">Originating</option>
 											<option value="exploits">Exploits</option>
-											<option value="evidence">Evidence</option>
 										</select>
 									</div>
 									<div class="col-md-5">
@@ -115,10 +116,21 @@
 														currentValue--;
 												}
 											);
+											
+											var g = new JustGage({
+														id: "gauge",
+														value: 67,
+														min: 0,
+														max: 100,
+														title: "Confidence Ranking",
+														label: "Current Confidence",
+														levelColorsGradient: false
+													});
 										}
 									);
 									</script>
 								</div>
+								<div id="gauge" class="50x50px" align="center"></div>
 							</form>
 						</div>
 				</div>
