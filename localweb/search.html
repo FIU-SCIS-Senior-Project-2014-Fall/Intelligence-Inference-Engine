@@ -62,10 +62,16 @@
 										<button type="button" class="btn btn-sm btn-success" id="custom-search">Custom Search</button>
 									</div>
 								</div>
+								<div class="form-group">
+									<div class="col-md-12">
+										<label for="prefixName">Prefix</label>
+										<input type="text" class="form-control" style="border-radius:0px" name="prefixName" placeholder="Separate Prefixes By CSV">
+									</div>
+								</div>
 								<div class="form-group" id="holder">
 									<div class="col-md-4">
 										<select class="form-control">
-											<option value="targets">Targets</option>
+											<option value="targets" selected="selected">Targets</option>
 											<option value="related to">Related To</option>
 											<option value="originating">Originating</option>
 											<option value="exploits">Exploits</option>
@@ -82,28 +88,25 @@
 										<span class="glyphicon glyphicon-minus"></span>
 									</button>
 									<script type="text/javascript">
+									var currentValue = 2;
 									$(document).ready(
 										function() 
 										{
 											$( "#plus" ).click(
 												function()
 												{
-													$("#holder").append('<div id="xtra-select" class="col-md-4"><select class="form-control"><option value="targets">Targets</option><option value="related to">Related To</option><option value="originating">Originating</option><option value="exploits">Exploits</option><option value="evidence">Evidence</option></select></div><div id="xtra-text-input" class="col-md-5"><input type="text" class="form-control" style="border-radius:0px" name="data-1" placeholder="free-form text"></div>');
+													$("#holder").append('<div id="xtra-select' + currentValue + '" class="col-md-4"><select class="form-control" name="data-pred'+ currentValue +'"><option value="targets">Targets</option><option value="related to">Related To</option><option value="originating">Originating</option><option value="exploits">Exploits</option><option value="evidence">Evidence</option></select></div><div id="xtra-text-input'+ currentValue +'" class="col-md-5"><input type="text" class="form-control" style="border-radius:0px" name="data-'+currentValue+'" placeholder="free-form text"></div>');
+													currentValue++;
 												}
 											);
 											
 											$( "#minus" ).click(
 												function()
 												{
-													$("#xtra-select").last().remove()
-													$("#xtra-text-input").last().remove();
-												}
-											);
-											
-											$( "#custom-search" ).click(
-												function()
-												{
-													window.open("custom_search.html", '_self');
+													$("#xtra-select"+(currentValue-1)+"").last().remove()
+													$("#xtra-text-input"+(currentValue-1)+"").last().remove();
+													if(currentValue != 0)
+														currentValue--;
 												}
 											);
 										}
