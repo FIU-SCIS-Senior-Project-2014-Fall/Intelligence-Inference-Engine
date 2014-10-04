@@ -151,6 +151,7 @@
 												{
 													var evidenceExists = false;
 													var evidenceFields = "";
+													var textData = "";
 													
 													
 													$("select option:selected").each(function( index ) 
@@ -169,6 +170,13 @@
 														{
 															//Store the text values;
 															var textField = $(this).parent().attr("name").replace("pred","");
+															var textValue = $("input[name=" + textField + "]").val();
+															var dropDownValue = $(this).val();
+															
+															if(textData == "")
+																textData += dropDownValue + "->" + textValue;
+															else
+																textData += "," + dropDownValue + "->" + textValue;
 														}
 														
 														
@@ -177,17 +185,16 @@
 													//Show the gauges.
 													if(evidenceExists)
 													{
+														console.log("Text: " + textData);
+														
 														//Get the data for every evidence marked field.
 														var evLocs = evidenceFields.split(",");
 														for (var i = 0; i < evLocs.length; i++)
 														{
 															//Print the text of every outgoing domain
 															console.log('http://www.corsproxy.com/' + $("input[name="+evLocs[i]+"]").val().replace("www.","").replace("http://",""));
-															$.get(  'http://www.corsproxy.com/' + 
-																	$("input[name="+evLocs[i]+"]").val().replace("wwww.","").replace("http://",""),
-																	function(response) {
-																		console.log(response);
-																		});
+															$.get(  'http://www.corsproxy.com/' + $("input[name="+evLocs[i]+"]").val().replace("www.","").replace("http://",""),
+																	function(response) { console.log(response); });
 														}
 														
 														$('#gauge').show();
