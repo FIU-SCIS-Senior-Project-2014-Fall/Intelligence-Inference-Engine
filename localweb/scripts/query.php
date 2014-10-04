@@ -1,6 +1,7 @@
 
 <?php
-include('./httpful.phar');
+
+include 'httpful.phar';
 
 $query = '';
 
@@ -8,13 +9,22 @@ if (isset($_POST['query']))
 	$query = $_POST['query'];//should already be urlencoded
 else
 	$query = null;
-
 	
 
-if($query)
+
+$uri = $uri = "http://iie-dev.cs.fiu.edu:9090/tql/"; 
+$temp = urlencode("insert");
+echo $temp;
+$data = array('query' => $temp);
+
+$response = \Httpful\Request::post($uri)
+    ->send();
+echo $response;
+
+/*if($query)
 {
 	
-	$query = urlencode("");
+	/*$query = urlencode("");
 	$graph = "test:data";
 
 	//$uri = "www.webservicex.net/CurrencyConvertor.asmx/ConversionRate?FromCurrency=USD&ToCurrency=ZWD";
@@ -25,6 +35,7 @@ if($query)
 
 
 	echo $response;//for testing, send response to  another page
+	
 
 }
 
