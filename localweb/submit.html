@@ -98,10 +98,29 @@
 									<script type="text/javascript">
 									var currentValue = 2;
 									var currentSize = 1;
+									var g;
 									$(document).ready(
 										function() 
 										{
 											$("#size").val(currentSize);
+											var myColors = [
+															"#ff0000",
+															"#ffe675",
+															"#baff75"
+											]
+											g = new JustGage({
+												id: "gauge",
+												value: 0,
+												min: 0,
+												max: 100,
+												title: "Confidence Ranking",
+												label: "Current Confidence",
+												levelColors: myColors,																	
+												levelColorsGradient: false
+											});
+											$('#gauge').hide();
+											
+											//Deal with adds.
 											$( "#plus" ).click(
 												function()
 												{
@@ -112,6 +131,7 @@
 												}
 											);
 											
+											//Deal with removals.
 											$( "#minus" ).click(
 												function()
 												{
@@ -125,15 +145,60 @@
 												}
 											);
 											
-											var g = new JustGage({
-														id: "gauge",
-														value: 67,
-														min: 0,
-														max: 100,
-														title: "Confidence Ranking",
-														label: "Current Confidence",
-														levelColorsGradient: false
+											//Get all selected values to be printed.
+											$("div").on('click', 'select.form-control',
+												function()
+												{
+													var evidenceExists = false;
+													var evidenceFields = "";
+													
+													
+													$("select option:selected").each(function( index ) 
+													{
+														//Verify that evidence is either selected or not.
+														if( $(this).val().indexOf('evidence') > -1)
+														{
+															evidenceExists = true;
+															//Get the name of the dropdown and find the text box that goes with it.
+															if(evidenceFields == "")
+																evidenceFields += $(this).parent().attr("name").replace("pred",""); 
+															else
+																evidenceFields += "," + $(this).parent().attr("name").replace("pred",""); 
+														}
+														else
+														{
+															//Store the text values;
+															var textField = $(this).parent().attr("name").replace("pred","");
+														}
+														
+														
 													});
+													
+													//Show the gauges.
+													if(evidenceExists)
+													{
+														//Get the data for every evidence marked field.
+														var evLocs = evidenceFields.split(",");
+														for (var i = 0; i < evLocs.length; i++)
+														{
+															//Print the text of every outgoing domain
+															console.log('http://www.corsproxy.com/' + $("input[name="+evLocs[i]+"]").val().replace("www.","").replace("http://",""));
+															$.get(  'http://www.corsproxy.com/' + 
+																	$("input[name="+evLocs[i]+"]").val().replace("wwww.","").replace("http://",""),
+																	function(response) {
+																		console.log(response);
+																		});
+														}
+														
+														$('#gauge').show();
+													}
+													else
+													{
+														$('#gauge').hide();
+													}
+												}
+											);
+											
 										}
 									);
 									</script>
