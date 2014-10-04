@@ -68,6 +68,7 @@
 									<div class="col-md-12">
 										<label for="prefixName">Prefix</label>
 										<input type="text" class="form-control" style="border-radius:0px" name="prefixName" placeholder="Separate Prefixes By CSV">
+										<input type="hidden" class="form-control" style="border-radius:0px" id="size" name="size">
 									</div>
 								</div>
 								<div class="form-group">
@@ -96,14 +97,18 @@
 									</button>
 									<script type="text/javascript">
 									var currentValue = 2;
+									var currentSize = 1;
 									$(document).ready(
 										function() 
 										{
+											$("#size").val(currentSize);
 											$( "#plus" ).click(
 												function()
 												{
 													$("#holder").append('<div id="xtra-select' + currentValue + '" class="col-md-4"><select class="form-control" name="data-pred'+ currentValue +'"><option value="targets">Targets</option><option value="related to">Related To</option><option value="originating">Originating</option><option value="exploits">Exploits</option><option value="evidence">Evidence</option></select></div><div id="xtra-text-input'+ currentValue +'" class="col-md-5"><input type="text" class="form-control" style="border-radius:0px" name="data-'+currentValue+'" placeholder="free-form text"></div>');
 													currentValue++;
+													currentSize++;
+													$("#size").val(currentSize);
 												}
 											);
 											
@@ -112,8 +117,11 @@
 												{
 													$("#xtra-select"+(currentValue-1)+"").last().remove()
 													$("#xtra-text-input"+(currentValue-1)+"").last().remove();
-													if(currentValue != 0)
+													if(currentValue != 2)
 														currentValue--;
+													if(currentSize != 1)
+														currentSize--;
+													$("#size").val(currentSize);
 												}
 											);
 											
