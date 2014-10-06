@@ -73,7 +73,7 @@
 									<div class="col-md-4">
 										<select class="form-control" name="data-pred1">
 											<option value="targets" selected="selected">Targets</option>
-											<option value="related to">Related To</option>
+											<option value="related">Related To</option>
 											<option value="originating">Originating</option>
 											<option value="exploits">Exploits</option>
 											<option value="evidence">Evidence</option>
@@ -98,7 +98,7 @@
 											$( "#plus" ).click(
 												function()
 												{
-													$("#holder").append('<div id="xtra-select' + currentValue + '" class="col-md-4"><select class="form-control" name="data-pred'+ currentValue +'"><option value="targets">Targets</option><option value="related to">Related To</option><option value="originating">Originating</option><option value="exploits">Exploits</option><option value="evidence">Evidence</option></select></div><div id="xtra-text-input'+ currentValue +'" class="col-md-5"><input type="text" class="form-control" style="border-radius:0px" name="data-'+currentValue+'" placeholder="free-form text"></div>');
+													$("#holder").append('<div id="xtra-select' + currentValue + '" class="col-md-4"><select class="form-control" name="data-pred'+ currentValue +'"><option value="targets">Targets</option><option value="related">Related To</option><option value="originating">Originating</option><option value="exploits">Exploits</option><option value="evidence">Evidence</option></select></div><div id="xtra-text-input'+ currentValue +'" class="col-md-5"><input type="text" class="form-control" style="border-radius:0px" name="data-'+currentValue+'" placeholder="free-form text"></div>');
 													currentValue++;
 													currentSize++;
 													$("#size").val(currentSize);
