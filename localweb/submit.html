@@ -191,7 +191,7 @@
 										{
 											var tar = $(this).parent().parent().attr("id");
 											var cleanedTar = tar.replace("xtra-select","");
-											$("#"+tar).html('<input type="text" class="form-control" style="border-radius:0px" name="data-'+ cleanedTar +'" placeholder="free-form text">');
+											$("#"+tar).html('<input type="text" class="form-control" style="border-radius:0px" name="data-pred'+ cleanedTar +'" placeholder="free-form text">');
 										}
 										else
 										{
@@ -336,7 +336,7 @@
 											$( "#minus" ).click(UI.performSubstract);
 											
 											//Get all selected values to be printed.
-											$("div").on('click', 'select.form-control', UI.selectionChanged);
+											$("div").on('change', 'select.form-control', UI.selectionChanged);
 											$("div").on('change', 'input.form-control', UI.selectionChanged);
 											
 										}
