@@ -56,7 +56,7 @@
 					<div class="panel-heading"><h3 class="panel-title"><strong>Custom Data Search Form</strong></h3></div>
 						<div class="panel-body">
 							<form method = "post" class="form-horizontal" action="custom_query.php" role="form">
-								<div class="form-group col-md-12">
+								<div id='query-area' class="form-group col-md-12">
 									<textarea id="query" class="form-control" align="center" rows="5">Your query goes here</textarea>
 								</div>
 								<style>
@@ -68,16 +68,70 @@
 								
 								<div class="form-group">
 									<div class="col-md-8">
-										<input type="text" class="form-control" style="border-radius:0px" name="data-1" placeholder="tags(csv)">
+										<input type="text" class="form-control" style="border-radius:0px" id="tags" placeholder="tags(csv)">
 									</div>
-									<button type="button" class="btn btn-sm btn-success">Add Query</button>
-									<button type="button" class="btn btn-sm btn-success">Find Queries</button>
+									<button type="button" id="add" class="btn btn-sm btn-success">Add Query</button>
+									<button type="button" id="search" class="btn btn-sm btn-success">Find Queries</button>
 								</div>
 								<div class="form-group">
 									<div class="col-md-8 col-md-offset-2" align="center">
 										<button id="submit" name="submit" value="Submit" type="submit" class="btn btn-sm btn-success">Execute Query</button>
 									</div>
 								</div>
+								<script type="text/javascript">
+								$(document).ready(
+									//Basic Functionality.
+									function()
+									{
+										$( "#add" ).click(
+										
+											//Store the data.
+											function()
+											{
+												var tags = $("#tags").val();
+												var query = $("#query").val();
+												var data = [query, tags];
+												
+												//Ajax call to adding-query to DB.
+												$.ajax({
+													type : "POST",
+													dataType : "jsonp",
+													data : data,
+													url : "http://iie-dev.cs.fiu.edu/scripts/add-to-db.php",
+													success: function(data){
+														console.log(data.contents);
+														$("#query-area").append('<div class="alert alert-success" align="center" role="alert">Query Successfully Stored</div>');
+														setTimeout(function () {
+															$("#query-area").children().remove('div');
+														}, 5000);
+													}
+												});
+											}
+										);
+										
+										$( "#search" ).click(
+											//Retrieve the data.
+											function()
+											{
+												var tags = $("#tags").val();
+												var data = [tags];
+												
+												//Ajax call to retrieve query from DB.
+												$.ajax({
+													type : "POST",
+													dataType : "jsonp",
+													data : data,
+													url : "http://iie-dev.cs.fiu.edu/scripts/search-db.php",
+													success: function(data){
+														console.log(data.contents);
+														$("#query").val(data.contents);
+													}
+												});
+											}
+										);
+									}
+								);
+								</script>
 							</form>
 						</div>
 				</div>
