@@ -88,22 +88,23 @@
 											//Store the data.
 											function()
 											{
-												var tags = $("#tags").val();
-												var query = $("#query").val();
-												var data = [query, tags];
+												var tagData = $("#tags").val();
+												var queryData = $("#query").val();
 												
 												//Ajax call to adding-query to DB.
 												$.ajax({
 													type : "POST",
-													dataType : "jsonp",
-													data : data,
+													data : {query : queryData, tags : tagData},
 													url : "http://iie-dev.cs.fiu.edu/scripts/add-to-db.php",
 													success: function(data){
-														console.log(data.contents);
-														$("#query-area").append('<div class="alert alert-success" align="center" role="alert">Query Successfully Stored</div>');
-														setTimeout(function () {
-															$("#query-area").children().remove('div');
-														}, 5000);
+														if(data.indexOf('unsuccessful') < 0)
+														{
+															console.log(data);
+															$("#query-area").append('<div class="alert alert-success" align="center" role="alert">Query Successfully Stored</div>');
+															setTimeout(function () {
+																$("#query-area").children().remove('div');
+															}, 5000);
+														}
 													}
 												});
 											}
@@ -113,18 +114,15 @@
 											//Retrieve the data.
 											function()
 											{
-												var tags = $("#tags").val();
-												var data = [tags];
+												var tagData = $("#tags").val();
 												
 												//Ajax call to retrieve query from DB.
 												$.ajax({
 													type : "POST",
-													dataType : "jsonp",
-													data : data,
+													data : {tags : tagData},
 													url : "http://iie-dev.cs.fiu.edu/scripts/search-db.php",
 													success: function(data){
-														console.log(data.contents);
-														$("#query").val(data.contents);
+														$("#query").val(data);
 													}
 												});
 											}
