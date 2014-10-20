@@ -3,11 +3,13 @@
 
 include 'httpful.phar';
 
-$query = "http://iie-dev.cs.fiu.edu:3030/iie/query?query=" . $_POST['query'];
-echo "Query URL: " . $query;
+$queryURL = "http://iie-dev.cs.fiu.edu:3030/iie/query";
+$queryContents = $_POST['query'];
+echo "Query URL: " . $queryURL;
+echo "<br>Query Contents: " . $queryContents;
 
-$response = \Httpful\Request::get($query)
-			->expectsJson()
+$response = \Httpful\Request::get($queryURL)
+			->param("query", $queryContents)
 			->send();
 
 echo "<br>Response: " . $response;
