@@ -21,8 +21,11 @@ echo "Reporter: " . $reporter . '<br>';
 	
 $query = "PREFIX iie: &lt/fake/iie/types&gt";
 
-foreach (explode(",",$_POST["prefixName"]) as $prefix);
-	$query = $query . "PREFIX " . $prefix;
+foreach (explode(",",$_POST["prefixName"]) as $prefix)
+{
+	if ($prefix !== '')
+		$query = $query . "PREFIX " . $prefix;
+}
 
 $query = str_replace("<","&lt",$query);
 $query = str_replace(">","&gt",$query);
@@ -49,5 +52,15 @@ for($i=1; $i<=$size; $i++)
 $query = $query . " }";
 
 print $query;
+
+
+/*$uri = "http://iie-dev.cs.fiu.edu:3030/update/"; 
+$temp = urlencode($query);
+echo $temp;
+$data = array('query' => $temp);
+
+//$response = \Httpful\Request::post($uri)
+//    ->send();
+//cho $response;*/
 
 ?>
