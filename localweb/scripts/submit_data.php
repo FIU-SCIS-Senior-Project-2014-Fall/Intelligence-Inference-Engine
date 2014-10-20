@@ -53,4 +53,14 @@ $query = $query . " }";
 
 print $query;
 
+
+/*$uri = "http://iie-dev.cs.fiu.edu:3030/update/"; 
+$temp = urlencode($query);
+echo $temp;
+$data = array('query' => $temp);
+
+//$response = \Httpful\Request::post($uri)
+//    ->send();
+//cho $response;*/
+
 ?>

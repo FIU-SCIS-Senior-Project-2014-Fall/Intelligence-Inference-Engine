@@ -23,7 +23,7 @@ for($i=1; $i<=$size; $i++)
 {
 	if($i == 1)
 		$query = $query . "?subject ";
-	$query = $query . "iie:" . $_POST['data-pred'. strval($i)] . " ";
+	$query = $query . $_POST['data-prefix'. strval($i)] . $_POST['data-pred'. strval($i)] . " ";
 	$query = $query . "\"" . $_POST['data-'.strval($i)] ."\"" ;
 	if($i < $size)
 		$query = $query . "; " ;
@@ -33,7 +33,11 @@ for($i=1; $i<=$size; $i++)
 
 $query = $query . " }";
 
-print $query;
+$uri = "http://iie-dev.cs.fiu.ecu:3030/iie/query?query=" . $query;
+$response = Request::get($uri) 
+    ->send();
+
+print $response;
 
 
 
