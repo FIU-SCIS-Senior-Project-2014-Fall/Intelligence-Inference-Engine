@@ -21,8 +21,11 @@ echo "Reporter: " . $reporter . '<br>';
 	
 $query = "PREFIX iie: &lt/fake/iie/types&gt";
 
-foreach (explode(",",$_POST["prefixName"]) as $prefix);
-	$query = $query . "PREFIX " . $prefix;
+foreach (explode(",",$_POST["prefixName"]) as $prefix)
+{
+	if ($prefix !== '')
+		$query = $query . "PREFIX " . $prefix;
+}
 
 $query = str_replace("<","&lt",$query);
 $query = str_replace(">","&gt",$query);
