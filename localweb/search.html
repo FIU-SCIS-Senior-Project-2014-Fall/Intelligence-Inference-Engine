@@ -65,7 +65,7 @@
 								<div class="form-group">
 									<div class="col-md-12">
 										<label for="prefixName">Prefix</label>
-										<input type="text" class="form-control" style="border-radius:0px" name="prefixName" placeholder="Separate Prefixes By CSV">
+										<input type="text" class="form-control" style="border-radius:0px" name="prefixName" id="prefixName" placeholder="Separate Prefixes By CSV">
 										<input type="hidden" class="form-control" style="border-radius:0px" id="size" name="size">
 									</div>
 								</div>
@@ -211,9 +211,23 @@
 																	}
 																}
 																
-																console.log(selections);
 																$("select[name='"+tar.replace('xtra-select','data-prefix')+"']").html(selections);
 																$("#"+tar).html('<input type="text" class="form-control" style="border-radius:0px" name="data-pred'+ cleanedTar +'" placeholder="free-form text">');
+																
+																$("#holder").prepend('<div id="help" class="col-md-12" align="center"><div class="alert alert-success" align="center" role="alert">Info: Enter <b>drop!</b> to undo.</div></div>');
+																setTimeout(function () {
+																	$("#help").remove();
+																}, 10000);
+																
+																if ($("#prefixName").val().indexOf(":") < 0)
+																{
+																	redirect = "document.getElementById('prefixName').focus()";
+																	$("#holder").prepend('<div id="warning" class="col-md-12" align="center"><div class="alert alert-danger" align="center" role="alert">Warning: Prefixes are Required.</div></div>');
+																	setTimeout(function () 
+																	{
+																		$("#warning").remove();
+																	}, 10000);
+																}
 															}
 														}
 													);
