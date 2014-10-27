@@ -180,6 +180,35 @@
 													$("select[name='"+tar.replace('pred','prefix')+"']").html('<option selected="selected">iie</option>');
 													$(this).parent().html('<select class="form-control" name="'+ tar +'"><option value="targets">Targets</option><option value="related">Related To</option><option value="originating">Originating</option><option value="exploits">Exploits</option><option value="text">Text</option></select>');
 												}
+												else if ($(this).attr("name").indexOf('prefixName') > -1)
+												{
+													$( "input[name*='data-pred']" ).each(function(index)
+													{
+														var currentTarget = $(this).attr("name").replace("pred","prefix");
+														var rawPrefix = $("input[name='prefixName']").val();
+														while(rawPrefix.indexOf(" :") > -1)
+															rawPrefix = rawPrefix.replace(" :",":");
+														var selections = "";
+																
+														var commaSeparate = rawPrefix.split(",");
+														for (var i = 0; i < commaSeparate.length; i++)
+														{
+															var spaceSeparate = commaSeparate[i].split(" ");
+															for (var j = 0; j < spaceSeparate.length; j++)
+															{
+																if(spaceSeparate[j].indexOf(":") > -1)
+																{
+																	selections = selections + "<option>" + spaceSeparate[j].replace(":","") + "</option>";
+																	j = spaceSeparate.length;
+																}
+															}
+														}
+																
+														var curr = $("select[name='"+currentTarget+"']").html();
+														if(curr.indexOf(selections) < 0)
+															 $("select[name='"+currentTarget+"']").html(selections);
+													});
+												}
 											}
 										);											
 										
@@ -214,6 +243,8 @@
 											var cleanedTar = tar.replace("xtra-select","");
 											
 											var rawPrefix = $("input[name='prefixName']").val();
+											while(rawPrefix.indexOf(" :") > -1)
+												rawPrefix = rawPrefix.replace(" :",":");
 											var selections = "";
 																
 											var commaSeparate = rawPrefix.split(",");
