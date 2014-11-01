@@ -78,10 +78,15 @@
 									<button id="submit" name="submit" value="Submit" type="submit" class="btn btn-sm btn-success">Submit Lead</button>
 								</div>
 								<div class="form-group" id="holder">
-									<div class="col-md-4">
+									<div class="col-md-2">
+										<select class="form-control" name="data-prefix1">
+											<option selected="selected">iie</option>
+										</select>
+									</div>
+									<div class="col-md-3">
 										<select class="form-control" name="data-pred1">
 											<option value="targets">Targets</option>
-											<option value="relatedTo">Related To</option>
+											<option value="related">Related To</option>
 											<option value="originating">Originating</option>
 											<option value="exploits">Exploits</option>
 										</select>
@@ -99,10 +104,21 @@
 									var currentValue = 2;
 									var currentSize = 1;
 									var g;
-									$(document).ready(
-										function() 
-										{
-											$("#size").val(currentSize);
+									
+									//Evidence variables.
+									var minimumConfidence = 100;
+									var evidenceExists = false;
+									var evidenceFields = "";
+									var textConcat = "";
+									var textDropDowns = "";
+									var textData = "";	
+									var html;							
+									
+									function userInterface(){}
+									userInterface.prototype.initialSetup = function()
+									{
+										console.log("Initialized");
+										$("#size").val(currentSize);
 											var myColors = [
 															"#ff0000",
 															"#ffe675",
@@ -119,91 +135,293 @@
 												levelColorsGradient: false
 											});
 											$('#gauge').hide();
+									}
+									
+									userInterface.prototype.performAdd =  function()
+									{
+										$("#holder").append('<div class="clearfix" id="xtra-clear'+currentValue+'"></div><div class="col-md-2" id= "xtra-prefix'+currentValue+'"><select class="form-control" name="data-prefix'+currentValue+'"><option selected="selected">iie</option></select></div><div id="xtra-select' + currentValue + '" class="col-md-3"><select class="form-control" name="data-pred'+ currentValue +'"><option value="targets">Targets</option><option value="related">Related To</option><option value="originating">Originating</option><option value="exploits">Exploits</option><option value="evidence">Evidence</option><option value="text">Text</option></select></div><div id="xtra-text-input'+ currentValue +'" class="col-md-5"><input type="text" class="form-control" style="border-radius:0px" name="data-'+currentValue+'" placeholder="free-form text"></div>');
+										currentValue++;
+										currentSize++;
+										$("#size").val(currentSize);
+									}
+									
+									userInterface.prototype.performSubstract = function()
+									{
+										$("#xtra-clear"+(currentValue-1)+"").last().remove()
+										$("#xtra-prefix"+(currentValue-1)+"").last().remove()
+										$("#xtra-select"+(currentValue-1)+"").last().remove()
+										$("#xtra-text-input"+(currentValue-1)+"").last().remove();
+										if(currentValue != 2)
+											currentValue--;
+										if(currentSize != 1)
+											currentSize--;
+										$("#size").val(currentSize);
+									}
+									
+									userInterface.prototype.selectionChanged = function()
+									{
+										g.refresh(minimumConfidence);	
+										evidenceExists = false;
+										evidenceFields = "";
+										textDropDowns = "";
+										textData = "";		
+										textConcat = "";
+										minimumConfidence = 100;
+										
+										$("select option:selected").each(new userInterface().verifySelected);
+										$("input").each(
+											function(index)
+											{
+												if ($(this).val().indexOf('drop!') > -1)
+												{
+													var tar = $(this).attr("name");
+													if (tar.indexOf('data-pred') < 0)
+														return;
+													$("select[name='"+tar.replace('pred','prefix')+"']").html('<option selected="selected">iie</option>');
+													$(this).parent().html('<select class="form-control" name="'+ tar +'"><option value="targets">Targets</option><option value="related">Related To</option><option value="originating">Originating</option><option value="exploits">Exploits</option><option value="text">Text</option></select>');
+												}
+												else if ($(this).attr("name").indexOf('prefixName') > -1)
+												{
+													$( "input[name*='data-pred']" ).each(function(index)
+													{
+														var currentTarget = $(this).attr("name").replace("pred","prefix");
+														var rawPrefix = $("input[name='prefixName']").val();
+														while(rawPrefix.indexOf(" :") > -1)
+															rawPrefix = rawPrefix.replace(" :",":");
+														var selections = "";
+																
+														var commaSeparate = rawPrefix.split(",");
+														for (var i = 0; i < commaSeparate.length; i++)
+														{
+															var spaceSeparate = commaSeparate[i].split(" ");
+															for (var j = 0; j < spaceSeparate.length; j++)
+															{
+																if(spaceSeparate[j].indexOf(":") > -1)
+																{
+																	selections = selections + "<option>" + spaceSeparate[j].replace(":","") + "</option>";
+																	j = spaceSeparate.length;
+																}
+															}
+														}
+																
+														var curr = $("select[name='"+currentTarget+"']").html();
+														if(curr.indexOf(selections) < 0)
+															 $("select[name='"+currentTarget+"']").html(selections);
+													});
+												}
+											}
+										);											
+										
+										//Show the gauges.
+										if(evidenceExists)
+										{
+											new userInterface().calculateConfidence();	
+											$('#gauge').show();
+										}
+										else
+										{
+											$('#gauge').hide();
+										}
+									}
+									userInterface.prototype.verifySelected = function( index ) 
+									{	
+										//Verify that evidence is either selected or not.
+										if( $(this).val().indexOf('evidence') > -1)
+										{
+											evidenceExists = true;
+											//Get the name of the dropdown and find the text box that goes with it.
+											if(evidenceFields == "")
+												evidenceFields += $(this).parent().attr("name").replace("pred",""); 
+											else
+												evidenceFields += "," + $(this).parent().attr("name").replace("pred",""); 
+										}
+										//Set text drop downs to text;
+										else if ($(this).val().indexOf('text') > -1)
+										{
+											//TODO text section handling of prefixes.
+											var tar = $(this).parent().parent().attr("id");
+											var cleanedTar = tar.replace("xtra-select","");
+											
+											var rawPrefix = $("input[name='prefixName']").val();
+											while(rawPrefix.indexOf(" :") > -1)
+												rawPrefix = rawPrefix.replace(" :",":");
+											var selections = "";
+																
+											var commaSeparate = rawPrefix.split(",");
+											for (var i = 0; i < commaSeparate.length; i++)
+											{
+												var spaceSeparate = commaSeparate[i].split(" ");
+												for (var j = 0; j < spaceSeparate.length; j++)
+												{
+													if(spaceSeparate[j].indexOf(":") > -1)
+													{
+														selections = selections + "<option>" + spaceSeparate[j].replace(":","") + "</option>";
+														j = spaceSeparate.length;
+													}
+												}
+											}
+																
+											$("select[name='"+tar.replace('xtra-select','data-prefix')+"']").html(selections);
+											$("#"+tar).html('<input type="text" class="form-control" style="border-radius:0px" name="data-pred'+ cleanedTar +'" placeholder="free-form text">');
+										}
+										else
+										{
+											//Store the text values;
+											var textField = $(this).parent().attr("name").replace("pred","");
+											if($(this).parent().attr("name").indexOf('prefix') > -1)
+												return;
+											var textValue = $("input[name=" + textField + "]").val();
+											var dropDownValue = $(this).val();
+															
+											if(textData == "")
+											{
+												textData += textValue.replace(" ",",");
+												textDropDowns += dropDownValue;
+												textConcat += dropDownValue + " " + textValue;
+											}
+											else
+											{
+												textData += "," + textValue.replace(" ",",");
+												textDropDowns += "," + dropDownValue;
+												textConcat += "," + dropDownValue + " " + textValue;
+											}			
+										}
+														
+									};
+									userInterface.prototype.calculateConfidence = function()
+									{
+										//console.log("Text: " + textData);
+														
+										//Get the data for every evidence marked field.
+										var evLocs = evidenceFields.split(",");
+										for (var i = 0; i < evLocs.length; i++)
+										{
+											//Print the text of every outgoing domain
+											var target = $("input[name="+evLocs[i]+"]").val();
+															
+											//TODO fix the URL fixer so it doesn't suck.
+											target = target.replace("www.","");
+											target = target.replace("http://","");
+											target = target.replace("https://","");
+											target = "http://www." + target;
+																
+											//Get the files.
+											$.getJSON('http://whateverorigin.org/get?url=' + encodeURIComponent(target) + '&callback=?',
+											function(data)
+											{	
+												html = data.contents; 
+												html = $(html).text();
+												new userInterface().finalizeConfidence();
+												
+											});
+														
+										}
+									}
+
+									userInterface.prototype.finalizeConfidence = function()
+									{
+										//Storage for the amount of words matched and the words that must be matched.
+										var matchedWords = 0;
+										var targetWords = html.split(" ");
+										var providedStrings = textConcat.split(",");
+										var providedData = textData.split(",");
+										var providedDropDowns = textDropDowns.split(",");
+										
+										console.log("Sentences: " + providedStrings);
+										console.log("Data: " + providedData);
+										console.log("Dropdowns: " + providedDropDowns);
+																	
+										//Number of words from the form.
+										var formWords = 0;
+										formWords = providedData.length + providedDropDowns.length;
+																	
+										//Number of words from the text.
+										var textWords = 0;
+										textWords = targetWords.length;
+															
+										//Begin verification (2 step - full sentence, word by word)
+										var fullMatch = true;
+										for (var i = 0; i < providedStrings.length; i++)
+										{
+											console.log("Attempt match: " + providedStrings[i]);
+											if(html.toUpperCase().indexOf(providedStrings[i].toUpperCase) <0)
+												fullMatch = false;
+										}
+										if(fullMatch)
+										{
+											minConfidence = 100;
+											$("#wordsMatched").text("PERFECT MATCH");
+											g.refresh(minimumConfidence);
+										}
+										else
+										{
+											//Fallback if first step fails;
+											for (var i = 0; i < textWords; i++)
+											{
+												targetWords[i] = targetWords[i].trim();
+												//Match text data
+												for (var j = 0; j < providedData.length; j++)
+												{
+													//console.log("attempt match: " + providedData[j] + " => " + targetWords[i]);
+													if(providedData[j].indexOf(targetWords[i]) > 0)
+													{
+														matchedWords++;
+													}
+												}
+																		
+												//Match drop downs
+												for (var k = 0; k < providedDropDowns; k++)
+												{
+													//console.log("attempt match: " + providedDropDowns[k] + " => " + targetWords[i]);
+													if(providedDropDowns[k].indexOf(targetWords[i]) > 0)
+													{
+														matchedWords++;
+													}
+												}
+											}
+																	
+											console.log("matchedWords: " + matchedWords);
+																	
+											//Basic formula: Words Matched / Words in Text * log( Words In Text - Words Matched)
+											var finalResult = (matchedWords / textWords) * Math.log( textWords - matchedWords);
+											finalResult = finalResult * 100;
+											if(finalResult < minimumConfidence)
+											{
+												minimumConfidence = finalResult;
+												$("#wordsMatched").text("wordsMatched: " + matchedWords);
+												$("#wordsText").text("wordsText: " + textWords);
+												$("#wordsNotMatched").text("wordsNotMatched: " + (textWords - matchedWords));
+												$("#confidence").text("confidence: " + finalResult);
+												g.refresh(minimumConfidence);
+											}
+										}
+									}
+									$(document).ready(
+										function() 
+										{	
+											var UI = new userInterface();
+											UI.initialSetup();
 											
 											//Deal with adds.
-											$( "#plus" ).click(
-												function()
-												{
-													$("#holder").append('<div id="xtra-select' + currentValue + '" class="col-md-4"><select class="form-control" name="data-pred'+ currentValue +'"><option value="targets">Targets</option><option value="relatedTo">Related To</option><option value="originating">Originating</option><option value="exploits">Exploits</option><option value="evidence">Evidence</option></select></div><div id="xtra-text-input'+ currentValue +'" class="col-md-5"><input type="text" class="form-control" style="border-radius:0px" name="data-'+currentValue+'" placeholder="free-form text"></div>');
-													currentValue++;
-													currentSize++;
-													$("#size").val(currentSize);
-												}
-											);
+											$( "#plus" ).click(UI.performAdd);
 											
 											//Deal with removals.
-											$( "#minus" ).click(
-												function()
-												{
-													$("#xtra-select"+(currentValue-1)+"").last().remove()
-													$("#xtra-text-input"+(currentValue-1)+"").last().remove();
-													if(currentValue != 2)
-														currentValue--;
-													if(currentSize != 1)
-														currentSize--;
-													$("#size").val(currentSize);
-												}
-											);
+											$( "#minus" ).click(UI.performSubstract);
 											
 											//Get all selected values to be printed.
-											$("div").on('click', 'select.form-control',
-												function()
-												{
-													var evidenceExists = false;
-													var evidenceFields = "";
-													
-													
-													$("select option:selected").each(function( index ) 
-													{
-														//Verify that evidence is either selected or not.
-														if( $(this).val().indexOf('evidence') > -1)
-														{
-															evidenceExists = true;
-															//Get the name of the dropdown and find the text box that goes with it.
-															if(evidenceFields == "")
-																evidenceFields += $(this).parent().attr("name").replace("pred",""); 
-															else
-																evidenceFields += "," + $(this).parent().attr("name").replace("pred",""); 
-														}
-														else
-														{
-															//Store the text values;
-															var textField = $(this).parent().attr("name").replace("pred","");
-														}
-														
-														
-													});
-													
-													//Show the gauges.
-													if(evidenceExists)
-													{
-														//Get the data for every evidence marked field.
-														var evLocs = evidenceFields.split(",");
-														for (var i = 0; i < evLocs.length; i++)
-														{
-															//Print the text of every outgoing domain
-															console.log('http://www.corsproxy.com/' + $("input[name="+evLocs[i]+"]").val().replace("www.","").replace("http://",""));
-															$.get(  'http://www.corsproxy.com/' + 
-																	$("input[name="+evLocs[i]+"]").val().replace("wwww.","").replace("http://",""),
-																	function(response) {
-																		console.log(response);
-																		});
-														}
-														
-														$('#gauge').show();
-													}
-													else
-													{
-														$('#gauge').hide();
-													}
-												}
-											);
+											$("div").on('change', 'select.form-control', UI.selectionChanged);
+											$("div").on('change', 'input.form-control', UI.selectionChanged);
 											
 										}
 									);
 									</script>
 								</div>
-								<div id="gauge" class="50x50px" align="center"></div>
+								<div id="gauge" class="50x50px" align="center">
+									<label id="wordsMatched"></label>
+									<label id="wordsText"></label>
+									<label id="wordsNotMatched"></label>
+									<label id="confidence"></label>
+								</div>
 							</form>
 						</div>
 				</div>
