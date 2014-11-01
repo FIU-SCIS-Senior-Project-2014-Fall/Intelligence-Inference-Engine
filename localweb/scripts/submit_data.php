@@ -2,8 +2,6 @@
 
 <?php
 
-include 'httpful.phar';
-
 //echo $_POST['data-pred'];
 //echo $_POST['data-1'];
 
@@ -21,21 +19,21 @@ else
 	
 echo "Reporter: " . $reporter . '<br>';
 	
-$query = "PREFIX iie: </fake/iie/types/>";
+$query = "PREFIX iie: &lt/fake/iie/types&gt";
 
-foreach (explode("," , $_POST["prefixName"]) as $prefix)
+foreach (explode(",",$_POST["prefixName"]) as $prefix)
 {
-	if(strlen($prefix) != 0)
+	if ($prefix !== '')
 		$query = $query . "PREFIX " . $prefix;
 }
 
-//$query = str_replace("<","&lt",$query);
-//$query = str_replace(">","&gt",$query);
+$query = str_replace("<","&lt",$query);
+$query = str_replace(">","&gt",$query);
 
 $query = $query . "INSERT DATA { ";
 
 if (strpos($_POST["subject"], "<") === FALSE)
-	$query = $query . "</" . $_POST["subject"] . ">" . " ";
+	$query = $query . "&lt" . $_POST["subject"] . "&gt" . " ";
 else
 	$query = $query . $_POST["subject"] . " ";
 
@@ -44,13 +42,7 @@ $size = intval($_POST['size']);
 for($i=1; $i<=$size; $i++)
 {
 	$query = $query . "iie:" . $_POST['data-pred'. strval($i)] . " ";
-	
 	$query = $query . "\"" . $_POST['data-'.strval($i)] ."\"" ;
-	/*$predicate = $_POST['data-'. strval($i)];
-	$predicate = str_replace("<","", $predicate);
-	$predicate = str_replace(">","", $predicate);
-	
-	$query = $query . "<" . $predicate .">" ;*/
 	if($i < $size)
 		$query = $query . "; " ;
 	else
@@ -59,16 +51,8 @@ for($i=1; $i<=$size; $i++)
 
 $query = $query . " }";
 
-echo $query;
-echo "<br>";
-echo urlencode($query);
-echo "<br>";
+print $query;
 
-$response = \Httpful\Request::post("http://iie-dev.cs.fiu.edu:3030/iie/update")
-->body($query)
-->send();
-
-echo htmlentities($response->body);
 
 /*$uri = "http://iie-dev.cs.fiu.edu:3030/update/"; 
 $temp = urlencode($query);
@@ -76,7 +60,7 @@ echo $temp;
 $data = array('query' => $temp);
 
 //$response = \Httpful\Request::post($uri)
-    ->send();
-cho $response;*/
+//    ->send();
+//cho $response;*/
 
 ?>

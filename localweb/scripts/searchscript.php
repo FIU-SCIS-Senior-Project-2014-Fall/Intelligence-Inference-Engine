@@ -1,19 +1,19 @@
 <?php
 
 //echo var_dump($_POST) . "<br>";
-include 'httpful.phar';
 
 
-$query = "PREFIX iie: </fake/iie/types/>";
+
+$query = "PREFIX iie: &lt/fake/iie/types&gt";
 
 foreach (explode(",",$_POST["prefixName"]) as $prefix)
 {
-	if(strlen($prefix) != 0)
+	if ($prefix !== '')
 		$query = $query . "PREFIX " . $prefix;
 }
 
-//$query = str_replace("<","&lt",$query);
-//$query = str_replace(">","&gt",$query);
+$query = str_replace("<","&lt",$query);
+$query = str_replace(">","&gt",$query);
 
 $query = $query . "SELECT ?subject WHERE { ";
 
@@ -23,17 +23,8 @@ for($i=1; $i<=$size; $i++)
 {
 	if($i == 1)
 		$query = $query . "?subject ";
-	$query = $query . $_POST['data-prefix'. strval($i)] . ":" . $_POST['data-pred'. strval($i)] . " ";
-	
-	
+	$query = $query . $_POST['data-prefix'. strval($i)] . $_POST['data-pred'. strval($i)] . " ";
 	$query = $query . "\"" . $_POST['data-'.strval($i)] ."\"" ;
-	/*$predicate = $_POST['data-'. strval($i)];
-	$predicate = str_replace("<","");
-	$predicate = str_replace(">","");
-	
-	$query = $query . "<" . $predicate .">" ;*/
-	
-	
 	if($i < $size)
 		$query = $query . "; " ;
 	else
@@ -42,16 +33,11 @@ for($i=1; $i<=$size; $i++)
 
 $query = $query . " }";
 
-echo $query;
+$uri = "http://iie-dev.cs.fiu.ecu:3030/iie/query?query=" . $query;
+$response = Request::get($uri) 
+    ->send();
 
-$queryURL = "http://iie-dev.cs.fiu.edu:3030/iie/query?query=" . urlencode($query);
-echo "<br>Query URL: " . $queryURL;
-
-$response = \Httpful\Request::get($queryURL)
-			->send();
-
-echo "<br>Response: " . htmlentities($response->body);
-
+print $response;
 
 
 
