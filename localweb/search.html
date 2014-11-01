@@ -65,7 +65,7 @@
 								<div class="form-group">
 									<div class="col-md-12">
 										<label for="prefixName">Prefix</label>
-										<input type="text" class="form-control" style="border-radius:0px" name="prefixName" placeholder="Separate Prefixes By CSV">
+										<input type="text" class="form-control" style="border-radius:0px" name="prefixName" id="prefixName" placeholder="Separate Prefixes By CSV">
 										<input type="hidden" class="form-control" style="border-radius:0px" id="size" name="size">
 									</div>
 								</div>
@@ -95,34 +95,136 @@
 									<script type="text/javascript">
 									var currentValue = 2;
 									var currentSize = 1;
+									
+									function userInterface(){}
+									userInterface.prototype.initialSetup = function()
+									{
+										$("#size").val(currentSize);
+									}
+									userInterface.prototype.performAdd = function()
+									{
+										$("#holder").append('<div class="clearfix" id="xtra-clear'+currentValue+'"></div><div class="col-md-2" id= "xtra-prefix'+currentValue+'"><select class="form-control" name="data-prefix'+currentValue+'"><option selected="selected">iie</option></select></div><div id="xtra-select' + currentValue + '" class="col-md-3"><select class="form-control" name="data-pred'+ currentValue +'"><option value="targets">Targets</option><option value="related">Related To</option><option value="originating">Originating</option><option value="exploits">Exploits</option><option value="text">Text</option></select></div><div id="xtra-text-input'+ currentValue +'" class="col-md-5"><input type="text" class="form-control" style="border-radius:0px" name="data-'+currentValue+'" placeholder="free-form text"></div>');
+										currentValue++;
+										currentSize++;
+										$("#size").val(currentSize);
+									}
+									
+									userInterface.prototype.performSubstract = function()
+									{
+										$("#xtra-clear"+(currentValue-1)+"").last().remove()
+										$("#xtra-prefix"+(currentValue-1)+"").last().remove()
+										$("#xtra-select"+(currentValue-1)+"").last().remove()
+										$("#xtra-text-input"+(currentValue-1)+"").last().remove();
+										if(currentValue != 2)
+											currentValue--;
+										if(currentSize != 1)
+											currentSize--;
+										$("#size").val(currentSize);
+									}
+									userInterface.prototype.inputChanged = function()
+									{
+										$("input").each(
+											function(index)
+											{
+												if ($(this).val().indexOf('drop!') > -1)
+												{
+													var tar = $(this).attr("name");
+													if (tar.indexOf('data-pred') < 0)
+														return;
+													$("select[name='"+tar.replace('pred','prefix')+"']").html('<option selected="selected">iie</option>');
+													$(this).parent().html('<select class="form-control" name="'+ tar +'"><option value="targets">Targets</option><option value="related">Related To</option><option value="originating">Originating</option><option value="exploits">Exploits</option><option value="text">Text</option></select>');
+												}
+												else if ($(this).attr("name").indexOf('prefixName') > -1)
+												{
+													$( "input[name*='data-pred']" ).each(function(index)
+													{
+														var currentTarget = $(this).attr("name").replace("pred","prefix");
+														var rawPrefix = $("input[name='prefixName']").val();
+														while(rawPrefix.indexOf(" :") > -1)
+															rawPrefix = rawPrefix.replace(" :",":");
+														var selections = "";
+															
+														var commaSeparate = rawPrefix.split(",");
+														for (var i = 0; i < commaSeparate.length; i++)
+														{
+															var spaceSeparate = commaSeparate[i].split(" ");
+															for (var j = 0; j < spaceSeparate.length; j++)
+															{
+																if(spaceSeparate[j].indexOf(":") > -1)
+																{
+																	selections = selections + "<option>" + spaceSeparate[j].replace(":","") + "</option>";
+																	j = spaceSeparate.length;
+																}
+															}
+														}
+																
+														var curr = $("select[name='"+currentTarget+"']").html();
+														if(curr.indexOf(selections) < 0)
+															$("select[name='"+currentTarget+"']").html(selections);
+													});
+												}
+											}
+										);
+									}
+									userInterface.prototype.selectionChanged = function()
+									{
+										$("select option:selected").each(
+											function(index)
+											{
+												if ($(this).val().indexOf('text') > -1)
+												{
+													var tar = $(this).parent().parent().attr("id");
+													var cleanedTar = tar.replace("xtra-select","");
+																
+													var rawPrefix = $("input[name='prefixName']").val();
+													while(rawPrefix.indexOf(" :") > -1)
+													rawPrefix = rawPrefix.replace(" :",":");
+													var selections = "";
+																	
+													var commaSeparate = rawPrefix.split(",");
+													for (var i = 0; i < commaSeparate.length; i++)
+													{
+														var spaceSeparate = commaSeparate[i].split(" ");
+														for (var j = 0; j < spaceSeparate.length; j++)
+														{
+															if(spaceSeparate[j].indexOf(":") > -1)
+															{
+																selections = selections + "<option>" + spaceSeparate[j].replace(":","") + "</option>";
+																j = spaceSeparate.length;
+															}
+														}
+													}
+																
+													$("select[name='"+tar.replace('xtra-select','data-prefix')+"']").html(selections);
+													$("#"+tar).html('<input type="text" class="form-control" style="border-radius:0px" name="data-pred'+ cleanedTar +'" placeholder="free-form text">');
+																
+													$("#holder").prepend('<div id="help" class="col-md-12" align="center"><div class="alert alert-success" align="center" role="alert">Info: Enter <b>drop!</b> to undo.</div></div>');
+													setTimeout(function () {
+														$("#help").remove();
+													}, 10000);
+																
+													if ($("#prefixName").val().indexOf(":") < 0)
+													{
+														redirect = "document.getElementById('prefixName').focus()";
+														$("#holder").prepend('<div id="warning" class="col-md-12" align="center"><div class="alert alert-danger" align="center" role="alert">Warning: Prefixes are Required.</div></div>');
+														setTimeout(function () 
+														{
+															$("#warning").remove();
+														}, 10000);
+													}	
+												}
+											}
+										);
+									}
+									
 									$(document).ready(
 										function() 
 										{
-											$("#size").val(currentSize);
-											$( "#plus" ).click(
-												function()
-												{
-													$("#holder").append('<div class="clearfix" id="xtra-clear'+currentValue+'"></div><div class="col-md-2" id= "xtra-prefix'+currentValue+'"><select class="form-control" name="data-prefix'+currentValue+'"><option selected="selected">iie</option></select></div><div id="xtra-select' + currentValue + '" class="col-md-3"><select class="form-control" name="data-pred'+ currentValue +'"><option value="targets">Targets</option><option value="related">Related To</option><option value="originating">Originating</option><option value="exploits">Exploits</option><option value="text">Text</option></select></div><div id="xtra-text-input'+ currentValue +'" class="col-md-5"><input type="text" class="form-control" style="border-radius:0px" name="data-'+currentValue+'" placeholder="free-form text"></div>');
-													currentValue++;
-													currentSize++;
-													$("#size").val(currentSize);
-												}
-											);
+											var UI = new userInterface();
+											UI.initialSetup();
 											
-											$( "#minus" ).click(
-												function()
-												{
-													$("#xtra-clear"+(currentValue-1)+"").last().remove()
-													$("#xtra-prefix"+(currentValue-1)+"").last().remove()
-													$("#xtra-select"+(currentValue-1)+"").last().remove()
-													$("#xtra-text-input"+(currentValue-1)+"").last().remove();
-													if(currentValue != 2)
-														currentValue--;
-													if(currentSize != 1)
-														currentSize--;
-													$("#size").val(currentSize);
-												}
-											);
+											$( "#plus" ).click(UI.performAdd);
+											$( "#minus" ).click(UI.performSubstract);
 											
 											$( "#custom-search" ).click(
 												function()
@@ -132,93 +234,10 @@
 											);
 											
 											//Probably needs a refactor (anonymous functions are evil...)
-											$("div").on('change', 'input.form-control',
-												function()
-												{
-													$("input").each(
-														function(index)
-														{
-															if ($(this).val().indexOf('drop!') > -1)
-															{
-																var tar = $(this).attr("name");
-																if (tar.indexOf('data-pred') < 0)
-																	return;
-																$("select[name='"+tar.replace('pred','prefix')+"']").html('<option selected="selected">iie</option>');
-																$(this).parent().html('<select class="form-control" name="'+ tar +'"><option value="targets">Targets</option><option value="related">Related To</option><option value="originating">Originating</option><option value="exploits">Exploits</option><option value="text">Text</option></select>');
-															}
-															else if ($(this).attr("name").indexOf('prefixName') > -1)
-															{
-																$( "input[name*='data-pred']" ).each(function(index)
-																{
-																	var currentTarget = $(this).attr("name").replace("pred","prefix");
-																	var rawPrefix = $("input[name='prefixName']").val();
-																	while(rawPrefix.indexOf(" :") > -1)
-																		rawPrefix = rawPrefix.replace(" :",":");
-																	var selections = "";
-																
-																	var commaSeparate = rawPrefix.split(",");
-																	for (var i = 0; i < commaSeparate.length; i++)
-																	{
-																		var spaceSeparate = commaSeparate[i].split(" ");
-																		for (var j = 0; j < spaceSeparate.length; j++)
-																		{
-																			if(spaceSeparate[j].indexOf(":") > -1)
-																			{
-																			selections = selections + "<option>" + spaceSeparate[j].replace(":","") + "</option>";
-																			j = spaceSeparate.length;
-																			}
-																		}
-																	}
-																
-																	var curr = $("select[name='"+currentTarget+"']").html();
-																	if(curr.indexOf(selections) < 0)
-																		$("select[name='"+currentTarget+"']").html(selections);
-																});
-															}
-														}
-													);
-												}
-											);
+											$("div").on('change', 'input.form-control', UI.inputChanged);
 											
 											//Probably needs a refactor (anonymous functions are evil...)
-											$("div").on('change', 'select.form-control', 
-												function()
-												{
-													$("select option:selected").each(
-														function(index)
-														{
-															if ($(this).val().indexOf('text') > -1)
-															{
-																var tar = $(this).parent().parent().attr("id");
-																var cleanedTar = tar.replace("xtra-select","");
-																
-																var rawPrefix = $("input[name='prefixName']").val();
-																while(rawPrefix.indexOf(" :") > -1)
-																	rawPrefix = rawPrefix.replace(" :",":");
-																var selections = "";
-																
-																var commaSeparate = rawPrefix.split(",");
-																for (var i = 0; i < commaSeparate.length; i++)
-																{
-																	var spaceSeparate = commaSeparate[i].split(" ");
-																	for (var j = 0; j < spaceSeparate.length; j++)
-																	{
-																		if(spaceSeparate[j].indexOf(":") > -1)
-																		{
-																			selections = selections + "<option>" + spaceSeparate[j].replace(":","") + "</option>";
-																			j = spaceSeparate.length;
-																		}
-																	}
-																}
-																
-																console.log(selections);
-																$("select[name='"+tar.replace('xtra-select','data-prefix')+"']").html(selections);
-																$("#"+tar).html('<input type="text" class="form-control" style="border-radius:0px" name="data-pred'+ cleanedTar +'" placeholder="free-form text">');
-															}
-														}
-													);
-												}
-											);
+											$("div").on('change', 'select.form-control', UI.selectionChanged);
 										}
 									);
 									</script>
