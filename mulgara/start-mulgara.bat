@@ -1,1 +1,0 @@
-java -Djava.security.policy==java.policy -jar mulgara-2.1.13.jar -p 9090
