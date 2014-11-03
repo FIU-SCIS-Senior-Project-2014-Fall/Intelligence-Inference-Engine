@@ -180,6 +180,31 @@
 													$("select[name='"+tar.replace('pred','prefix')+"']").html('<option selected="selected">iie</option>');
 													$(this).parent().html('<select class="form-control" name="'+ tar +'"><option value="targets">Targets</option><option value="related">Related To</option><option value="originating">Originating</option><option value="exploits">Exploits</option><option value="text">Text</option></select>');
 												}
+												else if ($(this).val().indexOf(':') > -1 &&  $(this).attr("name").indexOf('data-pred') > -1)
+												{
+													console.log("Attempting prefix merge");
+													var rawPrefix = $(this).val();
+													while(rawPrefix.indexOf(" :") > -1)
+														rawPrefix = rawPrefix.replace(" :",":");
+														
+													var prefixList = $("input[name='prefixName']").val();
+													while(prefixList.indexOf(" :") > -1)
+														prefixList = prefixList.replace(" :",":");
+													
+													var targs = rawPrefix.split(":");
+													if(prefixList.indexOf(targs[0]+":") > -1)
+													{
+														$(this).val(targs[1]);
+													}
+													else
+													{
+														var tar = $("input[name='prefixName']").val();
+														tar += targs[0] + ":, ";
+														
+														$("input[name='prefixName']").val(tar);
+														$(this).val(targs[1]);
+													}
+												}
 												else if ($(this).attr("name").indexOf('prefixName') > -1)
 												{
 													$( "input[name*='data-pred']" ).each(function(index)
