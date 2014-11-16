@@ -73,25 +73,26 @@
 								</div>
 								<div class="form-group">
 									<div class="col-md-9">
+										<label for="subject">Subject</label>
 										<input type="text" class="form-control" style="border-radius:0px" name="subject" placeholder="Subject of Lead"> 
 									</div>
-									<button id="submit" name="submit" value="Submit" type="submit" class="btn btn-sm btn-success">Submit Lead</button>
 								</div>
 								<div class="form-group" id="holder">
-									<div class="col-md-2">
+									<div class="col-md-2" id="xtra-prefix1">
 										<select class="form-control" name="data-prefix1">
 											<option selected="selected">iie</option>
 										</select>
 									</div>
-									<div class="col-md-3">
+									<div class="col-md-3" id="xtra-select1">
 										<select class="form-control" name="data-pred1">
 											<option value="targets">Targets</option>
 											<option value="related">Related To</option>
 											<option value="originating">Originating</option>
 											<option value="exploits">Exploits</option>
+											<option value="text">Text</option>
 										</select>
 									</div>
-									<div class="col-md-5">
+									<div class="col-md-5" id="xtra-text-input1">
 										<input type="text" class="form-control" style="border-radius:0px" name="data-1" placeholder="free-form text">
 									</div>
 									<button type="button" id="plus" class="col-md-1 btn btn-sm btn-success">
@@ -147,14 +148,14 @@
 									
 									userInterface.prototype.performSubstract = function()
 									{
-										$("#xtra-clear"+(currentValue-1)+"").last().remove()
-										$("#xtra-prefix"+(currentValue-1)+"").last().remove()
-										$("#xtra-select"+(currentValue-1)+"").last().remove()
-										$("#xtra-text-input"+(currentValue-1)+"").last().remove();
-										if(currentValue != 2)
+										if(currentValue > 2)
 											currentValue--;
-										if(currentSize != 1)
+										if(currentSize > 1)
 											currentSize--;
+										$("#xtra-clear"+(currentValue)+"").last().remove()
+										$("#xtra-prefix"+(currentValue)+"").last().remove()
+										$("#xtra-select"+(currentValue)+"").last().remove()
+										$("#xtra-text-input"+(currentValue)+"").last().remove();
 										$("#size").val(currentSize);
 									}
 									
@@ -461,6 +462,9 @@
 									<label id="wordsText"></label>
 									<label id="wordsNotMatched"></label>
 									<label id="confidence"></label>
+								</div>
+								<div class="clearfix" align="center">
+									<button id="submit" name="submit" value="Submit" type="submit" class="btn btn-sm btn-success">Submit Lead</button>
 								</div>
 							</form>
 						</div>
