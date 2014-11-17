@@ -12,10 +12,10 @@
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.css" rel="stylesheet">
 
-	<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
 	
     <!-- Custom CSS for the 'Heroic Features' Template -->
     <link href="css/heroic-features.css" rel="stylesheet">
+	<script src="js/d3.min.jss"></script>
 </head>
 
 <body>
@@ -39,6 +39,8 @@
                     </li>
                     <li><a href="search.html">Search Now!</a>
                     </li>
+					<li><a href="database_explorer.html">Explore our database!</a>
+                </li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -49,58 +51,16 @@
     <div class="container">
 
         <div class="jumbotron hero-spacer">
-            <h1 align="center">Intelligence Engine Crawler Control</h1>
+            <h1 align="center">Intelligence Engine Database Explorer</h1>
             <div class="container" style="margin-top:30px">
-			<div class="col-md-8 col-md-offset-2">
+			<div class="col-md-12">
 				<div class="panel panel-default">
-					<div class="panel-heading"><h3 class="panel-title"><strong>Web Crawler Control Form</strong></h3></div>
-						<div class="panel-body">
-							<!--- <form method = "post" class="form-horizontal" role="form"> --->
-								<div class="form-group col-md-12">
-									<textarea id="query" class="form-control" align="center" rows="5">List of Websites</textarea>
-								</div>
-								<style>
-									#query
-									{
-										resize: vertical;
-									}
-								</style>
-								<div class="form-group" align ="center" id="holder">
-									<h2><span id ="status" class="label label-danger">Web Crawler: Offline</span></h2>
-								</div>
-								<div class="form-group" align ="center">
-									<h3><span id ="status" class="label label-info">Parsed Items: 0</span></h3>
-								</div>
-								<div class="form-group" align ="center">
-									<div class="btn-group">
-										<button id="enable" class="btn btn-sm btn-success">Enable Web Crawler</button>
-										<button id="disable" class="btn btn-sm btn-danger">Disable Web Crawler</button>
-									</div>
-									<script type="text/javascript">
-									$(document).ready(
-										function() 
-										{
-											$( "#enable" ).click(
-												function()
-												{
-													$("#status").remove();
-													$("#holder").append('<h2><span id ="status" class="label label-success">Web Crawler: Online</span></h2>');
-												}
-											);
-											
-											$( "#disable" ).click(
-												function()
-												{
-													$("#status").remove();
-													$("#holder").append('<h2><span id ="status" class="label label-danger">Web Crawler: Offline</span></h2>')
-												}
-											);
-										}
-									);
-									</script>
-								</div>
-							<!--- </form> --->
-						</div>
+					<div class="panel-heading">
+						<h3 class="panel-title"><strong>Exploration Page</strong></h3>
+					</div>
+					<div class="panel-body">
+							
+					</div>
 				</div>
 			</div>
 		</div>
@@ -118,7 +78,6 @@
     <!-- /.container -->
 
     <!-- JavaScript -->
-    <script src="js/jquery-1.10.2.js"></script>
     <script src="js/bootstrap.js"></script>
 
 </body>

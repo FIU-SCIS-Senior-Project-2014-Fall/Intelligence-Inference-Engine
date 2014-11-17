@@ -9,13 +9,12 @@
 
     <title>Intelligence Inference Engine</title>
 
-    <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/heroic-features.css" rel="stylesheet">
+	<link href="css/jquery-ui.css" rel="stylesheet">
 
 	<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
-	<script type="text/javascript" src="js/jquery.autocomplete.min.js"></script>
-    <!-- Custom CSS for the 'Heroic Features' Template -->
-    <link href="css/heroic-features.css" rel="stylesheet">
+	<script type="text/javascript" src="js/jquery-ui.js"></script>
 	
 </head>
 
@@ -40,6 +39,8 @@
                     </li>
                     <li><a href="search.html">Search Now!</a>
                     </li>
+					<li><a href="database_explorer.html">Explore our database!</a>
+                </li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -95,6 +96,7 @@
 									<script type="text/javascript">
 									var currentValue = 2;
 									var currentSize = 1;
+									var autoComplete = null;
 									
 									function userInterface(){}
 									userInterface.prototype.initialSetup = function()
@@ -136,7 +138,6 @@
 												}
 												else if ($(this).val().indexOf(':') > -1 &&  $(this).attr("name").indexOf('data-pred') > -1)
 												{
-													console.log("Attempting prefix merge");
 													var rawPrefix = $(this).val();
 													while(rawPrefix.indexOf(" :") > -1)
 														rawPrefix = rawPrefix.replace(" :",":");
@@ -241,7 +242,46 @@
 											}
 										);
 									}
-									
+									userInterface.prototype.getAutocomplete = function()
+									{
+										var i = 0;
+										var target = "";
+										var final_set = "";
+										$.ajax({
+											type : "GET",
+											url : "http://iie-dev.cs.fiu.edu/scripts/auto_complete_targets.php",
+											success: function(data)
+											{
+												var elements = $(data);
+												$('uri', elements).each( function() 
+												{ 
+													if(target == "")
+														target = $(this).html();
+													else
+														target += ","+$(this).html(); 
+												});
+												
+												var target_array = target.split(",");
+												for (i = 0; i < target_array.length;i++)
+												{
+													var target_objects = target_array[i].split("/fake/");
+													var prefix = target_objects[1].split("/")[0];
+													var predicate = target_objects[1].split("/")[target_objects[1].split("/").length-1];
+													var prefix_pred = prefix + ":" + predicate;
+													
+													if(final_set.indexOf(prefix) < 0)
+														final_set += prefix + ",";
+													if(final_set.indexOf(predicate) < 0)
+														final_set += predicate + ",";
+													if(final_set.indexOf(prefix_pred) < 0)
+														final_set += prefix_pred + ",";	
+												}
+												final_set = final_set.substring(0, final_set.length - 1);
+												autoComplete = final_set.split(",");
+
+											}
+										});
+									}
 									$(document).ready(
 										function() 
 										{
@@ -261,18 +301,24 @@
 											//Probably needs a refactor (anonymous functions are evil...)
 											$("div").on('change', 'input.form-control', UI.inputChanged);
 											
+											
 											//Probably needs a refactor (anonymous functions are evil...)
 											$("div").on('change', 'select.form-control', UI.selectionChanged);
 											
-											//Auto-complete magic.
-											var targs = [
-													{ value: 'Lazaro Herrera', data: 'LH' },
-													{ value: 'Jose Acosta', data: 'JA' }
-														];
 											
-											$( "input[name*='data-pred']" ).autocomplete({
-												lookup: targs,
+											UI.getAutocomplete();
+											$( "div" ).on( "click", 'input.form-control' , function() {
+												if(autoComplete.length > 0)
+													$(this).autocomplete({
+														source: autoComplete,
+														select: function(event, ui) {
+															setTimeout(function() {
+																UI.inputChanged();
+															}, 500);
+														}
+													});
 											});
+											
 										}
 									);
 									</script>
@@ -303,7 +349,6 @@
     <!-- /.container -->
 
     <!-- JavaScript -->
-    <script src="js/jquery-1.10.2.js"></script>
     <script src="js/bootstrap.js"></script>
 
 </body>
