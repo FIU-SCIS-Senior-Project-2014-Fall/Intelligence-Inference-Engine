@@ -108,6 +108,8 @@
 									<script type="text/javascript">
 									var currentValue = 2;
 									var currentSize = 1;
+									var autoComplete_prefix = null;
+									var autoComplete_predicate = null;
 									var g;
 									
 									//Evidence variables.
@@ -122,7 +124,6 @@
 									function userInterface(){}
 									userInterface.prototype.initialSetup = function()
 									{
-										console.log("Initialized");
 										$("#size").val(currentSize);
 											var myColors = [
 															"#ff0000",
@@ -445,7 +446,8 @@
 									{
 										var i = 0;
 										var target = "";
-										var final_set = "";
+										var final_set_prefix = "";
+										var final_set_predicate = "";
 										$.ajax({
 											type : "GET",
 											url : "http://iie-dev.cs.fiu.edu/scripts/auto_complete_targets.php",
@@ -463,22 +465,53 @@
 												var target_array = target.split(",");
 												for (i = 0; i < target_array.length;i++)
 												{
-													var target_objects = target_array[i].split("/fake/");
-													var prefix = target_objects[1].split("/")[0];
-													var predicate = target_objects[1].split("/")[target_objects[1].split("/").length-1];
-													var prefix_pred = prefix + ":" + predicate;
-													
-													if(final_set.indexOf(prefix) < 0)
-														final_set += prefix + ",";
-													if(final_set.indexOf(predicate) < 0)
-														final_set += predicate + ",";
-													if(final_set.indexOf(prefix_pred) < 0)
-														final_set += prefix_pred + ",";	
-												}
-												final_set = final_set.substring(0, final_set.length - 1);
-												autoComplete = final_set.split(",");
+													var target_objects = target_array[i].split("/");
+													var prefix = target;
+													var predicate = target_array[i].split("/")[target_array[i].split("/").length-1];
 
+													if(final_set_prefix.indexOf(prefix) < 0)
+														final_set_prefix += prefix + ",";
+													if(final_set_predicate.indexOf(predicate) < 0)
+														final_set_predicate += predicate + ",";
+												}
+												final_set_prefix = final_set_prefix.substring(0, final_set_prefix.length - 1);
+												final_set_predicate = final_set_predicate.substring(0, final_set_predicate.length - 1);
+												
+												autoComplete_prefix = final_set_prefix.split(",");
+												autoComplete_predicate = final_set_predicate.split(",");
 											}
+										});
+									}
+									userInterface.prototype.importDatabase = function()
+									{
+										$("#file").trigger('click');
+										
+										$("#file").change(function()
+										{
+											file = this.files[0];
+											fr = new FileReader();
+												
+											fr.onload = function(e) 
+											{
+												var contents = fr.result;
+												
+												//Send the contents to a PHP file.
+												$.ajax({
+													type : "POST",
+													url : "http://iie-dev.cs.fiu.edu/scripts/bulk_import.php",
+													data: { data: contents},
+													success: function(data)
+													{
+														//Return contents to a DIV success label/failure label.
+														$("#returns").html('<div class="alert alert-success" align="center" role="alert" id="raw-output">'+data+'</div>')
+														setTimeout(function () {
+															$("#raw-output").remove();
+														}, 2000);
+													}
+												});
+											};
+										
+											fr.readAsText(file);
 										});
 									}
 									$(document).ready(
@@ -493,22 +526,41 @@
 											//Deal with removals.
 											$( "#minus" ).click(UI.performSubstract);
 											
+											//Deals with bulk import disabling if it's not supported in other browsers.
+											
+											if (typeof window.FileReader !== 'function') {
+												$("#bulk-import").attr("disabled","true");
+											}
+											else
+											{
+												$("#bulk-import").click(UI.importDatabase);
+											}
+											
 											//Get all selected values to be printed.
 											$("div").on('change', 'select.form-control', UI.selectionChanged);
 											$("div").on('change', 'input.form-control', UI.selectionChanged);
 											
 											UI.getAutocomplete();
-											$( "div" ).on( "click", 'input.form-control' , function() {
-												if(autoComplete.length > 0)
+											$( "div" ).on( "click", "input.form-control" , function() {
+												if($(this).attr("name").indexOf("prefix") > -1 && autoComplete_prefix.length > 0)
 													$(this).autocomplete({
-														source: autoComplete,
+														source: autoComplete_prefix,
 														select: function(event, ui) {
 															setTimeout(function() {
 																UI.inputChanged();
 															}, 500);
 														}
 													});
-											});
+												if($(this).attr("name").indexOf("data") > -1 && autoComplete_predicate.length > 0)
+													$(this).autocomplete({
+														source: autoComplete_predicate,
+														select: function(event, ui) {
+															setTimeout(function() {
+																UI.inputChanged();
+														}, 500);
+													}
+												});
+											});	
 										}
 									);
 									</script>
@@ -520,7 +572,14 @@
 									<label id="confidence"></label>
 								</div>
 								<div class="clearfix" align="center">
-									<button id="submit" name="submit" value="Submit" type="submit" class="btn btn-sm btn-success">Submit Lead</button>
+									<button value="Submit" type="submit" class="btn btn-sm btn-success" id="submit" name="submit" >
+										<span class="glyphicon glyphicon-send"></span> Submit Lead
+									</button>
+									<button type="button" class="btn btn-sm btn-success" id="bulk-import" >
+										<span class="glyphicon glyphicon-cloud-upload"></span> Bulk Import Data
+									</button>
+									<div id="returns"></div>
+									<input type="file" id="file"  style="visibility:hidden"/>
 								</div>
 							</form>
 						</div>
