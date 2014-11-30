@@ -175,6 +175,16 @@
 										minimumConfidence = 100;
 										
 										$("select option:selected").each(new userInterface().verifySelected);
+										//Show the gauges.
+										if(evidenceExists)
+										{
+											new userInterface().calculateConfidence();	
+											$('#gauge').show();
+										}
+										else
+										{
+											$('#gauge').hide();
+										}
 										$("input").each(
 											function(index)
 											{
@@ -184,11 +194,10 @@
 													if (tar.indexOf('data-pred') < 0)
 														return;
 													$("select[name='"+tar.replace('pred','prefix')+"']").html('<option selected="selected">iie</option>');
-													$(this).parent().html('<select class="form-control" name="'+ tar +'"><option value="targets">Targets</option><option value="related">Related To</option><option value="originating">Originating</option><option value="exploits">Exploits</option><option value="text">Text</option></select>');
+													$(this).parent().html('<select class="form-control" name="'+ tar +'"><option value="targets">Targets</option><option value="related">Related To</option><option value="evidence">Evidence</option><option value="originating">Originating</option><option value="exploits">Exploits</option><option value="text">Text</option></select>');
 												}
 												else if ($(this).val().indexOf(':') > -1 &&  $(this).attr("name").indexOf('data-pred') > -1)
 												{
-													console.log("Attempting prefix merge");
 													var rawPrefix = $(this).val();
 													while(rawPrefix.indexOf(" :") > -1)
 														rawPrefix = rawPrefix.replace(" :",":");
@@ -242,17 +251,6 @@
 												}
 											}
 										);											
-										
-										//Show the gauges.
-										if(evidenceExists)
-										{
-											new userInterface().calculateConfidence();	
-											$('#gauge').show();
-										}
-										else
-										{
-											$('#gauge').hide();
-										}
 									}
 									userInterface.prototype.verifySelected = function( index ) 
 									{	
