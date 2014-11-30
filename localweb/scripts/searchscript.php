@@ -1,6 +1,6 @@
 <?php
 
-////echo var_dump($_POST) . "<br>";
+//echo var_dump($_POST) . "<br>";
 include 'httpful.phar';
 
 
@@ -42,15 +42,15 @@ for($i=1; $i<=$size; $i++)
 
 $query = $query . " }";
 
-//echo $query;
+echo $query;
 
-$queryURL = "http://iie-dev.cs.fiu.edu:3030/iie/query?query=" . urlencode($query) . "&output=xml&stylesheet=";
-//echo "<br>Query URL: " . $queryURL;
+$queryURL = "http://iie-dev.cs.fiu.edu:3030/iie/query?query=" . urlencode($query);
+echo "<br>Query URL: " . $queryURL;
 
 $response = \Httpful\Request::get($queryURL)
 			->send();
 
-echo $response;
+echo "<br>Response: " . htmlentities($response->body);
 
 
 

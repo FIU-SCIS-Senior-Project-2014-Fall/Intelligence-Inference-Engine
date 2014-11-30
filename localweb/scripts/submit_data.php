@@ -4,10 +4,10 @@
 
 include 'httpful.phar';
 
-////echo $_POST['data-pred'];
-////echo $_POST['data-1'];
+//echo $_POST['data-pred'];
+//echo $_POST['data-1'];
 
-////echo var_dump($_POST) . "<br>";
+//echo var_dump($_POST) . "<br>";
 
 //$_POST["reporterName"];
 //$_POST["subject"];
@@ -19,7 +19,7 @@ if (strlen($_POST["reporterName"]) == 0)
 else
 	$reporter = $_POST["reporterName"];
 	
-//echo "Reporter: " . $reporter . '<br>';
+echo "Reporter: " . $reporter . '<br>';
 	
 $query = "PREFIX iie: </fake/iie/types/>";
 
@@ -59,24 +59,20 @@ for($i=1; $i<=$size; $i++)
 
 $query = $query . " }";
 
-//echo $query;
-//echo "<br>";
-//echo urlencode($query);
-//echo "<br>";
+echo $query;
+echo "<br>";
+echo urlencode($query);
+echo "<br>";
 
 $response = \Httpful\Request::post("http://iie-dev.cs.fiu.edu:3030/iie/update")
 ->body($query)
 ->send();
 
-if (strcmp($response->body, '') == 0)
-	echo "<response><code>S</code><message>Data has been successfully entered</message></response>";
-else
-	echo "<response><code>F</code><message>There was an error entering your data</message></response>";
-
+echo htmlentities($response->body);
 
 /*$uri = "http://iie-dev.cs.fiu.edu:3030/update/"; 
 $temp = urlencode($query);
-//echo $temp;
+echo $temp;
 $data = array('query' => $temp);
 
 //$response = \Httpful\Request::post($uri)
