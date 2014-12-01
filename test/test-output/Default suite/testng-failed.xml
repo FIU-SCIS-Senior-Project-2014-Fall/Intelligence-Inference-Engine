@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Failed suite [Default suite]">
+  <test name="Default test(failed)">
+    <classes>
+      <class name="SubmitTests">
+        <methods>
+          <include name="setUp"/>
+          <include name="verifyAutocompleteCapabilities"/>
+          <include name="verifyEvidenceEvaluation"/>
+          <include name="verifyBasicUILayout"/>
+          <include name="verifyModularUI"/>
+        </methods>
+      </class> <!-- SubmitTests -->
+      <class name="CustomSearchTests">
+        <methods>
+          <include name="setUp"/>
+          <include name="verifyBasicUILayout"/>
+        </methods>
+      </class> <!-- CustomSearchTests -->
+      <class name="SearchTests">
+        <methods>
+          <include name="verifyAutocompleteCapabilities"/>
+          <include name="setUp"/>
+          <include name="verifyModularUI"/>
+          <include name="verifyBulkExporting"/>
+          <include name="verifyBasicUILayout"/>
+        </methods>
+      </class> <!-- SearchTests -->
+      <class name="DatabaseExplorerTests">
+        <methods>
+          <include name="setUp"/>
+        </methods>
+      </class> <!-- DatabaseExplorerTests -->
+    </classes>
+  </test> <!-- Default test(failed) -->
+</suite> <!-- Failed suite [Default suite] -->
