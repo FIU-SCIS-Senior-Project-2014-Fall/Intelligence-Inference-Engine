@@ -1,35 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results skipped="0" failed="9" total="12" passed="3">
+<testng-results skipped="0" failed="2" total="12" passed="10">
   <reporter-output>
   </reporter-output>
-  <suite name="Default suite" duration-ms="79241" started-at="2014-12-01T04:19:22Z" finished-at="2014-12-01T04:20:42Z">
+  <suite name="Default suite" duration-ms="328562" started-at="2014-12-01T09:17:59Z" finished-at="2014-12-01T09:23:27Z">
     <groups>
     </groups>
-    <test name="Default test" duration-ms="79241" started-at="2014-12-01T04:19:22Z" finished-at="2014-12-01T04:20:42Z">
+    <test name="Default test" duration-ms="328562" started-at="2014-12-01T09:17:59Z" finished-at="2014-12-01T09:23:27Z">
       <class name="SearchTests">
-        <test-method status="FAIL" signature="verifyAutocompleteCapabilities()[pri:0, instance:SearchTests@54448f09]" name="verifyAutocompleteCapabilities" duration-ms="1888" started-at="2014-11-30T23:20:25Z" finished-at="2014-11-30T23:20:27Z">
-          <exception class="org.openqa.selenium.InvalidSelectorException">
+        <test-method status="PASS" signature="setUp()[pri:0, instance:SearchTests@7c6ee7ea]" name="setUp" is-config="true" duration-ms="6831" started-at="2014-12-01T04:21:51Z" finished-at="2014-12-01T04:21:58Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method status="FAIL" signature="verifyAutocompleteCapabilities()[pri:0, instance:SearchTests@7c6ee7ea]" name="verifyAutocompleteCapabilities" duration-ms="13363" started-at="2014-12-01T04:21:58Z" finished-at="2014-12-01T04:22:12Z">
+          <exception class="org.openqa.selenium.NoSuchElementException">
             <message>
-              <![CDATA[The given selector ui-autocomplete ui-front ui-menu ui-widget ui-widget-content is either invalid or does not result in a WebElement. The following error occurred:
-InvalidSelectorError: Compound class names not permitted
-Command duration or timeout: 40 milliseconds
-For documentation on this error, please visit: http://seleniumhq.org/exceptions/invalid_selector_exception.html
+              <![CDATA[no such element
+  (Session info: chrome=35.0.1916.114)
+  (Driver info: chromedriver=2.10.267521,platform=Windows NT 5.2 SP2 x86) (WARNING: The server did not provide any stacktrace information)
+Command duration or timeout: 10.19 seconds
+For documentation on this error, please visit: http://seleniumhq.org/exceptions/no_such_element.html
 Build info: version: '2.44.0', revision: '76d78cf', time: '2014-10-23 20:03:00'
 System info: host: 'Lazaro-PC', ip: '192.168.56.1', os.name: 'Windows 7', os.arch: 'amd64', os.version: '6.1', java.version: '1.7.0_45'
-Session ID: 0aa8a7e8-a82d-4a9b-8e07-0b33224d0431
-Driver info: org.openqa.selenium.firefox.FirefoxDriver
-Capabilities [{platform=WINDOWS, acceptSslCerts=true, javascriptEnabled=true, cssSelectorsEnabled=true, databaseEnabled=true, browserName=firefox, handlesAlerts=true, nativeEvents=false, webStorageEnabled=true, rotatable=false, locationContextEnabled=true, applicationCacheEnabled=true, takesScreenshot=true, version=35.0a2}]]]>
+Session ID: dd09773135454734a955f7bbd177b4eb
+Driver info: org.openqa.selenium.remote.RemoteWebDriver
+Capabilities [{platform=XP, acceptSslCerts=true, javascriptEnabled=true, hasMetadata=true, browserName=chrome, chrome={userDataDir=C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\scoped_dir260_5674}, rotatable=false, locationContextEnabled=true, webdriver.remote.sessionid=dd09773135454734a955f7bbd177b4eb, version=35.0.1916.114, takesHeapSnapshot=true, databaseEnabled=false, cssSelectorsEnabled=true, handlesAlerts=true, browserConnectionEnabled=false, webStorageEnabled=true, nativeEvents=true, applicationCacheEnabled=false, takesScreenshot=true}]]]>
             </message>
             <full-stacktrace>
-              <![CDATA[org.openqa.selenium.InvalidSelectorException: The given selector ui-autocomplete ui-front ui-menu ui-widget ui-widget-content is either invalid or does not result in a WebElement. The following error occurred:
-InvalidSelectorError: Compound class names not permitted
-Command duration or timeout: 40 milliseconds
-For documentation on this error, please visit: http://seleniumhq.org/exceptions/invalid_selector_exception.html
+              <![CDATA[org.openqa.selenium.NoSuchElementException: no such element
+  (Session info: chrome=35.0.1916.114)
+  (Driver info: chromedriver=2.10.267521,platform=Windows NT 5.2 SP2 x86) (WARNING: The server did not provide any stacktrace information)
+Command duration or timeout: 10.19 seconds
+For documentation on this error, please visit: http://seleniumhq.org/exceptions/no_such_element.html
 Build info: version: '2.44.0', revision: '76d78cf', time: '2014-10-23 20:03:00'
 System info: host: 'Lazaro-PC', ip: '192.168.56.1', os.name: 'Windows 7', os.arch: 'amd64', os.version: '6.1', java.version: '1.7.0_45'
-Session ID: 0aa8a7e8-a82d-4a9b-8e07-0b33224d0431
-Driver info: org.openqa.selenium.firefox.FirefoxDriver
-Capabilities [{platform=WINDOWS, acceptSslCerts=true, javascriptEnabled=true, cssSelectorsEnabled=true, databaseEnabled=true, browserName=firefox, handlesAlerts=true, nativeEvents=false, webStorageEnabled=true, rotatable=false, locationContextEnabled=true, applicationCacheEnabled=true, takesScreenshot=true, version=35.0a2}]
+Session ID: dd09773135454734a955f7bbd177b4eb
+Driver info: org.openqa.selenium.remote.RemoteWebDriver
+Capabilities [{platform=XP, acceptSslCerts=true, javascriptEnabled=true, hasMetadata=true, browserName=chrome, chrome={userDataDir=C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\scoped_dir260_5674}, rotatable=false, locationContextEnabled=true, webdriver.remote.sessionid=dd09773135454734a955f7bbd177b4eb, version=35.0.1916.114, takesHeapSnapshot=true, databaseEnabled=false, cssSelectorsEnabled=true, handlesAlerts=true, browserConnectionEnabled=false, webStorageEnabled=true, nativeEvents=true, applicationCacheEnabled=false, takesScreenshot=true}]
 	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
 	at sun.reflect.NativeConstructorAccessorImpl.newInstance(Unknown Source)
 	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(Unknown Source)
@@ -41,7 +47,7 @@ Capabilities [{platform=WINDOWS, acceptSslCerts=true, javascriptEnabled=true, cs
 	at org.openqa.selenium.remote.RemoteWebDriver.findElementByClassName(RemoteWebDriver.java:433)
 	at org.openqa.selenium.By$ByClassName.findElement(By.java:387)
 	at org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:344)
-	at SearchTests.verifyAutocompleteCapabilities(SearchTests.java:107)
+	at SearchTests.verifyAutocompleteCapabilities(SearchTests.java:126)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
@@ -66,342 +72,123 @@ Capabilities [{platform=WINDOWS, acceptSslCerts=true, javascriptEnabled=true, cs
 	at org.testng.remote.RemoteTestNG.run(RemoteTestNG.java:111)
 	at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:204)
 	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:175)
-Caused by: org.openqa.selenium.InvalidSelectorException: The given selector ui-autocomplete ui-front ui-menu ui-widget ui-widget-content is either invalid or does not result in a WebElement. The following error occurred:
-InvalidSelectorError: Compound class names not permitted
-For documentation on this error, please visit: http://seleniumhq.org/exceptions/invalid_selector_exception.html
-Build info: version: '2.44.0', revision: '76d78cf', time: '2014-10-23 20:03:00'
-System info: host: 'Lazaro-PC', ip: '192.168.56.1', os.name: 'Windows 7', os.arch: 'amd64', os.version: '6.1', java.version: '1.7.0_45'
-Driver info: driver.version: unknown
-	at <anonymous class>.FirefoxDriver.annotateInvalidSelectorError_(file:///C:/Users/Lazaro/AppData/Local/Temp/anonymous2742772444421161992webdriver-profile/extensions/fxdriver@googlecode.com/components/driver-component.js:9615:1)
-	at <anonymous class>.FirefoxDriver.prototype.findElementInternal_(file:///C:/Users/Lazaro/AppData/Local/Temp/anonymous2742772444421161992webdriver-profile/extensions/fxdriver@googlecode.com/components/driver-component.js:9646:9)
-	at <anonymous class>.FirefoxDriver.prototype.findElement(file:///C:/Users/Lazaro/AppData/Local/Temp/anonymous2742772444421161992webdriver-profile/extensions/fxdriver@googlecode.com/components/driver-component.js:9650:3)
-	at <anonymous class>.DelayedCommand.prototype.executeInternal_/h(file:///C:/Users/Lazaro/AppData/Local/Temp/anonymous2742772444421161992webdriver-profile/extensions/fxdriver@googlecode.com/components/command-processor.js:11635:16)
-	at <anonymous class>.DelayedCommand.prototype.executeInternal_(file:///C:/Users/Lazaro/AppData/Local/Temp/anonymous2742772444421161992webdriver-profile/extensions/fxdriver@googlecode.com/components/command-processor.js:11640:7)
-	at <anonymous class>.DelayedCommand.prototype.execute/<(file:///C:/Users/Lazaro/AppData/Local/Temp/anonymous2742772444421161992webdriver-profile/extensions/fxdriver@googlecode.com/components/command-processor.js:11582:5)
-]]>
-            </full-stacktrace>
-          </exception> <!-- org.openqa.selenium.InvalidSelectorException -->
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- verifyAutocompleteCapabilities -->
-        <test-method status="FAIL" signature="verifyBasicUILayout()[pri:0, instance:SearchTests@54448f09]" name="verifyBasicUILayout" duration-ms="1881" started-at="2014-11-30T23:20:27Z" finished-at="2014-11-30T23:20:29Z">
-          <exception class="org.openqa.selenium.WebDriverException">
-            <message>
-              <![CDATA[arguments[0] is undefined
-Command duration or timeout: 25 milliseconds
-Build info: version: '2.44.0', revision: '76d78cf', time: '2014-10-23 20:03:00'
-System info: host: 'Lazaro-PC', ip: '192.168.56.1', os.name: 'Windows 7', os.arch: 'amd64', os.version: '6.1', java.version: '1.7.0_45'
-Session ID: 0aa8a7e8-a82d-4a9b-8e07-0b33224d0431
-Driver info: org.openqa.selenium.firefox.FirefoxDriver
-Capabilities [{platform=WINDOWS, acceptSslCerts=true, javascriptEnabled=true, cssSelectorsEnabled=true, databaseEnabled=true, browserName=firefox, handlesAlerts=true, nativeEvents=false, webStorageEnabled=true, rotatable=false, locationContextEnabled=true, applicationCacheEnabled=true, takesScreenshot=true, version=35.0a2}]]]>
-            </message>
-            <full-stacktrace>
-              <![CDATA[org.openqa.selenium.WebDriverException: arguments[0] is undefined
-Command duration or timeout: 25 milliseconds
-Build info: version: '2.44.0', revision: '76d78cf', time: '2014-10-23 20:03:00'
-System info: host: 'Lazaro-PC', ip: '192.168.56.1', os.name: 'Windows 7', os.arch: 'amd64', os.version: '6.1', java.version: '1.7.0_45'
-Session ID: 0aa8a7e8-a82d-4a9b-8e07-0b33224d0431
-Driver info: org.openqa.selenium.firefox.FirefoxDriver
-Capabilities [{platform=WINDOWS, acceptSslCerts=true, javascriptEnabled=true, cssSelectorsEnabled=true, databaseEnabled=true, browserName=firefox, handlesAlerts=true, nativeEvents=false, webStorageEnabled=true, rotatable=false, locationContextEnabled=true, applicationCacheEnabled=true, takesScreenshot=true, version=35.0a2}]
-	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
-	at sun.reflect.NativeConstructorAccessorImpl.newInstance(Unknown Source)
-	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(Unknown Source)
-	at java.lang.reflect.Constructor.newInstance(Unknown Source)
-	at org.openqa.selenium.remote.ErrorHandler.createThrowable(ErrorHandler.java:204)
-	at org.openqa.selenium.remote.ErrorHandler.throwIfResponseFailed(ErrorHandler.java:156)
-	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:599)
-	at org.openqa.selenium.remote.RemoteWebDriver.executeScript(RemoteWebDriver.java:508)
-	at SearchTests.verifyExistence(SearchTests.java:135)
-	at SearchTests.verifyBasicUILayout(SearchTests.java:33)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
-	at java.lang.reflect.Method.invoke(Unknown Source)
-	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:84)
-	at org.testng.internal.Invoker.invokeMethod(Invoker.java:714)
-	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:901)
-	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1231)
-	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:127)
-	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:111)
-	at org.testng.TestRunner.privateRun(TestRunner.java:767)
-	at org.testng.TestRunner.run(TestRunner.java:617)
-	at org.testng.SuiteRunner.runTest(SuiteRunner.java:334)
-	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:329)
-	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:291)
-	at org.testng.SuiteRunner.run(SuiteRunner.java:240)
-	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
-	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:86)
-	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1224)
-	at org.testng.TestNG.runSuitesLocally(TestNG.java:1149)
-	at org.testng.TestNG.run(TestNG.java:1057)
-	at org.testng.remote.RemoteTestNG.run(RemoteTestNG.java:111)
-	at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:204)
-	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:175)
-Caused by: org.openqa.selenium.WebDriverException: arguments[0] is undefined
-Build info: version: '2.44.0', revision: '76d78cf', time: '2014-10-23 20:03:00'
-System info: host: 'Lazaro-PC', ip: '192.168.56.1', os.name: 'Windows 7', os.arch: 'amd64', os.version: '6.1', java.version: '1.7.0_45'
-Driver info: driver.version: unknown
-	at <anonymous class>.anonymous(http://iie-dev.cs.fiu.edu/search.html line 68 > Function:1:1)
-	at <anonymous class>.handleEvaluateEvent(http://iie-dev.cs.fiu.edu/search.html:68:20)
-]]>
-            </full-stacktrace>
-          </exception> <!-- org.openqa.selenium.WebDriverException -->
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- verifyBasicUILayout -->
-        <test-method status="FAIL" signature="verifyBulkExporting()[pri:0, instance:SearchTests@54448f09]" name="verifyBulkExporting" duration-ms="10825" started-at="2014-11-30T23:20:29Z" finished-at="2014-11-30T23:20:39Z">
-          <exception class="org.openqa.selenium.NoSuchElementException">
-            <message>
-              <![CDATA[Unable to locate element: {"method":"name","selector":"bulk-export"}
-Command duration or timeout: 10.05 seconds
-For documentation on this error, please visit: http://seleniumhq.org/exceptions/no_such_element.html
-Build info: version: '2.44.0', revision: '76d78cf', time: '2014-10-23 20:03:00'
-System info: host: 'Lazaro-PC', ip: '192.168.56.1', os.name: 'Windows 7', os.arch: 'amd64', os.version: '6.1', java.version: '1.7.0_45'
-Session ID: 0aa8a7e8-a82d-4a9b-8e07-0b33224d0431
-Driver info: org.openqa.selenium.firefox.FirefoxDriver
-Capabilities [{platform=WINDOWS, acceptSslCerts=true, javascriptEnabled=true, cssSelectorsEnabled=true, databaseEnabled=true, browserName=firefox, handlesAlerts=true, nativeEvents=false, webStorageEnabled=true, rotatable=false, locationContextEnabled=true, applicationCacheEnabled=true, takesScreenshot=true, version=35.0a2}]]]>
-            </message>
-            <full-stacktrace>
-              <![CDATA[org.openqa.selenium.NoSuchElementException: Unable to locate element: {"method":"name","selector":"bulk-export"}
-Command duration or timeout: 10.05 seconds
-For documentation on this error, please visit: http://seleniumhq.org/exceptions/no_such_element.html
-Build info: version: '2.44.0', revision: '76d78cf', time: '2014-10-23 20:03:00'
-System info: host: 'Lazaro-PC', ip: '192.168.56.1', os.name: 'Windows 7', os.arch: 'amd64', os.version: '6.1', java.version: '1.7.0_45'
-Session ID: 0aa8a7e8-a82d-4a9b-8e07-0b33224d0431
-Driver info: org.openqa.selenium.firefox.FirefoxDriver
-Capabilities [{platform=WINDOWS, acceptSslCerts=true, javascriptEnabled=true, cssSelectorsEnabled=true, databaseEnabled=true, browserName=firefox, handlesAlerts=true, nativeEvents=false, webStorageEnabled=true, rotatable=false, locationContextEnabled=true, applicationCacheEnabled=true, takesScreenshot=true, version=35.0a2}]
-	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
-	at sun.reflect.NativeConstructorAccessorImpl.newInstance(Unknown Source)
-	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(Unknown Source)
-	at java.lang.reflect.Constructor.newInstance(Unknown Source)
-	at org.openqa.selenium.remote.ErrorHandler.createThrowable(ErrorHandler.java:204)
-	at org.openqa.selenium.remote.ErrorHandler.throwIfResponseFailed(ErrorHandler.java:156)
-	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:599)
-	at org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:352)
-	at org.openqa.selenium.remote.RemoteWebDriver.findElementByName(RemoteWebDriver.java:425)
-	at org.openqa.selenium.By$ByName.findElement(By.java:299)
-	at org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:344)
-	at SearchTests.verifyBulkExporting(SearchTests.java:125)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
-	at java.lang.reflect.Method.invoke(Unknown Source)
-	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:84)
-	at org.testng.internal.Invoker.invokeMethod(Invoker.java:714)
-	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:901)
-	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1231)
-	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:127)
-	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:111)
-	at org.testng.TestRunner.privateRun(TestRunner.java:767)
-	at org.testng.TestRunner.run(TestRunner.java:617)
-	at org.testng.SuiteRunner.runTest(SuiteRunner.java:334)
-	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:329)
-	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:291)
-	at org.testng.SuiteRunner.run(SuiteRunner.java:240)
-	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
-	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:86)
-	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1224)
-	at org.testng.TestNG.runSuitesLocally(TestNG.java:1149)
-	at org.testng.TestNG.run(TestNG.java:1057)
-	at org.testng.remote.RemoteTestNG.run(RemoteTestNG.java:111)
-	at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:204)
-	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:175)
-Caused by: org.openqa.selenium.NoSuchElementException: Unable to locate element: {"method":"name","selector":"bulk-export"}
-For documentation on this error, please visit: http://seleniumhq.org/exceptions/no_such_element.html
-Build info: version: '2.44.0', revision: '76d78cf', time: '2014-10-23 20:03:00'
-System info: host: 'Lazaro-PC', ip: '192.168.56.1', os.name: 'Windows 7', os.arch: 'amd64', os.version: '6.1', java.version: '1.7.0_45'
-Driver info: driver.version: unknown
-	at <anonymous class>.FirefoxDriver.prototype.findElementInternal_(file:///C:/Users/Lazaro/AppData/Local/Temp/anonymous2742772444421161992webdriver-profile/extensions/fxdriver@googlecode.com/components/driver-component.js:9641:26)
-	at <anonymous class>.fxdriver.Timer.prototype.setTimeout/<.notify(file:///C:/Users/Lazaro/AppData/Local/Temp/anonymous2742772444421161992webdriver-profile/extensions/fxdriver@googlecode.com/components/driver-component.js:548:5)
 ]]>
             </full-stacktrace>
           </exception> <!-- org.openqa.selenium.NoSuchElementException -->
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- verifyBulkExporting -->
-        <test-method status="FAIL" signature="verifyModularUI()[pri:0, instance:SearchTests@54448f09]" name="verifyModularUI" duration-ms="2158" started-at="2014-11-30T23:20:39Z" finished-at="2014-11-30T23:20:42Z">
-          <exception class="org.openqa.selenium.WebDriverException">
-            <message>
-              <![CDATA[arguments[0] is undefined
-Command duration or timeout: 28 milliseconds
-Build info: version: '2.44.0', revision: '76d78cf', time: '2014-10-23 20:03:00'
-System info: host: 'Lazaro-PC', ip: '192.168.56.1', os.name: 'Windows 7', os.arch: 'amd64', os.version: '6.1', java.version: '1.7.0_45'
-Session ID: 0aa8a7e8-a82d-4a9b-8e07-0b33224d0431
-Driver info: org.openqa.selenium.firefox.FirefoxDriver
-Capabilities [{platform=WINDOWS, acceptSslCerts=true, javascriptEnabled=true, cssSelectorsEnabled=true, databaseEnabled=true, browserName=firefox, handlesAlerts=true, nativeEvents=false, webStorageEnabled=true, rotatable=false, locationContextEnabled=true, applicationCacheEnabled=true, takesScreenshot=true, version=35.0a2}]]]>
-            </message>
-            <full-stacktrace>
-              <![CDATA[org.openqa.selenium.WebDriverException: arguments[0] is undefined
-Command duration or timeout: 28 milliseconds
-Build info: version: '2.44.0', revision: '76d78cf', time: '2014-10-23 20:03:00'
-System info: host: 'Lazaro-PC', ip: '192.168.56.1', os.name: 'Windows 7', os.arch: 'amd64', os.version: '6.1', java.version: '1.7.0_45'
-Session ID: 0aa8a7e8-a82d-4a9b-8e07-0b33224d0431
-Driver info: org.openqa.selenium.firefox.FirefoxDriver
-Capabilities [{platform=WINDOWS, acceptSslCerts=true, javascriptEnabled=true, cssSelectorsEnabled=true, databaseEnabled=true, browserName=firefox, handlesAlerts=true, nativeEvents=false, webStorageEnabled=true, rotatable=false, locationContextEnabled=true, applicationCacheEnabled=true, takesScreenshot=true, version=35.0a2}]
-	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
-	at sun.reflect.NativeConstructorAccessorImpl.newInstance(Unknown Source)
-	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(Unknown Source)
-	at java.lang.reflect.Constructor.newInstance(Unknown Source)
-	at org.openqa.selenium.remote.ErrorHandler.createThrowable(ErrorHandler.java:204)
-	at org.openqa.selenium.remote.ErrorHandler.throwIfResponseFailed(ErrorHandler.java:156)
-	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:599)
-	at org.openqa.selenium.remote.RemoteWebDriver.executeScript(RemoteWebDriver.java:508)
-	at SearchTests.verifyExistence(SearchTests.java:135)
-	at SearchTests.verifyModularUI(SearchTests.java:59)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
-	at java.lang.reflect.Method.invoke(Unknown Source)
-	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:84)
-	at org.testng.internal.Invoker.invokeMethod(Invoker.java:714)
-	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:901)
-	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1231)
-	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:127)
-	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:111)
-	at org.testng.TestRunner.privateRun(TestRunner.java:767)
-	at org.testng.TestRunner.run(TestRunner.java:617)
-	at org.testng.SuiteRunner.runTest(SuiteRunner.java:334)
-	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:329)
-	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:291)
-	at org.testng.SuiteRunner.run(SuiteRunner.java:240)
-	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
-	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:86)
-	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1224)
-	at org.testng.TestNG.runSuitesLocally(TestNG.java:1149)
-	at org.testng.TestNG.run(TestNG.java:1057)
-	at org.testng.remote.RemoteTestNG.run(RemoteTestNG.java:111)
-	at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:204)
-	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:175)
-Caused by: org.openqa.selenium.WebDriverException: arguments[0] is undefined
-Build info: version: '2.44.0', revision: '76d78cf', time: '2014-10-23 20:03:00'
-System info: host: 'Lazaro-PC', ip: '192.168.56.1', os.name: 'Windows 7', os.arch: 'amd64', os.version: '6.1', java.version: '1.7.0_45'
-Driver info: driver.version: unknown
-	at <anonymous class>.anonymous(http://iie-dev.cs.fiu.edu/search.html line 68 > Function:1:1)
-	at <anonymous class>.handleEvaluateEvent(http://iie-dev.cs.fiu.edu/search.html:68:20)
-]]>
-            </full-stacktrace>
-          </exception> <!-- org.openqa.selenium.WebDriverException -->
+        </test-method> <!-- verifyAutocompleteCapabilities -->
+        <test-method status="PASS" signature="tearDown()[pri:0, instance:SearchTests@7c6ee7ea]" name="tearDown" is-config="true" duration-ms="280" started-at="2014-12-01T04:22:12Z" finished-at="2014-12-01T04:22:12Z">
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- verifyModularUI -->
-      </class> <!-- SearchTests -->
-      <class name="CustomSearchTests">
-        <test-method status="PASS" signature="setUp()[pri:0, instance:CustomSearchTests@6e56103e]" name="setUp" is-config="true" duration-ms="5833" started-at="2014-11-30T23:19:22Z" finished-at="2014-11-30T23:19:28Z">
+        </test-method> <!-- tearDown -->
+        <test-method status="PASS" signature="setUp()[pri:0, instance:SearchTests@7c6ee7ea]" name="setUp" is-config="true" duration-ms="6433" started-at="2014-12-01T04:22:12Z" finished-at="2014-12-01T04:22:18Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method status="PASS" signature="setUp()[pri:0, instance:DatabaseExplorerTests@610ac317]" name="setUp" is-config="true" duration-ms="4913" started-at="2014-11-30T23:19:28Z" finished-at="2014-11-30T23:19:33Z">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- setUp -->
-        <test-method status="PASS" signature="setUp()[pri:0, instance:SearchTests@54448f09]" name="setUp" is-config="true" duration-ms="5610" started-at="2014-11-30T23:19:33Z" finished-at="2014-11-30T23:19:39Z">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- setUp -->
-        <test-method status="PASS" signature="setUp()[pri:0, instance:SubmitTests@f2c03ac]" name="setUp" is-config="true" duration-ms="5196" started-at="2014-11-30T23:19:39Z" finished-at="2014-11-30T23:19:44Z">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- setUp -->
-        <test-method status="FAIL" signature="verifyBasicUILayout()[pri:0, instance:CustomSearchTests@6e56103e]" name="verifyBasicUILayout" duration-ms="2169" started-at="2014-11-30T23:20:10Z" finished-at="2014-11-30T23:20:12Z">
-          <exception class="org.openqa.selenium.WebDriverException">
-            <message>
-              <![CDATA[arguments[0] is undefined
-Command duration or timeout: 29 milliseconds
-Build info: version: '2.44.0', revision: '76d78cf', time: '2014-10-23 20:03:00'
-System info: host: 'Lazaro-PC', ip: '192.168.56.1', os.name: 'Windows 7', os.arch: 'amd64', os.version: '6.1', java.version: '1.7.0_45'
-Session ID: 5f436015-3f13-44e1-84a4-23bc7a2ffced
-Driver info: org.openqa.selenium.firefox.FirefoxDriver
-Capabilities [{platform=WINDOWS, acceptSslCerts=true, javascriptEnabled=true, cssSelectorsEnabled=true, databaseEnabled=true, browserName=firefox, handlesAlerts=true, nativeEvents=false, webStorageEnabled=true, rotatable=false, locationContextEnabled=true, applicationCacheEnabled=true, takesScreenshot=true, version=35.0a2}]]]>
-            </message>
-            <full-stacktrace>
-              <![CDATA[org.openqa.selenium.WebDriverException: arguments[0] is undefined
-Command duration or timeout: 29 milliseconds
-Build info: version: '2.44.0', revision: '76d78cf', time: '2014-10-23 20:03:00'
-System info: host: 'Lazaro-PC', ip: '192.168.56.1', os.name: 'Windows 7', os.arch: 'amd64', os.version: '6.1', java.version: '1.7.0_45'
-Session ID: 5f436015-3f13-44e1-84a4-23bc7a2ffced
-Driver info: org.openqa.selenium.firefox.FirefoxDriver
-Capabilities [{platform=WINDOWS, acceptSslCerts=true, javascriptEnabled=true, cssSelectorsEnabled=true, databaseEnabled=true, browserName=firefox, handlesAlerts=true, nativeEvents=false, webStorageEnabled=true, rotatable=false, locationContextEnabled=true, applicationCacheEnabled=true, takesScreenshot=true, version=35.0a2}]
-	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
-	at sun.reflect.NativeConstructorAccessorImpl.newInstance(Unknown Source)
-	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(Unknown Source)
-	at java.lang.reflect.Constructor.newInstance(Unknown Source)
-	at org.openqa.selenium.remote.ErrorHandler.createThrowable(ErrorHandler.java:204)
-	at org.openqa.selenium.remote.ErrorHandler.throwIfResponseFailed(ErrorHandler.java:156)
-	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:599)
-	at org.openqa.selenium.remote.RemoteWebDriver.executeScript(RemoteWebDriver.java:508)
-	at CustomSearchTests.verifyExistence(CustomSearchTests.java:85)
-	at CustomSearchTests.verifyBasicUILayout(CustomSearchTests.java:34)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
-	at java.lang.reflect.Method.invoke(Unknown Source)
-	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:84)
-	at org.testng.internal.Invoker.invokeMethod(Invoker.java:714)
-	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:901)
-	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1231)
-	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:127)
-	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:111)
-	at org.testng.TestRunner.privateRun(TestRunner.java:767)
-	at org.testng.TestRunner.run(TestRunner.java:617)
-	at org.testng.SuiteRunner.runTest(SuiteRunner.java:334)
-	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:329)
-	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:291)
-	at org.testng.SuiteRunner.run(SuiteRunner.java:240)
-	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
-	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:86)
-	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1224)
-	at org.testng.TestNG.runSuitesLocally(TestNG.java:1149)
-	at org.testng.TestNG.run(TestNG.java:1057)
-	at org.testng.remote.RemoteTestNG.run(RemoteTestNG.java:111)
-	at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:204)
-	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:175)
-Caused by: org.openqa.selenium.WebDriverException: arguments[0] is undefined
-Build info: version: '2.44.0', revision: '76d78cf', time: '2014-10-23 20:03:00'
-System info: host: 'Lazaro-PC', ip: '192.168.56.1', os.name: 'Windows 7', os.arch: 'amd64', os.version: '6.1', java.version: '1.7.0_45'
-Driver info: driver.version: unknown
-	at <anonymous class>.anonymous(http://iie-dev.cs.fiu.edu/custom_search.html line 68 > Function:1:1)
-	at <anonymous class>.handleEvaluateEvent(http://iie-dev.cs.fiu.edu/custom_search.html:68:20)
-]]>
-            </full-stacktrace>
-          </exception> <!-- org.openqa.selenium.WebDriverException -->
+        <test-method status="PASS" signature="verifyBasicUILayout()[pri:0, instance:SearchTests@7c6ee7ea]" name="verifyBasicUILayout" duration-ms="12365" started-at="2014-12-01T04:22:18Z" finished-at="2014-12-01T04:22:31Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- verifyBasicUILayout -->
-        <test-method status="PASS" signature="verifyDataStorage()[pri:0, instance:CustomSearchTests@6e56103e]" name="verifyDataStorage" duration-ms="12714" started-at="2014-11-30T23:20:12Z" finished-at="2014-11-30T23:20:25Z">
+        <test-method status="PASS" signature="tearDown()[pri:0, instance:SearchTests@7c6ee7ea]" name="tearDown" is-config="true" duration-ms="180" started-at="2014-12-01T04:22:31Z" finished-at="2014-12-01T04:22:31Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+        <test-method status="PASS" signature="setUp()[pri:0, instance:SearchTests@7c6ee7ea]" name="setUp" is-config="true" duration-ms="6236" started-at="2014-12-01T04:22:31Z" finished-at="2014-12-01T04:22:37Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method status="PASS" signature="verifyBulkExporting()[pri:0, instance:SearchTests@7c6ee7ea]" name="verifyBulkExporting" duration-ms="6392" started-at="2014-12-01T04:22:37Z" finished-at="2014-12-01T04:22:44Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- verifyBulkExporting -->
+        <test-method status="PASS" signature="tearDown()[pri:0, instance:SearchTests@7c6ee7ea]" name="tearDown" is-config="true" duration-ms="270" started-at="2014-12-01T04:22:44Z" finished-at="2014-12-01T04:22:44Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+        <test-method status="PASS" signature="setUp()[pri:0, instance:SearchTests@7c6ee7ea]" name="setUp" is-config="true" duration-ms="6234" started-at="2014-12-01T04:22:44Z" finished-at="2014-12-01T04:22:50Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method status="PASS" signature="verifyModularUI()[pri:0, instance:SearchTests@7c6ee7ea]" name="verifyModularUI" duration-ms="36732" started-at="2014-12-01T04:22:50Z" finished-at="2014-12-01T04:23:27Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- verifyModularUI -->
+        <test-method status="PASS" signature="tearDown()[pri:0, instance:SearchTests@7c6ee7ea]" name="tearDown" is-config="true" duration-ms="300" started-at="2014-12-01T04:23:27Z" finished-at="2014-12-01T04:23:27Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+      </class> <!-- SearchTests -->
+      <class name="CustomSearchTests">
+        <test-method status="PASS" signature="setUp()[pri:0, instance:CustomSearchTests@553bf378]" name="setUp" is-config="true" duration-ms="6939" started-at="2014-12-01T04:21:05Z" finished-at="2014-12-01T04:21:12Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method status="PASS" signature="verifyBasicUILayout()[pri:0, instance:CustomSearchTests@553bf378]" name="verifyBasicUILayout" duration-ms="14122" started-at="2014-12-01T04:21:12Z" finished-at="2014-12-01T04:21:26Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- verifyBasicUILayout -->
+        <test-method status="PASS" signature="tearDown()[pri:0, instance:CustomSearchTests@553bf378]" name="tearDown" is-config="true" duration-ms="290" started-at="2014-12-01T04:21:26Z" finished-at="2014-12-01T04:21:26Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+        <test-method status="PASS" signature="setUp()[pri:0, instance:CustomSearchTests@553bf378]" name="setUp" is-config="true" duration-ms="7123" started-at="2014-12-01T04:21:26Z" finished-at="2014-12-01T04:21:33Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method status="PASS" signature="verifyDataStorage()[pri:0, instance:CustomSearchTests@553bf378]" name="verifyDataStorage" duration-ms="17676" started-at="2014-12-01T04:21:33Z" finished-at="2014-12-01T04:21:51Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- verifyDataStorage -->
+        <test-method status="PASS" signature="tearDown()[pri:0, instance:CustomSearchTests@553bf378]" name="tearDown" is-config="true" duration-ms="310" started-at="2014-12-01T04:21:51Z" finished-at="2014-12-01T04:21:51Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
       </class> <!-- CustomSearchTests -->
       <class name="DatabaseExplorerTests">
-        <test-method status="PASS" signature="verifyRendering()[pri:0, instance:DatabaseExplorerTests@610ac317]" name="verifyRendering" duration-ms="20322" started-at="2014-11-30T23:19:50Z" finished-at="2014-11-30T23:20:10Z">
+        <test-method status="PASS" signature="setUp()[pri:0, instance:DatabaseExplorerTests@52ed76ff]" name="setUp" is-config="true" duration-ms="7413" started-at="2014-12-01T04:20:29Z" finished-at="2014-12-01T04:20:36Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method status="PASS" signature="verifyRendering()[pri:0, instance:DatabaseExplorerTests@52ed76ff]" name="verifyRendering" duration-ms="28473" started-at="2014-12-01T04:20:36Z" finished-at="2014-12-01T04:21:05Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- verifyRendering -->
+        <test-method status="PASS" signature="tearDown()[pri:0, instance:DatabaseExplorerTests@52ed76ff]" name="tearDown" is-config="true" duration-ms="340" started-at="2014-12-01T04:21:05Z" finished-at="2014-12-01T04:21:05Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
       </class> <!-- DatabaseExplorerTests -->
       <class name="SubmitTests">
-        <test-method status="FAIL" signature="verifyAutocompleteCapabilities()[pri:0, instance:SubmitTests@f2c03ac]" name="verifyAutocompleteCapabilities" duration-ms="2185" started-at="2014-11-30T23:19:44Z" finished-at="2014-11-30T23:19:46Z">
-          <exception class="org.openqa.selenium.InvalidSelectorException">
+        <test-method status="PASS" signature="setUp()[pri:0, instance:SubmitTests@144b3c7b]" name="setUp" is-config="true" duration-ms="7250" started-at="2014-12-01T04:17:59Z" finished-at="2014-12-01T04:18:06Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method status="FAIL" signature="verifyAutocompleteCapabilities()[pri:0, instance:SubmitTests@144b3c7b]" name="verifyAutocompleteCapabilities" duration-ms="13501" started-at="2014-12-01T04:18:06Z" finished-at="2014-12-01T04:18:19Z">
+          <exception class="org.openqa.selenium.NoSuchElementException">
             <message>
-              <![CDATA[The given selector ui-autocomplete ui-front ui-menu ui-widget ui-widget-content is either invalid or does not result in a WebElement. The following error occurred:
-InvalidSelectorError: Compound class names not permitted
-Command duration or timeout: 22 milliseconds
-For documentation on this error, please visit: http://seleniumhq.org/exceptions/invalid_selector_exception.html
+              <![CDATA[no such element
+  (Session info: chrome=35.0.1916.114)
+  (Driver info: chromedriver=2.10.267521,platform=Windows NT 5.2 SP2 x86) (WARNING: The server did not provide any stacktrace information)
+Command duration or timeout: 10.21 seconds
+For documentation on this error, please visit: http://seleniumhq.org/exceptions/no_such_element.html
 Build info: version: '2.44.0', revision: '76d78cf', time: '2014-10-23 20:03:00'
 System info: host: 'Lazaro-PC', ip: '192.168.56.1', os.name: 'Windows 7', os.arch: 'amd64', os.version: '6.1', java.version: '1.7.0_45'
-Session ID: 3ed3bb63-f6d2-479f-b93f-88bfa0cb8339
-Driver info: org.openqa.selenium.firefox.FirefoxDriver
-Capabilities [{platform=WINDOWS, acceptSslCerts=true, javascriptEnabled=true, cssSelectorsEnabled=true, databaseEnabled=true, browserName=firefox, handlesAlerts=true, nativeEvents=false, webStorageEnabled=true, rotatable=false, locationContextEnabled=true, applicationCacheEnabled=true, takesScreenshot=true, version=35.0a2}]]]>
+Session ID: 4d10d054f74441d0ac56d253bd17b388
+Driver info: org.openqa.selenium.remote.RemoteWebDriver
+Capabilities [{platform=XP, acceptSslCerts=true, javascriptEnabled=true, hasMetadata=true, browserName=chrome, chrome={userDataDir=C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\scoped_dir1020_2535}, rotatable=false, locationContextEnabled=true, webdriver.remote.sessionid=4d10d054f74441d0ac56d253bd17b388, version=35.0.1916.114, takesHeapSnapshot=true, databaseEnabled=false, cssSelectorsEnabled=true, handlesAlerts=true, browserConnectionEnabled=false, webStorageEnabled=true, nativeEvents=true, applicationCacheEnabled=false, takesScreenshot=true}]]]>
             </message>
             <full-stacktrace>
-              <![CDATA[org.openqa.selenium.InvalidSelectorException: The given selector ui-autocomplete ui-front ui-menu ui-widget ui-widget-content is either invalid or does not result in a WebElement. The following error occurred:
-InvalidSelectorError: Compound class names not permitted
-Command duration or timeout: 22 milliseconds
-For documentation on this error, please visit: http://seleniumhq.org/exceptions/invalid_selector_exception.html
+              <![CDATA[org.openqa.selenium.NoSuchElementException: no such element
+  (Session info: chrome=35.0.1916.114)
+  (Driver info: chromedriver=2.10.267521,platform=Windows NT 5.2 SP2 x86) (WARNING: The server did not provide any stacktrace information)
+Command duration or timeout: 10.21 seconds
+For documentation on this error, please visit: http://seleniumhq.org/exceptions/no_such_element.html
 Build info: version: '2.44.0', revision: '76d78cf', time: '2014-10-23 20:03:00'
 System info: host: 'Lazaro-PC', ip: '192.168.56.1', os.name: 'Windows 7', os.arch: 'amd64', os.version: '6.1', java.version: '1.7.0_45'
-Session ID: 3ed3bb63-f6d2-479f-b93f-88bfa0cb8339
-Driver info: org.openqa.selenium.firefox.FirefoxDriver
-Capabilities [{platform=WINDOWS, acceptSslCerts=true, javascriptEnabled=true, cssSelectorsEnabled=true, databaseEnabled=true, browserName=firefox, handlesAlerts=true, nativeEvents=false, webStorageEnabled=true, rotatable=false, locationContextEnabled=true, applicationCacheEnabled=true, takesScreenshot=true, version=35.0a2}]
+Session ID: 4d10d054f74441d0ac56d253bd17b388
+Driver info: org.openqa.selenium.remote.RemoteWebDriver
+Capabilities [{platform=XP, acceptSslCerts=true, javascriptEnabled=true, hasMetadata=true, browserName=chrome, chrome={userDataDir=C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\scoped_dir1020_2535}, rotatable=false, locationContextEnabled=true, webdriver.remote.sessionid=4d10d054f74441d0ac56d253bd17b388, version=35.0.1916.114, takesHeapSnapshot=true, databaseEnabled=false, cssSelectorsEnabled=true, handlesAlerts=true, browserConnectionEnabled=false, webStorageEnabled=true, nativeEvents=true, applicationCacheEnabled=false, takesScreenshot=true}]
 	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
 	at sun.reflect.NativeConstructorAccessorImpl.newInstance(Unknown Source)
 	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(Unknown Source)
@@ -413,7 +200,7 @@ Capabilities [{platform=WINDOWS, acceptSslCerts=true, javascriptEnabled=true, cs
 	at org.openqa.selenium.remote.RemoteWebDriver.findElementByClassName(RemoteWebDriver.java:433)
 	at org.openqa.selenium.By$ByClassName.findElement(By.java:387)
 	at org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:344)
-	at SubmitTests.verifyAutocompleteCapabilities(SubmitTests.java:129)
+	at SubmitTests.verifyAutocompleteCapabilities(SubmitTests.java:152)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
@@ -438,187 +225,64 @@ Capabilities [{platform=WINDOWS, acceptSslCerts=true, javascriptEnabled=true, cs
 	at org.testng.remote.RemoteTestNG.run(RemoteTestNG.java:111)
 	at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:204)
 	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:175)
-Caused by: org.openqa.selenium.InvalidSelectorException: The given selector ui-autocomplete ui-front ui-menu ui-widget ui-widget-content is either invalid or does not result in a WebElement. The following error occurred:
-InvalidSelectorError: Compound class names not permitted
-For documentation on this error, please visit: http://seleniumhq.org/exceptions/invalid_selector_exception.html
-Build info: version: '2.44.0', revision: '76d78cf', time: '2014-10-23 20:03:00'
-System info: host: 'Lazaro-PC', ip: '192.168.56.1', os.name: 'Windows 7', os.arch: 'amd64', os.version: '6.1', java.version: '1.7.0_45'
-Driver info: driver.version: unknown
-	at <anonymous class>.FirefoxDriver.annotateInvalidSelectorError_(file:///C:/Users/Lazaro/AppData/Local/Temp/anonymous5253457034113066815webdriver-profile/extensions/fxdriver@googlecode.com/components/driver-component.js:9615:1)
-	at <anonymous class>.FirefoxDriver.prototype.findElementInternal_(file:///C:/Users/Lazaro/AppData/Local/Temp/anonymous5253457034113066815webdriver-profile/extensions/fxdriver@googlecode.com/components/driver-component.js:9646:9)
-	at <anonymous class>.FirefoxDriver.prototype.findElement(file:///C:/Users/Lazaro/AppData/Local/Temp/anonymous5253457034113066815webdriver-profile/extensions/fxdriver@googlecode.com/components/driver-component.js:9650:3)
-	at <anonymous class>.DelayedCommand.prototype.executeInternal_/h(file:///C:/Users/Lazaro/AppData/Local/Temp/anonymous5253457034113066815webdriver-profile/extensions/fxdriver@googlecode.com/components/command-processor.js:11635:16)
-	at <anonymous class>.DelayedCommand.prototype.executeInternal_(file:///C:/Users/Lazaro/AppData/Local/Temp/anonymous5253457034113066815webdriver-profile/extensions/fxdriver@googlecode.com/components/command-processor.js:11640:7)
-	at <anonymous class>.DelayedCommand.prototype.execute/<(file:///C:/Users/Lazaro/AppData/Local/Temp/anonymous5253457034113066815webdriver-profile/extensions/fxdriver@googlecode.com/components/command-processor.js:11582:5)
 ]]>
             </full-stacktrace>
-          </exception> <!-- org.openqa.selenium.InvalidSelectorException -->
+          </exception> <!-- org.openqa.selenium.NoSuchElementException -->
           <reporter-output>
           </reporter-output>
         </test-method> <!-- verifyAutocompleteCapabilities -->
-        <test-method status="FAIL" signature="verifyBasicUILayout()[pri:0, instance:SubmitTests@f2c03ac]" name="verifyBasicUILayout" duration-ms="2233" started-at="2014-11-30T23:19:46Z" finished-at="2014-11-30T23:19:48Z">
-          <exception class="org.openqa.selenium.WebDriverException">
-            <message>
-              <![CDATA[arguments[0] is undefined
-Command duration or timeout: 67 milliseconds
-Build info: version: '2.44.0', revision: '76d78cf', time: '2014-10-23 20:03:00'
-System info: host: 'Lazaro-PC', ip: '192.168.56.1', os.name: 'Windows 7', os.arch: 'amd64', os.version: '6.1', java.version: '1.7.0_45'
-Session ID: 3ed3bb63-f6d2-479f-b93f-88bfa0cb8339
-Driver info: org.openqa.selenium.firefox.FirefoxDriver
-Capabilities [{platform=WINDOWS, acceptSslCerts=true, javascriptEnabled=true, cssSelectorsEnabled=true, databaseEnabled=true, browserName=firefox, handlesAlerts=true, nativeEvents=false, webStorageEnabled=true, rotatable=false, locationContextEnabled=true, applicationCacheEnabled=true, takesScreenshot=true, version=35.0a2}]]]>
-            </message>
-            <full-stacktrace>
-              <![CDATA[org.openqa.selenium.WebDriverException: arguments[0] is undefined
-Command duration or timeout: 67 milliseconds
-Build info: version: '2.44.0', revision: '76d78cf', time: '2014-10-23 20:03:00'
-System info: host: 'Lazaro-PC', ip: '192.168.56.1', os.name: 'Windows 7', os.arch: 'amd64', os.version: '6.1', java.version: '1.7.0_45'
-Session ID: 3ed3bb63-f6d2-479f-b93f-88bfa0cb8339
-Driver info: org.openqa.selenium.firefox.FirefoxDriver
-Capabilities [{platform=WINDOWS, acceptSslCerts=true, javascriptEnabled=true, cssSelectorsEnabled=true, databaseEnabled=true, browserName=firefox, handlesAlerts=true, nativeEvents=false, webStorageEnabled=true, rotatable=false, locationContextEnabled=true, applicationCacheEnabled=true, takesScreenshot=true, version=35.0a2}]
-	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
-	at sun.reflect.NativeConstructorAccessorImpl.newInstance(Unknown Source)
-	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(Unknown Source)
-	at java.lang.reflect.Constructor.newInstance(Unknown Source)
-	at org.openqa.selenium.remote.ErrorHandler.createThrowable(ErrorHandler.java:204)
-	at org.openqa.selenium.remote.ErrorHandler.throwIfResponseFailed(ErrorHandler.java:156)
-	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:599)
-	at org.openqa.selenium.remote.RemoteWebDriver.executeScript(RemoteWebDriver.java:508)
-	at SubmitTests.verifyExistence(SubmitTests.java:154)
-	at SubmitTests.verifyBasicUILayout(SubmitTests.java:33)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
-	at java.lang.reflect.Method.invoke(Unknown Source)
-	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:84)
-	at org.testng.internal.Invoker.invokeMethod(Invoker.java:714)
-	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:901)
-	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1231)
-	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:127)
-	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:111)
-	at org.testng.TestRunner.privateRun(TestRunner.java:767)
-	at org.testng.TestRunner.run(TestRunner.java:617)
-	at org.testng.SuiteRunner.runTest(SuiteRunner.java:334)
-	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:329)
-	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:291)
-	at org.testng.SuiteRunner.run(SuiteRunner.java:240)
-	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
-	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:86)
-	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1224)
-	at org.testng.TestNG.runSuitesLocally(TestNG.java:1149)
-	at org.testng.TestNG.run(TestNG.java:1057)
-	at org.testng.remote.RemoteTestNG.run(RemoteTestNG.java:111)
-	at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:204)
-	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:175)
-Caused by: org.openqa.selenium.WebDriverException: arguments[0] is undefined
-Build info: version: '2.44.0', revision: '76d78cf', time: '2014-10-23 20:03:00'
-System info: host: 'Lazaro-PC', ip: '192.168.56.1', os.name: 'Windows 7', os.arch: 'amd64', os.version: '6.1', java.version: '1.7.0_45'
-Driver info: driver.version: unknown
-	at <anonymous class>.anonymous(http://iie-dev.cs.fiu.edu/submit.html line 68 > Function:1:1)
-	at <anonymous class>.handleEvaluateEvent(http://iie-dev.cs.fiu.edu/submit.html:68:20)
-]]>
-            </full-stacktrace>
-          </exception> <!-- org.openqa.selenium.WebDriverException -->
+        <test-method status="PASS" signature="tearDown()[pri:0, instance:SubmitTests@144b3c7b]" name="tearDown" is-config="true" duration-ms="1649" started-at="2014-12-01T04:18:19Z" finished-at="2014-12-01T04:18:21Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+        <test-method status="PASS" signature="setUp()[pri:0, instance:SubmitTests@144b3c7b]" name="setUp" is-config="true" duration-ms="6812" started-at="2014-12-01T04:18:21Z" finished-at="2014-12-01T04:18:28Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method status="PASS" signature="verifyBasicUILayout()[pri:0, instance:SubmitTests@144b3c7b]" name="verifyBasicUILayout" duration-ms="23285" started-at="2014-12-01T04:18:28Z" finished-at="2014-12-01T04:18:51Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- verifyBasicUILayout -->
-        <test-method status="PASS" signature="verifyBulkImporting()[pri:0, instance:SubmitTests@f2c03ac]" name="verifyBulkImporting" duration-ms="1264" started-at="2014-11-30T23:19:48Z" finished-at="2014-11-30T23:19:50Z">
+        <test-method status="PASS" signature="tearDown()[pri:0, instance:SubmitTests@144b3c7b]" name="tearDown" is-config="true" duration-ms="280" started-at="2014-12-01T04:18:51Z" finished-at="2014-12-01T04:18:51Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+        <test-method status="PASS" signature="setUp()[pri:0, instance:SubmitTests@144b3c7b]" name="setUp" is-config="true" duration-ms="6002" started-at="2014-12-01T04:18:51Z" finished-at="2014-12-01T04:18:57Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method status="PASS" signature="verifyBulkImporting()[pri:0, instance:SubmitTests@144b3c7b]" name="verifyBulkImporting" duration-ms="3458" started-at="2014-12-01T04:18:57Z" finished-at="2014-12-01T04:19:01Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- verifyBulkImporting -->
-        <test-method status="FAIL" signature="verifyEvidenceEvaluation()[pri:0, instance:SubmitTests@f2c03ac]" name="verifyEvidenceEvaluation" duration-ms="1" started-at="2014-11-30T23:19:50Z" finished-at="2014-11-30T23:19:50Z">
-          <exception class="org.openqa.selenium.remote.SessionNotFoundException">
-            <message>
-              <![CDATA[The FirefoxDriver cannot be used after quit() was called.
-Build info: version: '2.44.0', revision: '76d78cf', time: '2014-10-23 20:03:00'
-System info: host: 'Lazaro-PC', ip: '192.168.56.1', os.name: 'Windows 7', os.arch: 'amd64', os.version: '6.1', java.version: '1.7.0_45'
-Driver info: driver.version: RemoteWebDriver]]>
-            </message>
-            <full-stacktrace>
-              <![CDATA[org.openqa.selenium.remote.SessionNotFoundException: The FirefoxDriver cannot be used after quit() was called.
-Build info: version: '2.44.0', revision: '76d78cf', time: '2014-10-23 20:03:00'
-System info: host: 'Lazaro-PC', ip: '192.168.56.1', os.name: 'Windows 7', os.arch: 'amd64', os.version: '6.1', java.version: '1.7.0_45'
-Driver info: driver.version: RemoteWebDriver
-	at org.openqa.selenium.firefox.FirefoxDriver$LazyCommandExecutor.execute(FirefoxDriver.java:359)
-	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:572)
-	at org.openqa.selenium.remote.RemoteWebDriver.get(RemoteWebDriver.java:304)
-	at SubmitTests.verifyEvidenceEvaluation(SubmitTests.java:100)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
-	at java.lang.reflect.Method.invoke(Unknown Source)
-	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:84)
-	at org.testng.internal.Invoker.invokeMethod(Invoker.java:714)
-	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:901)
-	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1231)
-	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:127)
-	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:111)
-	at org.testng.TestRunner.privateRun(TestRunner.java:767)
-	at org.testng.TestRunner.run(TestRunner.java:617)
-	at org.testng.SuiteRunner.runTest(SuiteRunner.java:334)
-	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:329)
-	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:291)
-	at org.testng.SuiteRunner.run(SuiteRunner.java:240)
-	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
-	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:86)
-	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1224)
-	at org.testng.TestNG.runSuitesLocally(TestNG.java:1149)
-	at org.testng.TestNG.run(TestNG.java:1057)
-	at org.testng.remote.RemoteTestNG.run(RemoteTestNG.java:111)
-	at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:204)
-	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:175)
-]]>
-            </full-stacktrace>
-          </exception> <!-- org.openqa.selenium.remote.SessionNotFoundException -->
+        <test-method status="PASS" signature="tearDown()[pri:0, instance:SubmitTests@144b3c7b]" name="tearDown" is-config="true" duration-ms="170" started-at="2014-12-01T04:19:01Z" finished-at="2014-12-01T04:19:01Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+        <test-method status="PASS" signature="setUp()[pri:0, instance:SubmitTests@144b3c7b]" name="setUp" is-config="true" duration-ms="8081" started-at="2014-12-01T04:19:01Z" finished-at="2014-12-01T04:19:09Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method status="PASS" signature="verifyEvidenceEvaluation()[pri:0, instance:SubmitTests@144b3c7b]" name="verifyEvidenceEvaluation" duration-ms="17207" started-at="2014-12-01T04:19:09Z" finished-at="2014-12-01T04:19:26Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- verifyEvidenceEvaluation -->
-        <test-method status="FAIL" signature="verifyModularUI()[pri:0, instance:SubmitTests@f2c03ac]" name="verifyModularUI" duration-ms="1" started-at="2014-11-30T23:19:50Z" finished-at="2014-11-30T23:19:50Z">
-          <exception class="org.openqa.selenium.remote.SessionNotFoundException">
-            <message>
-              <![CDATA[The FirefoxDriver cannot be used after quit() was called.
-Build info: version: '2.44.0', revision: '76d78cf', time: '2014-10-23 20:03:00'
-System info: host: 'Lazaro-PC', ip: '192.168.56.1', os.name: 'Windows 7', os.arch: 'amd64', os.version: '6.1', java.version: '1.7.0_45'
-Driver info: driver.version: RemoteWebDriver]]>
-            </message>
-            <full-stacktrace>
-              <![CDATA[org.openqa.selenium.remote.SessionNotFoundException: The FirefoxDriver cannot be used after quit() was called.
-Build info: version: '2.44.0', revision: '76d78cf', time: '2014-10-23 20:03:00'
-System info: host: 'Lazaro-PC', ip: '192.168.56.1', os.name: 'Windows 7', os.arch: 'amd64', os.version: '6.1', java.version: '1.7.0_45'
-Driver info: driver.version: RemoteWebDriver
-	at org.openqa.selenium.firefox.FirefoxDriver$LazyCommandExecutor.execute(FirefoxDriver.java:359)
-	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:572)
-	at org.openqa.selenium.remote.RemoteWebDriver.get(RemoteWebDriver.java:304)
-	at SubmitTests.verifyModularUI(SubmitTests.java:55)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
-	at java.lang.reflect.Method.invoke(Unknown Source)
-	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:84)
-	at org.testng.internal.Invoker.invokeMethod(Invoker.java:714)
-	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:901)
-	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1231)
-	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:127)
-	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:111)
-	at org.testng.TestRunner.privateRun(TestRunner.java:767)
-	at org.testng.TestRunner.run(TestRunner.java:617)
-	at org.testng.SuiteRunner.runTest(SuiteRunner.java:334)
-	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:329)
-	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:291)
-	at org.testng.SuiteRunner.run(SuiteRunner.java:240)
-	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
-	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:86)
-	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1224)
-	at org.testng.TestNG.runSuitesLocally(TestNG.java:1149)
-	at org.testng.TestNG.run(TestNG.java:1057)
-	at org.testng.remote.RemoteTestNG.run(RemoteTestNG.java:111)
-	at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:204)
-	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:175)
-]]>
-            </full-stacktrace>
-          </exception> <!-- org.openqa.selenium.remote.SessionNotFoundException -->
+        <test-method status="PASS" signature="tearDown()[pri:0, instance:SubmitTests@144b3c7b]" name="tearDown" is-config="true" duration-ms="270" started-at="2014-12-01T04:19:26Z" finished-at="2014-12-01T04:19:27Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+        <test-method status="PASS" signature="setUp()[pri:0, instance:SubmitTests@144b3c7b]" name="setUp" is-config="true" duration-ms="7183" started-at="2014-12-01T04:19:27Z" finished-at="2014-12-01T04:19:34Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method status="PASS" signature="verifyModularUI()[pri:0, instance:SubmitTests@144b3c7b]" name="verifyModularUI" duration-ms="54775" started-at="2014-12-01T04:19:34Z" finished-at="2014-12-01T04:20:28Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- verifyModularUI -->
+        <test-method status="PASS" signature="tearDown()[pri:0, instance:SubmitTests@144b3c7b]" name="tearDown" is-config="true" duration-ms="290" started-at="2014-12-01T04:20:28Z" finished-at="2014-12-01T04:20:29Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
       </class> <!-- SubmitTests -->
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->

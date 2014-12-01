@@ -1,12 +1,19 @@
+import java.net.URL;
 import java.util.UUID;
 
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
@@ -17,10 +24,16 @@ public class CustomSearchTests
 	String testURL = baseURL + "custom_search.html";
 	private WebDriver driver;
 	
-	@BeforeTest
+	@BeforeMethod
     public void setUp() throws Exception {
-
-       driver = new FirefoxDriver();
+		
+		DesiredCapabilities capabilities = DesiredCapabilities.chrome();
+		capabilities.setCapability("version", "35");
+        capabilities.setCapability("platform", Platform.XP);
+        // Create the connection to Sauce Labs to run the tests
+        driver = new RemoteWebDriver(
+                new URL("http://lazherrera:a46f025c-0e5c-495a-a403-da422d5c60b0@ondemand.saucelabs.com:80/wd/hub"),
+                capabilities);
        driver.manage().window().maximize();
        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
@@ -42,8 +55,7 @@ public class CustomSearchTests
         verifyExistence(driver, driver.findElement(By.id("add")));
         verifyExistence(driver, driver.findElement(By.id("search")));
         verifyExistence(driver, driver.findElement(By.id("submit")));
-        
-        driver.quit();
+
 	}
 	
 	@Test
@@ -75,8 +87,13 @@ public class CustomSearchTests
 		if(driver.findElement(By.id("query")).getText().length() == 0)
 			throw new Exception("Storage failure for custom queries.");
 		
+	}
+	
+	@AfterMethod
+	public void tearDown() throws Exception {
 		driver.quit();
 	}
+	
 	
 	public void verifyExistence(WebDriver driver, WebElement element) throws InterruptedException {
 		Thread.sleep(1000);

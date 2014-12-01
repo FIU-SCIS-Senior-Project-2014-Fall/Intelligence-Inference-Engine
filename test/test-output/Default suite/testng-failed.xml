@@ -7,29 +7,26 @@
         <methods>
           <include name="setUp"/>
           <include name="verifyAutocompleteCapabilities"/>
-          <include name="verifyEvidenceEvaluation"/>
-          <include name="verifyBasicUILayout"/>
-          <include name="verifyModularUI"/>
+          <include name="tearDown"/>
         </methods>
       </class> <!-- SubmitTests -->
-      <class name="CustomSearchTests">
-        <methods>
-          <include name="setUp"/>
-          <include name="verifyBasicUILayout"/>
-        </methods>
-      </class> <!-- CustomSearchTests -->
       <class name="SearchTests">
         <methods>
           <include name="verifyAutocompleteCapabilities"/>
           <include name="setUp"/>
-          <include name="verifyModularUI"/>
-          <include name="verifyBulkExporting"/>
-          <include name="verifyBasicUILayout"/>
+          <include name="tearDown"/>
         </methods>
       </class> <!-- SearchTests -->
+      <class name="CustomSearchTests">
+        <methods>
+          <include name="setUp"/>
+          <include name="tearDown"/>
+        </methods>
+      </class> <!-- CustomSearchTests -->
       <class name="DatabaseExplorerTests">
         <methods>
           <include name="setUp"/>
+          <include name="tearDown"/>
         </methods>
       </class> <!-- DatabaseExplorerTests -->
     </classes>
