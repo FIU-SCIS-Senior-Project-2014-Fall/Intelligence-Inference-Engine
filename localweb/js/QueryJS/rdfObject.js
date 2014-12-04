@@ -1,6 +1,7 @@
 var uri;
 var literal;
 var isLiteral;
+var variable;
 
 var rdfObject = function rdfObject(data, isl)
 {
@@ -54,7 +55,9 @@ rdfObject.prototype.isLit = function()
 }
 rdfObject.prototype.getVariable = function()
 {
-	return "?"+this.hash();
+	if(variable == null)
+		variable = "?"+this.hash();
+	return variable;
 }
 rdfObject.prototype.hash = function()
 {
@@ -67,6 +70,11 @@ rdfObject.prototype.hash = function()
 	else
 	{
 		str = this.uri;
+	}
+	
+	if(str == null)
+	{
+		return Math.floor((Math.random() * 2000000000) + 1); //number should be sufficantly large enough to avoid collisions
 	}
 
 		

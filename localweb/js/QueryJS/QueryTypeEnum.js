@@ -1,3 +1,3 @@
 
 
-QueryType = Object.freeze({Update: 0, Select: 1});
+QueryType = Object.freeze({Update: "Update", Select: "Select"});
