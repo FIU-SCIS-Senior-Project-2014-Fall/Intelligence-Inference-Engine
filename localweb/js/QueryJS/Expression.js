@@ -39,7 +39,19 @@ Expression.prototype.buildExpression = function()
 	}
 	return (this.subject.getValue() + " " + this.pred.getPredicate() + " " + this.obj.getValue());
 }
-Expression.prototype.getExpression = function()
+Expression.prototype.getExpression = function(withsubject)
 {
-	return this.buildExpression();
+	if(withsubject)
+		return this.buildExpression();
+	else
+		return this.buildExpressionNoSubject();
+}
+Expression.prototype.buildExpressionNoSubject = function()
+{
+	if(this.subject.isLit())
+	{
+		console.log("Subject cannot be a literal, returning null")
+		return null;
+	}
+	return (this.pred.getPredicate() + " " + this.obj.getValue());
 }

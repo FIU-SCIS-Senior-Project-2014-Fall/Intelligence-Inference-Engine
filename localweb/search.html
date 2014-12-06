@@ -17,6 +17,7 @@
 	<script type="text/javascript" src="js/jquery-ui.js"></script>
 	<script src="js/QueryJS.min.js"></script>
 	<script src="js/QueryJS/SimpleMap.js"></script>
+	<script src="js/BuildGeneratorFunction.js"></script>
 	
 </head>
 
@@ -354,8 +355,11 @@
 											}
 										}
 										
-										console.log(prefix_array);
-										console.log(data_array);
+										//console.log(prefix_array);
+										//console.log(data_array);
+										
+										var generator = BuildGenerator(data_array, prefix_array, "Select");
+										console.log(generator.getQuery());
 									}
 									$(document).ready(
 										function() 

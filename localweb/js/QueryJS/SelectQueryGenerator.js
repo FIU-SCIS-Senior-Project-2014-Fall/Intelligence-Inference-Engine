@@ -47,14 +47,19 @@ SelectQueryGenerator.prototype.buildQuery = function()
 	var query = "";
 	for(var p in this.prefixes.getAll())
 	{
-		temppref = this.prefixes.get(p).getFullPrefix();
+		var temppref = this.prefixes.get(p).getFullPrefix();
 		if (temppref != null)
 			query += "PREFIX " + temppref + "\n";
 	}
 	query += "SELECT * {";
 	for(var i = 0; i < this.expressions.length;i++)
 	{
-		tempexp = this.expressions[i].getExpression();
+		var includesubj = false;
+		if(i == 0)
+			includesubj = true
+			
+		var tempexp = this.expressions[i].getExpression(includesubj);
+		
 		if (tempexp != null)
 			query += tempexp;
 		if (i < this.expressions.length - 1)

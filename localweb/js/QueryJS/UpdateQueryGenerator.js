@@ -54,7 +54,12 @@ UpdateQueryGenerator.prototype.buildQuery = function()
 	query += "INSERT DATA{";
 	for(var i = 0; i < this.expressions.length;i++)
 	{
-		tempexp = this.expressions[i].getExpression();
+		var includesubj = false;
+		if(i == 0)
+			includesubj = true
+			
+		var tempexp = this.expressions[i].getExpression(includesubj);
+		
 		if (tempexp != null)
 			query += tempexp;
 		if (i < this.expressions.length - 1)

@@ -36,6 +36,10 @@ rdfObject.prototype.getValue = function()								 // recommended way to get that
 rdfObject.prototype.getUri = function()
 {
 	//error checking
+	if(this.uri.charAt(0) != "<")
+		this.uri = "<" + this.uri;
+	if(this.uri.charAt(this.uri.length-1) != ">")
+		this.uri += ">";
 	return this.uri;
 }
 rdfObject.prototype.getLiteral = function()
