@@ -8,12 +8,12 @@ var BuildGenerator = function(data, pref, type)
 	
 	if(generator == null)
 		throw "Invalid query type";
-	console.log(data);
-	console.log(pref);
+	//console.log(data);
+	//console.log(pref);
 	for(var i = 0;i < pref.length;i++)
 	{
 		var p = pref[i];
-		console.log(p);
+		//console.log(p);
 		if(p[0] == null || p[0] == "" || p[1] == null || p[1] == "")
 			continue;
 		var prefix = new Prefix(p[0], p[1]);
@@ -23,7 +23,7 @@ var BuildGenerator = function(data, pref, type)
 	for(var i = 0;i < data.length; i++)
 	{
 		var d = data[i];
-		console.log(d);
+		//console.log(d);
 		var subj;
 		if(d[0] == null || d[0] == "")
 			subj = new rdfObject();
@@ -37,7 +37,7 @@ var BuildGenerator = function(data, pref, type)
 		else
 		{
 			var prefix = generator.prefixes.get(d[1]);
-			console.log(prefix);
+			//console.log(prefix);
 			//console.log(generator);
 			if(prefix != null)
 			{
@@ -59,7 +59,7 @@ var BuildGenerator = function(data, pref, type)
 			continue;
 		var e = new Expression(subj, pred, obj);
 		
-		console.log(e);
+		//console.log(e);
 		generator.addExpression(e);
 		
 		

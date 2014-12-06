@@ -308,7 +308,7 @@
 										str = str.replace(' ','_');
 										str = str.replace(/[^a-zA-Z0-9 ]/g, "");
 										str = "/" + str;
-										return str;
+										return str.toLowerCase();
 									}
 									userInterface.prototype.submit = function()
 									{
