@@ -1,33 +1,70 @@
+var type;
+var prefixes;
+var expressions;
+
+var SelectQueryGenerator = function  SelectQueryGenerator()
+{
+	this.prefixes = new SimpleMap();
+	this.expressions = new Array();
+	
+}
+SelectQueryGenerator.prototype.setType = function(type)
+{
+	if(QueryType[type] != null)
+		this.type = type
+	else
+		throw "Incompatible type given for type";
+}
+SelectQueryGenerator.prototype.addExpression = function(exp)
+{
+	if(exp instanceof Expression)
+		this.expressions.push(exp);
+	else
+		throw "Incompatible type given for expression";
+}
+SelectQueryGenerator.prototype.addPrefix = function(prefix) //make sure it is the same prefix object as the one the expression is using
+{
+	if(prefix instanceof Prefix)
+		this.prefixes.put(prefix.getShortcode(), prefix);
+	else
+		throw "Incompatible type given for prefix";
+}
+
 SelectQueryGenerator.prototype.buildQuery = function()
 {
-	if(prefixes == null)
+	if(this.prefixes == null)
 	{
 		throw "prefixes cannot be null";
 		return null;
 	}
-	if(expressions == null || expressions.length == 0)
+	if(this.expressions == null || this.expressions.length == 0)
 	{
 		throw "expressions cannot be null or empty";
 		return null;
 	}
-	if(subject == null)
-	{
-		throw "Subject cannot be null";
-		return null;
-	}
+
 	
 	var query = "";
-	for(var p in prefixes)
+	for(var p in this.prefixes.getAll())
 	{
-		temppref = prefixes[p].getFullPrefix();
+		temppref = this.prefixes.get(p).getFullPrefix();
 		if (temppref != null)
-			query += temppref + "\n";
+			query += "PREFIX " + temppref + "\n";
 	}
 	query += "SELECT * {";
-	for(var e in expressions)
+	for(var i = 0; i < this.expressions.length;i++)
 	{
-		tempexp = expressions[e].getExpression();
+		tempexp = this.expressions[i].getExpression();
+		if (tempexp != null)
+			query += tempexp;
+		if (i < this.expressions.length - 1)
+			query += ";\n";
+		else
+			query += ".\n";
 	}
+	query += "}";
+	
+	return query;
 }
 SelectQueryGenerator.prototype.getQuery = function()
 {

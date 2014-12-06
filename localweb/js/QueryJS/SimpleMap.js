@@ -12,3 +12,7 @@ SimpleMap.prototype.put = function(key, val)
 {
 	this.map[key] = val;
 }
+SimpleMap.prototype.getAll = function()
+{
+	return this.map;
+}

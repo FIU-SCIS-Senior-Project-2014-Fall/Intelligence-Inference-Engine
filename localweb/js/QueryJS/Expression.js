@@ -32,7 +32,12 @@ Expression.prototype.setObject = function(obj)
 }
 Expression.prototype.buildExpression = function()
 {
-	return (this.subject.getUri() + " " + this.pred.getPredicate() + " " + this.obj.getValue());
+	if(this.subject.isLit())
+	{
+		console.log("Subject cannot be a literal, returning null")
+		return null;
+	}
+	return (this.subject.getValue() + " " + this.pred.getPredicate() + " " + this.obj.getValue());
 }
 Expression.prototype.getExpression = function()
 {

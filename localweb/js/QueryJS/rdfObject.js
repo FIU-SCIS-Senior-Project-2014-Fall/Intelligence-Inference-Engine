@@ -18,8 +18,12 @@ var rdfObject = function rdfObject(data, isl)
 	
 }
 
-rdfObject.prototype.getValue = function()
+rdfObject.prototype.getValue = function()								 // recommended way to get that the rdfObject looks like for the query
 {
+	if(this.uri == null && this.literal == null)
+	{
+		return this.getVariable();
+	}
 	if(this.isLiteral)
 	{
 		return this.getLiteral();
@@ -37,7 +41,11 @@ rdfObject.prototype.getUri = function()
 rdfObject.prototype.getLiteral = function()
 {
 	//error checking
-	return this.literal;
+	if(this.literal.charAt(0) != "\"")
+		this.literal = "\"" + this.literal;
+	if(this.literal.charAt(this.literal.length-1) != "\"")
+		this.literal += "\"";
+	return this.literal ;
 }
 rdfObject.prototype.setUri = function(uri)
 {
@@ -51,13 +59,13 @@ rdfObject.prototype.setLiteral = function(lit)
 }
 rdfObject.prototype.isLit = function()
 {
-	return isLiteral;
+	return this.isLiteral;
 }
 rdfObject.prototype.getVariable = function()
 {
-	if(variable == null)
-		variable = "?"+this.hash();
-	return variable;
+	if(this.variable == null)
+		this.variable = "?"+this.hash();
+	return this.variable;
 }
 rdfObject.prototype.hash = function()
 {

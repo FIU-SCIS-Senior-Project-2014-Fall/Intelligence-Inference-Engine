@@ -1,20 +1,12 @@
 var type;
-var subject
 var prefixes;
 var expressions;
 
 var AbstractQueryGenerator = function  AbstractQueryGenerator()
 {
-	prefixes = new SimpleMap();
-	expressions = new Array();
-}
-
-AbstractQueryGenerator.prototype.setSubject = function(subj)
-{
-	if(subj instanceof rdfObject)
-		this.subject = subj;
-	else
-		throw "Incompatible type given for subject";
+	this.prefixes = new SimpleMap();
+	this.expressions = new Array();
+	
 }
 AbstractQueryGenerator.prototype.setType = function(type)
 {
@@ -30,10 +22,47 @@ AbstractQueryGenerator.prototype.addExpression = function(exp)
 	else
 		throw "Incompatible type given for expression";
 }
-AbstractQueryGenerator.prototype.addPrefix = function(prefix)
+AbstractQueryGenerator.prototype.addPrefix = function(prefix) //make sure it is the same prefix object as the one the expression is using
 {
-	if(exp instanceof Prefix)
+	if(prefix instanceof Prefix)
 		this.prefixes.put(prefix.getShortcode(), prefix);
 	else
 		throw "Incompatible type given for prefix";
+}
+
+AbstractQueryGenerator.prototype.buildQuery = function()
+{
+	if(this.prefixes == null)
+	{
+		throw "prefixes cannot be null";
+		return null;
+	}
+	if(this.expressions == null || this.expressions.length == 0)
+	{
+		throw "expressions cannot be null or empty";
+		return null;
+	}
+
+	
+	var query = "";
+	for(var p in this.prefixes.getAll())
+	{
+		temppref = this.prefixes.get(p).getFullPrefix();
+		if (temppref != null)
+			query += "PREFIX " + temppref + "\n";
+	}
+	query += "SELECT * {";
+	for(var i = 0; i < this.expressions.length;i++)
+	{
+		tempexp = this.expressions[i].getExpression();
+		if (tempexp != null)
+			query += tempexp;
+		if (i < this.expressions.length - 1)
+			query += ";\n";
+		else
+			query += ".\n";
+	}
+	query += "}";
+	
+	return query;
 }
