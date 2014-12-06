@@ -305,6 +305,8 @@
 									}
 									userInterface.prototype.sanitizeInput = function(str)
 									{
+										if(str == "")
+											return str;
 										str = str.replace(' ','_');
 										str = str.replace(/[^a-zA-Z0-9 ]/g, "");
 										str = "/" + str;
@@ -367,6 +369,7 @@
 										//console.log(data_array);
 										
 										var generator = BuildGenerator(data_array, prefix_array, "Select");
+										console.log(generator.getQuery());
 										
 										$.ajax({
 											type : "POST",
