@@ -359,7 +359,16 @@
 										//console.log(data_array);
 										
 										var generator = BuildGenerator(data_array, prefix_array, "Select");
-										console.log(generator.getQuery());
+										
+										$.ajax({
+											type : "GET",
+											url : "http://iie-dev.cs.fiu.edu/scripts/searchscript.php",
+											data: { query: generator.getQuery()},
+											success: function(data)
+											{
+												console.log(data);
+											}
+										});
 									}
 									$(document).ready(
 										function() 
