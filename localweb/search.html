@@ -374,10 +374,11 @@
 											data: { query: generator.getQuery()},
 											success: function(data)
 											{
-												$("#returns").html('<div class="alert alert-success" align="center" role="alert" id="raw-output">Data Successfully Stored</div>')
+												console.log(data);
+												$("#returns").html('<div class="alert alert-success" align="center" role="alert" id="raw-output">'+data+'</div>')
 												setTimeout(function () { 
 													$("#raw-output").remove();
-												}, 2000);
+												}, 5000);
 											}
 										});
 									}

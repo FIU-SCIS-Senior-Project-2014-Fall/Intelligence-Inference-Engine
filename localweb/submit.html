@@ -578,13 +578,13 @@
 										//console.log(data_array);
 										
 										var generator = BuildGenerator(data_array, prefix_array, "Update");
-										console.log("Changes");
 										$.ajax({
 											type : "POST",
 											url : "http://iie-dev.cs.fiu.edu/scripts/submit_data.php",
 											data: { reporterName: data.get("reporterName"), query: generator.getQuery()},
 											success: function(data)
 											{
+												console.log(data);
 												$(data).find("code").each(function()
 												{
 														if($(this).text().indexOf("S") > -1)
@@ -592,14 +592,14 @@
 															$("#returns").html('<div class="alert alert-success" align="center" role="alert" id="raw-output">Data Successfully Stored</div>')
 															setTimeout(function () { 
 																$("#raw-output").remove();
-															}, 2000);
+															}, 5000);
 														}
 														else if($(this).text().indexOf("F") > -1)
 														{
 															$("#returns").html('<div class="alert alert-danger" align="center" role="alert" id="raw-output">Data Could Not Be Stored</div>')
 															setTimeout(function () { 
 																$("#raw-output").remove();
-															}, 2000);
+															}, 5000);
 														}
 												});
 											}
