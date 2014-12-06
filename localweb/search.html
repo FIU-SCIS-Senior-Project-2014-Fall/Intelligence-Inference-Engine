@@ -374,7 +374,10 @@
 											data: { query: generator.getQuery()},
 											success: function(data)
 											{
-												console.log(data);
+												$("#returns").html('<div class="alert alert-success" align="center" role="alert" id="raw-output">Data Successfully Stored</div>')
+												setTimeout(function () { 
+													$("#raw-output").remove();
+												}, 2000);
 											}
 										});
 									}
@@ -443,6 +446,7 @@
 										</button>
 									</div>
 								</div>
+								<div id="returns"></div>
 							<!-- </form> -->
 						</div>
 				</div>
