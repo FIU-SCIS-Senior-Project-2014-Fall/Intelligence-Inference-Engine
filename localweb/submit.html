@@ -148,7 +148,7 @@
 									
 									userInterface.prototype.performAdd =  function()
 									{
-										$("#holder").append('<div class="clearfix" id="xtra-clear'+currentValue+'"></div><div class="col-md-2" id= "xtra-prefix'+currentValue+'"><select class="form-control" name="data-prefix'+currentValue+'"><option selected="selected">iie</option></select></div><div id="xtra-select' + currentValue + '" class="col-md-3"><select class="form-control" name="data-pred'+ currentValue +'"><option value="targets">Targets</option><option value="related">Related To</option><option value="originating">Originating</option><option value="exploits">Exploits</option><option value="evidence">Evidence</option><option value="text">Text</option></select></div><div id="xtra-text-input'+ currentValue +'" class="col-md-5"><input type="text" class="form-control" style="border-radius:0px" name="data-'+currentValue+'" placeholder="free-form text"></div>');
+										$("#holder").append('<div class="clearfix" id="xtra-clear'+currentValue+'"></div><div class="col-md-2" id= "xtra-prefix'+currentValue+'"><select class="form-control" name="data-prefix'+currentValue+'"><option selected="selected">iie</option></select></div><div id="xtra-select' + currentValue + '" class="col-md-3"><select class="form-control" name="data-pred'+ currentValue +'"><option value="targets">Targets</option><option value="related">Related To</option><option value="originating">Originating</option><option value="exploits">Exploits</option><option value="text">Text</option></select></div><div id="xtra-text-input'+ currentValue +'" class="col-md-5"><input type="text" class="form-control" style="border-radius:0px" name="data-'+currentValue+'" placeholder="free-form text"></div>');
 										currentValue++;
 										currentSize++;
 										$("#size").val(currentSize);
@@ -223,7 +223,7 @@
 														$(this).val(targs[1]);
 													}
 												}
-												else if ($(this).attr("name").indexOf('prefixName') > -1)
+												else if ($(this).attr("name") != null && $(this).attr("name").indexOf('prefixName') > -1)
 												{
 													$( "input[name*='data-pred']" ).each(function(index)
 													{
@@ -525,7 +525,6 @@
 									userInterface.prototype.submit = function()
 									{
 										var data = new SimpleMap();
-										var UI = new userInterface();
 										
 										$("input").each(
 												function(index)
@@ -567,10 +566,10 @@
 											if(x.indexOf('data-') > -1 && x.indexOf('data-prefix') < 0 && x.indexOf('data-pred') < 0)
 											{
 												var inner_array = new Array();
-												inner_array.push(UI.sanitizeInput(subject));
+												inner_array.push(subject);
 												inner_array.push(data.get(x.replace('data-','data-prefix')));
 												inner_array.push(data.get(x.replace('data-','data-pred')));
-												inner_array.push(UI.sanitizeInput(data.get(x)));
+												inner_array.push(data.get(x));
 												data_array.push(inner_array);
 											}
 										}
@@ -579,14 +578,30 @@
 										//console.log(data_array);
 										
 										var generator = BuildGenerator(data_array, prefix_array, "Update");
-										
+										console.log("Changes");
 										$.ajax({
 											type : "POST",
 											url : "http://iie-dev.cs.fiu.edu/scripts/submit_data.php",
 											data: { reporterName: data.get("reporterName"), query: generator.getQuery()},
 											success: function(data)
 											{
-												console.log(data);
+												$(data).find("code").each(function()
+												{
+														if($(this).text().indexOf("S") > -1)
+														{
+															$("#returns").html('<div class="alert alert-success" align="center" role="alert" id="raw-output">Data Successfully Stored</div>')
+															setTimeout(function () { 
+																$("#raw-output").remove();
+															}, 2000);
+														}
+														else if($(this).text().indexOf("F") > -1)
+														{
+															$("#returns").html('<div class="alert alert-danger" align="center" role="alert" id="raw-output">Data Could Not Be Stored</div>')
+															setTimeout(function () { 
+																$("#raw-output").remove();
+															}, 2000);
+														}
+												});
 											}
 										});
 									}
