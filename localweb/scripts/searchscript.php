@@ -4,7 +4,7 @@
 include 'httpful.phar';
 
 
-$query = "PREFIX iie: </fake/iie/types/>";
+/*$query = "PREFIX iie: </fake/iie/types/>";
 
 foreach (explode(",",$_POST["prefixName"]) as $prefix)
 {
@@ -31,7 +31,7 @@ for($i=1; $i<=$size; $i++)
 	$predicate = str_replace("<","");
 	$predicate = str_replace(">","");
 	
-	$query = $query . "<" . $predicate .">" ;*/
+	$query = $query . "<" . $predicate .">" ;
 	
 	
 	if($i < $size)
@@ -47,6 +47,10 @@ $query = $query . " }";
 $queryURL = "http://iie-dev.cs.fiu.edu:3030/iie/query?query=" . urlencode($query) . "&output=xml&stylesheet=";
 //echo "<br>Query URL: " . $queryURL;
 
+$response = \Httpful\Request::get($queryURL)
+			->send();
+			*/
+$queryURL = "http://iie-dev.cs.fiu.edu:3030/iie/query?query=" . urlencode($POST['query']) . "&output=xml&stylesheet=";		
 $response = \Httpful\Request::get($queryURL)
 			->send();
 
