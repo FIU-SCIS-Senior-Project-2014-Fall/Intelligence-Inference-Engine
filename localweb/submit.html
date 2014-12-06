@@ -11,10 +11,12 @@
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.css" rel="stylesheet">
+	<link href="css/jquery-ui.css" rel="stylesheet">
 	
 	<script src="js/jquery-1.11.1.min.js"></script>
 	<script src="js/raphael.2.1.0.min.js"></script>
 	<script src="js/justgage.1.0.1.min.js"></script>
+	<script type="text/javascript" src="js/jquery-ui.js"></script>
 
     <!-- Custom CSS for the 'Heroic Features' Template -->
     <link href="css/heroic-features.css" rel="stylesheet">
@@ -41,6 +43,8 @@
                     </li>
                     <li><a href="search.html">Search Now!</a>
                     </li>
+					<li><a href="database_explorer.html">Explore our database!</a>
+                </li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -73,25 +77,26 @@
 								</div>
 								<div class="form-group">
 									<div class="col-md-9">
+										<label for="subject">Subject</label>
 										<input type="text" class="form-control" style="border-radius:0px" name="subject" placeholder="Subject of Lead"> 
 									</div>
-									<button id="submit" name="submit" value="Submit" type="submit" class="btn btn-sm btn-success">Submit Lead</button>
 								</div>
 								<div class="form-group" id="holder">
-									<div class="col-md-2">
+									<div class="col-md-2" id="xtra-prefix1">
 										<select class="form-control" name="data-prefix1">
 											<option selected="selected">iie</option>
 										</select>
 									</div>
-									<div class="col-md-3">
+									<div class="col-md-3" id="xtra-select1">
 										<select class="form-control" name="data-pred1">
 											<option value="targets">Targets</option>
 											<option value="related">Related To</option>
 											<option value="originating">Originating</option>
 											<option value="exploits">Exploits</option>
+											<option value="text">Text</option>
 										</select>
 									</div>
-									<div class="col-md-5">
+									<div class="col-md-5" id="xtra-text-input1">
 										<input type="text" class="form-control" style="border-radius:0px" name="data-1" placeholder="free-form text">
 									</div>
 									<button type="button" id="plus" class="col-md-1 btn btn-sm btn-success">
@@ -103,6 +108,8 @@
 									<script type="text/javascript">
 									var currentValue = 2;
 									var currentSize = 1;
+									var autoComplete_prefix = null;
+									var autoComplete_predicate = null;
 									var g;
 									
 									//Evidence variables.
@@ -117,7 +124,6 @@
 									function userInterface(){}
 									userInterface.prototype.initialSetup = function()
 									{
-										console.log("Initialized");
 										$("#size").val(currentSize);
 											var myColors = [
 															"#ff0000",
@@ -147,14 +153,14 @@
 									
 									userInterface.prototype.performSubstract = function()
 									{
-										$("#xtra-clear"+(currentValue-1)+"").last().remove()
-										$("#xtra-prefix"+(currentValue-1)+"").last().remove()
-										$("#xtra-select"+(currentValue-1)+"").last().remove()
-										$("#xtra-text-input"+(currentValue-1)+"").last().remove();
-										if(currentValue != 2)
+										if(currentValue > 2)
 											currentValue--;
-										if(currentSize != 1)
+										if(currentSize > 1)
 											currentSize--;
+										$("#xtra-clear"+(currentValue)+"").last().remove()
+										$("#xtra-prefix"+(currentValue)+"").last().remove()
+										$("#xtra-select"+(currentValue)+"").last().remove()
+										$("#xtra-text-input"+(currentValue)+"").last().remove();
 										$("#size").val(currentSize);
 									}
 									
@@ -169,6 +175,16 @@
 										minimumConfidence = 100;
 										
 										$("select option:selected").each(new userInterface().verifySelected);
+										//Show the gauges.
+										if(evidenceExists)
+										{
+											new userInterface().calculateConfidence();	
+											$('#gauge').show();
+										}
+										else
+										{
+											$('#gauge').hide();
+										}
 										$("input").each(
 											function(index)
 											{
@@ -178,7 +194,31 @@
 													if (tar.indexOf('data-pred') < 0)
 														return;
 													$("select[name='"+tar.replace('pred','prefix')+"']").html('<option selected="selected">iie</option>');
-													$(this).parent().html('<select class="form-control" name="'+ tar +'"><option value="targets">Targets</option><option value="related">Related To</option><option value="originating">Originating</option><option value="exploits">Exploits</option><option value="text">Text</option></select>');
+													$(this).parent().html('<select class="form-control" name="'+ tar +'"><option value="targets">Targets</option><option value="related">Related To</option><option value="evidence">Evidence</option><option value="originating">Originating</option><option value="exploits">Exploits</option><option value="text">Text</option></select>');
+												}
+												else if ($(this).val().indexOf(':') > -1 &&  $(this).attr("name").indexOf('data-pred') > -1)
+												{
+													var rawPrefix = $(this).val();
+													while(rawPrefix.indexOf(" :") > -1)
+														rawPrefix = rawPrefix.replace(" :",":");
+														
+													var prefixList = $("input[name='prefixName']").val();
+													while(prefixList.indexOf(" :") > -1)
+														prefixList = prefixList.replace(" :",":");
+													
+													var targs = rawPrefix.split(":");
+													if(prefixList.indexOf(targs[0]+":") > -1)
+													{
+														$(this).val(targs[1]);
+													}
+													else
+													{
+														var tar = $("input[name='prefixName']").val();
+														tar += targs[0] + ":, ";
+														
+														$("input[name='prefixName']").val(tar);
+														$(this).val(targs[1]);
+													}
 												}
 												else if ($(this).attr("name").indexOf('prefixName') > -1)
 												{
@@ -211,17 +251,6 @@
 												}
 											}
 										);											
-										
-										//Show the gauges.
-										if(evidenceExists)
-										{
-											new userInterface().calculateConfidence();	
-											$('#gauge').show();
-										}
-										else
-										{
-											$('#gauge').hide();
-										}
 									}
 									userInterface.prototype.verifySelected = function( index ) 
 									{	
@@ -411,6 +440,78 @@
 											}
 										}
 									}
+									userInterface.prototype.getAutocomplete = function()
+									{
+										var i = 0;
+										var target = "";
+										var final_set_prefix = "";
+										var final_set_predicate = "";
+										$.ajax({
+											type : "GET",
+											url : "http://iie-dev.cs.fiu.edu/scripts/auto_complete_targets.php",
+											success: function(data)
+											{
+												var elements = $(data);
+												$('uri', elements).each( function() 
+												{ 
+													if(target == "")
+														target = $(this).html();
+													else
+														target += ","+$(this).html(); 
+												});
+												
+												var target_array = target.split(",");
+												for (i = 0; i < target_array.length;i++)
+												{
+													var target_objects = target_array[i].split("/");
+													var prefix = target;
+													var predicate = target_array[i].split("/")[target_array[i].split("/").length-1];
+
+													if(final_set_prefix.indexOf(prefix) < 0)
+														final_set_prefix += prefix + ",";
+													if(final_set_predicate.indexOf(predicate) < 0)
+														final_set_predicate += predicate + ",";
+												}
+												final_set_prefix = final_set_prefix.substring(0, final_set_prefix.length - 1);
+												final_set_predicate = final_set_predicate.substring(0, final_set_predicate.length - 1);
+												
+												autoComplete_prefix = final_set_prefix.split(",");
+												autoComplete_predicate = final_set_predicate.split(",");
+											}
+										});
+									}
+									userInterface.prototype.importDatabase = function()
+									{
+										$("#file").trigger('click');
+										
+										$("#file").change(function()
+										{
+											file = this.files[0];
+											fr = new FileReader();
+												
+											fr.onload = function(e) 
+											{
+												var contents = fr.result;
+												
+												//Send the contents to a PHP file.
+												$.ajax({
+													type : "POST",
+													url : "http://iie-dev.cs.fiu.edu/scripts/bulk_import.php",
+													data: { data: contents},
+													success: function(data)
+													{
+														//Return contents to a DIV success label/failure label.
+														$("#returns").html('<div class="alert alert-success" align="center" role="alert" id="raw-output">'+data+'</div>')
+														setTimeout(function () {
+															$("#raw-output").remove();
+														}, 2000);
+													}
+												});
+											};
+										
+											fr.readAsText(file);
+										});
+									}
 									$(document).ready(
 										function() 
 										{	
@@ -423,10 +524,41 @@
 											//Deal with removals.
 											$( "#minus" ).click(UI.performSubstract);
 											
+											//Deals with bulk import disabling if it's not supported in other browsers.
+											
+											if (typeof window.FileReader !== 'function') {
+												$("#bulk-import").attr("disabled","true");
+											}
+											else
+											{
+												$("#bulk-import").click(UI.importDatabase);
+											}
+											
 											//Get all selected values to be printed.
 											$("div").on('change', 'select.form-control', UI.selectionChanged);
 											$("div").on('change', 'input.form-control', UI.selectionChanged);
 											
+											UI.getAutocomplete();
+											$( "div" ).on( "click", "input.form-control" , function() {
+												if($(this).attr("name").indexOf("prefix") > -1 && autoComplete_prefix.length > 0)
+													$(this).autocomplete({
+														source: autoComplete_prefix,
+														select: function(event, ui) {
+															setTimeout(function() {
+																UI.inputChanged();
+															}, 500);
+														}
+													});
+												if($(this).attr("name").indexOf("data") > -1 && autoComplete_predicate.length > 0)
+													$(this).autocomplete({
+														source: autoComplete_predicate,
+														select: function(event, ui) {
+															setTimeout(function() {
+																UI.inputChanged();
+														}, 500);
+													}
+												});
+											});	
 										}
 									);
 									</script>
@@ -436,6 +568,16 @@
 									<label id="wordsText"></label>
 									<label id="wordsNotMatched"></label>
 									<label id="confidence"></label>
+								</div>
+								<div class="clearfix" align="center">
+									<button value="Submit" type="submit" class="btn btn-sm btn-success" id="submit" name="submit" >
+										<span class="glyphicon glyphicon-send"></span> Submit Lead
+									</button>
+									<button type="button" class="btn btn-sm btn-success" id="bulk-import" >
+										<span class="glyphicon glyphicon-cloud-upload"></span> Bulk Import Data
+									</button>
+									<div id="returns"></div>
+									<input type="file" id="file"  style="visibility:hidden"/>
 								</div>
 							</form>
 						</div>
@@ -456,7 +598,6 @@
     <!-- /.container -->
 
     <!-- JavaScript -->
-    <script src="js/jquery-1.10.2.js"></script>
     <script src="js/bootstrap.js"></script>
 
 </body>

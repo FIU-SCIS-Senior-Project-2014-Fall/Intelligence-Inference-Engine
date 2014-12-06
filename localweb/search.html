@@ -9,13 +9,13 @@
 
     <title>Intelligence Inference Engine</title>
 
-    <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/heroic-features.css" rel="stylesheet">
+	<link href="css/jquery-ui.css" rel="stylesheet">
 
 	<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="js/jquery-ui.js"></script>
 	
-    <!-- Custom CSS for the 'Heroic Features' Template -->
-    <link href="css/heroic-features.css" rel="stylesheet">
 </head>
 
 <body>
@@ -39,6 +39,8 @@
                     </li>
                     <li><a href="search.html">Search Now!</a>
                     </li>
+					<li><a href="database_explorer.html">Explore our database!</a>
+                </li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -53,37 +55,38 @@
             <div class="container" style="margin-top:30px">
 			<div class="col-md-8 col-md-offset-2">
 				<div class="panel panel-default">
-					<div class="panel-heading"><h3 class="panel-title"><strong>Data Search Form</strong></h3></div>
+					<div class="panel-heading">
+						<h3 class="panel-title"><strong>Data Search Form</strong></h3> 
+					</div>
 						<div class="panel-body">
 							<form method = "post" class="form-horizontal" action="scripts/searchscript.php" role="form">
-								<div class="form-group">
-									<div class="col-md-8 col-md-offset-2" align = "center">
-										<button id="submit" name="submit" value="Submit" type="submit" class="btn btn-sm btn-success">Search Database</button>
-										<button type="button" class="btn btn-sm btn-success" id="custom-search">Custom Search</button>
-									</div>
-								</div>
 								<div class="form-group">
 									<div class="col-md-12">
 										<label for="prefixName">Prefix</label>
 										<input type="text" class="form-control" style="border-radius:0px" name="prefixName" id="prefixName" placeholder="Separate Prefixes By CSV">
 										<input type="hidden" class="form-control" style="border-radius:0px" id="size" name="size">
 									</div>
+									<div class="col-md-12">
+										<label for="subject">Subject</label>
+										<input type="text" class="form-control" style="border-radius:0px" name="subject" placeholder="Subject of Lead"> 
+									</div>
 								</div>
 								<div class="form-group" id="holder">
-									<div class="col-md-2">
+									<div class="col-md-2" id="xtra-prefix1" >
 										<select class="form-control" name="data-prefix1">
 											<option selected="selected">iie</option>
 										</select>
 									</div>
-									<div class="col-md-3">
+									<div class="col-md-3" id="xtra-select1">
 										<select class="form-control" name="data-pred1">
 											<option value="targets" selected="selected">Targets</option>
 											<option value="related">Related To</option>
 											<option value="originating">Originating</option>
 											<option value="exploits">Exploits</option>
+											<option value="text">Text</option>
 										</select>
 									</div>
-									<div class="col-md-5">
+									<div class="col-md-5" id="xtra-text-input1">
 										<input type="text" class="form-control" style="border-radius:0px" name="data-1" placeholder="free-form text">
 									</div>
 									<button id="plus" type="button" class="col-md-1 btn btn-sm btn-success">
@@ -95,6 +98,8 @@
 									<script type="text/javascript">
 									var currentValue = 2;
 									var currentSize = 1;
+									var autoComplete_prefix = null;
+									var autoComplete_predicate = null;
 									
 									function userInterface(){}
 									userInterface.prototype.initialSetup = function()
@@ -111,14 +116,14 @@
 									
 									userInterface.prototype.performSubstract = function()
 									{
-										$("#xtra-clear"+(currentValue-1)+"").last().remove()
-										$("#xtra-prefix"+(currentValue-1)+"").last().remove()
-										$("#xtra-select"+(currentValue-1)+"").last().remove()
-										$("#xtra-text-input"+(currentValue-1)+"").last().remove();
-										if(currentValue != 2)
+										if(currentValue > 2)
 											currentValue--;
-										if(currentSize != 1)
+										if(currentSize > 1)
 											currentSize--;
+										$("#xtra-clear"+(currentValue)+"").last().remove()
+										$("#xtra-prefix"+(currentValue)+"").last().remove()
+										$("#xtra-select"+(currentValue)+"").last().remove()
+										$("#xtra-text-input"+(currentValue)+"").last().remove();
 										$("#size").val(currentSize);
 									}
 									userInterface.prototype.inputChanged = function()
@@ -133,6 +138,30 @@
 														return;
 													$("select[name='"+tar.replace('pred','prefix')+"']").html('<option selected="selected">iie</option>');
 													$(this).parent().html('<select class="form-control" name="'+ tar +'"><option value="targets">Targets</option><option value="related">Related To</option><option value="originating">Originating</option><option value="exploits">Exploits</option><option value="text">Text</option></select>');
+												}
+												else if ($(this).val().indexOf(':') > -1 &&  $(this).attr("name").indexOf('data-pred') > -1)
+												{
+													var rawPrefix = $(this).val();
+													while(rawPrefix.indexOf(" :") > -1)
+														rawPrefix = rawPrefix.replace(" :",":");
+														
+													var prefixList = $("input[name='prefixName']").val();
+													while(prefixList.indexOf(" :") > -1)
+														prefixList = prefixList.replace(" :",":");
+													
+													var targs = rawPrefix.split(":");
+													if(prefixList.indexOf(targs[0]+":") > -1)
+													{
+														$(this).val(targs[1]);
+													}
+													else
+													{
+														var tar = $("input[name='prefixName']").val();
+														tar += targs[0] + ":, ";
+														
+														$("input[name='prefixName']").val(tar);
+														$(this).val(targs[1]);
+													}
 												}
 												else if ($(this).attr("name").indexOf('prefixName') > -1)
 												{
@@ -216,7 +245,61 @@
 											}
 										);
 									}
+									userInterface.prototype.getAutocomplete = function()
+									{
+										var i = 0;
+										var target = "";
+										var final_set_prefix = "";
+										var final_set_predicate = "";
+										$.ajax({
+											type : "GET",
+											url : "http://iie-dev.cs.fiu.edu/scripts/auto_complete_targets.php",
+											success: function(data)
+											{
+												var elements = $(data);
+												$('uri', elements).each( function() 
+												{ 
+													if(target == "")
+														target = $(this).html();
+													else
+														target += ","+$(this).html(); 
+												});
+												
+												var target_array = target.split(",");
+												for (i = 0; i < target_array.length;i++)
+												{
+													var target_objects = target_array[i].split("/");
+													var prefix = target;
+													var predicate = target_array[i].split("/")[target_array[i].split("/").length-1];
+
+													if(final_set_prefix.indexOf(prefix) < 0)
+														final_set_prefix += prefix + ",";
+													if(final_set_predicate.indexOf(predicate) < 0)
+														final_set_predicate += predicate + ",";
+												}
+												final_set_prefix = final_set_prefix.substring(0, final_set_prefix.length - 1);
+												final_set_predicate = final_set_predicate.substring(0, final_set_predicate.length - 1);
+												
+												autoComplete_prefix = final_set_prefix.split(",");
+												autoComplete_predicate = final_set_predicate.split(",");
+											}
+										});
+									}
 									
+									userInterface.prototype.exportDatabase = function()
+									{
+										$.ajax({
+											type : "GET",
+											url : "http://iie-dev.cs.fiu.edu/scripts/bulk_export.php",
+											success: function(data)
+											{
+												var pom = document.createElement('a');
+												pom.setAttribute('href', 'data:application/xml;charset=utf-8,' + encodeURIComponent(data));
+												pom.setAttribute('download', "export.xml");
+												pom.click();
+											}
+										});
+									}
 									$(document).ready(
 										function() 
 										{
@@ -225,6 +308,7 @@
 											
 											$( "#plus" ).click(UI.performAdd);
 											$( "#minus" ).click(UI.performSubstract);
+											$( "#bulk-export").click(UI.exportDatabase);
 											
 											$( "#custom-search" ).click(
 												function()
@@ -236,11 +320,49 @@
 											//Probably needs a refactor (anonymous functions are evil...)
 											$("div").on('change', 'input.form-control', UI.inputChanged);
 											
+											
 											//Probably needs a refactor (anonymous functions are evil...)
 											$("div").on('change', 'select.form-control', UI.selectionChanged);
+											
+											
+											UI.getAutocomplete();
+											$( "div" ).on( "click", "input.form-control" , function() {
+												if($(this).attr("name").indexOf("prefix") > -1 && autoComplete_prefix.length > 0)
+													$(this).autocomplete({
+														source: autoComplete_prefix,
+														select: function(event, ui) {
+															setTimeout(function() {
+																UI.inputChanged();
+															}, 500);
+														}
+													});
+												if($(this).attr("name").indexOf("data") > -1 && autoComplete_predicate.length > 0)
+													$(this).autocomplete({
+														source: autoComplete_predicate,
+														select: function(event, ui) {
+															setTimeout(function() {
+																UI.inputChanged();
+														}, 500);
+													}
+												});
+											});	
 										}
 									);
 									</script>
+									
+								</div>
+								<div class="form-group">
+									<div class="col-md-10 col-md-offset-1" align = "center">
+										<button id="submit" name="submit" value="Submit" type="submit" class="btn btn-sm btn-success">
+											<span class="glyphicon glyphicon-search"></span> Search Database
+										</button>
+										<button type="button" class="btn btn-sm btn-success" id="custom-search">
+											<span class="glyphicon glyphicon-asterisk"></span> Custom Search
+										</button>
+										<button type="button" class="btn btn-sm btn-success" id="bulk-export">
+											<span class="glyphicon glyphicon-cloud-download"></span> Bulk Export Database
+										</button>
+									</div>
 								</div>
 							</form>
 						</div>
@@ -261,7 +383,6 @@
     <!-- /.container -->
 
     <!-- JavaScript -->
-    <script src="js/jquery-1.10.2.js"></script>
     <script src="js/bootstrap.js"></script>
 
 </body>
