@@ -3,6 +3,8 @@
 <?php
 
 include 'httpful.phar';
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET, POST");
 
 ////echo $_POST['data-pred'];
 ////echo $_POST['data-1'];
@@ -21,7 +23,7 @@ else
 	
 //echo "Reporter: " . $reporter . '<br>';
 	
-$query = "PREFIX iie: </fake/iie/types/>";
+/*$query = "PREFIX iie: </fake/iie/types/>";
 
 foreach (explode("," , $_POST["prefixName"]) as $prefix)
 {
@@ -50,7 +52,7 @@ for($i=1; $i<=$size; $i++)
 	$predicate = str_replace("<","", $predicate);
 	$predicate = str_replace(">","", $predicate);
 	
-	$query = $query . "<" . $predicate .">" ;*/
+	$query = $query . "<" . $predicate .">" ;
 	if($i < $size)
 		$query = $query . "; " ;
 	else
@@ -63,9 +65,10 @@ $query = $query . " }";
 //echo "<br>";
 //echo urlencode($query);
 //echo "<br>";
+*/
 
 $response = \Httpful\Request::post("http://iie-dev.cs.fiu.edu:3030/iie/update")
-->body($query)
+->body($_POST['query'])
 ->send();
 
 if (strcmp($response->body, '') == 0)

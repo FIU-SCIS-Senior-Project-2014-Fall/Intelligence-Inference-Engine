@@ -2,6 +2,8 @@
 
 ////echo var_dump($_POST) . "<br>";
 include 'httpful.phar';
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET, POST");
 
 
 /*$query = "PREFIX iie: </fake/iie/types/>";
@@ -50,7 +52,7 @@ $queryURL = "http://iie-dev.cs.fiu.edu:3030/iie/query?query=" . urlencode($query
 $response = \Httpful\Request::get($queryURL)
 			->send();
 			*/
-$queryURL = "http://iie-dev.cs.fiu.edu:3030/iie/query?query=" . urlencode($POST['query']) . "&output=xml&stylesheet=";		
+$queryURL = "http://iie-dev.cs.fiu.edu:3030/iie/query?query=" . urlencode($_POST['query']) . "&output=xml&stylesheet=";		
 $response = \Httpful\Request::get($queryURL)
 			->send();
 
