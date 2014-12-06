@@ -361,7 +361,7 @@
 										var generator = BuildGenerator(data_array, prefix_array, "Select");
 										
 										$.ajax({
-											type : "GET",
+											type : "POST",
 											url : "http://iie-dev.cs.fiu.edu/scripts/searchscript.php",
 											data: { query: generator.getQuery()},
 											success: function(data)

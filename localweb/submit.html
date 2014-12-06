@@ -574,9 +574,9 @@
 										var generator = BuildGenerator(data_array, prefix_array, "Update");
 										
 										$.ajax({
-											type : "GET",
+											type : "POST",
 											url : "http://iie-dev.cs.fiu.edu/scripts/submit_data.php",
-											data: { query: generator.getQuery()},
+											data: { reporterName: data.get("reporterName"), query: generator.getQuery()},
 											success: function(data)
 											{
 												console.log(data);
