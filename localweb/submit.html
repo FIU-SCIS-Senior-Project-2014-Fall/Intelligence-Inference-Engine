@@ -527,6 +527,7 @@
 									userInterface.prototype.submit = function()
 									{
 										var data = new SimpleMap();
+										var UI = new userInterface();
 										
 										$("input").each(
 												function(index)
@@ -568,10 +569,10 @@
 											if(x.indexOf('data-') > -1 && x.indexOf('data-prefix') < 0 && x.indexOf('data-pred') < 0)
 											{
 												var inner_array = new Array();
-												inner_array.push(subject);
+												inner_array.push(UI.sanitizeInput(subject));
 												inner_array.push(data.get(x.replace('data-','data-prefix')));
 												inner_array.push(data.get(x.replace('data-','data-pred')));
-												inner_array.push(data.get(x));
+												inner_array.push(UI.sanitizeInput(data.get(x)));
 												data_array.push(inner_array);
 											}
 										}
