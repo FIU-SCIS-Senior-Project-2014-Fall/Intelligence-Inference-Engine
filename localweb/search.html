@@ -15,7 +15,8 @@
 
 	<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
 	<script type="text/javascript" src="js/jquery-ui.js"></script>
-	<script src="QueryJS.min.js"></script>
+	<script src="js/QueryJS.min.js"></script>
+	<script src="js/QueryJS/SimpleMap.js"></script>
 	
 </head>
 
@@ -60,7 +61,7 @@
 						<h3 class="panel-title"><strong>Data Search Form</strong></h3> 
 					</div>
 						<div class="panel-body">
-							<form method = "post" class="form-horizontal" action="scripts/searchscript.php" role="form">
+							<!-- <form method = "post" class="form-horizontal" action="scripts/searchscript.php" role="form"> -->
 								<div class="form-group">
 									<div class="col-md-12">
 										<label for="prefixName">Prefix</label>
@@ -301,6 +302,61 @@
 											}
 										});
 									}
+									userInterface.prototype.submit = function()
+									{
+										var data = new SimpleMap();
+										
+										$("input").each(
+												function(index)
+												{
+													if($(this).attr("type") != "file" && $(this).attr("name") != "size")
+													{
+														data.put($(this).attr("name"), $(this).val());
+													}
+												}
+										);
+										$("select").each(
+											function(index)
+											{
+												data.put($(this).attr("name"), $(this).val());
+											}
+										);
+										
+										var prefix_array = new Array();
+										var prefix = data.get("prefixName");
+										
+										var inner_prefix = new Array();
+										inner_prefix.push("iie");
+										inner_prefix.push("</fake/iie/types/>");
+										prefix_array.push(inner_prefix);
+										for (var i = 0; i < prefix.split(",").length; i++)
+										{
+											var prefix_value = prefix.split(",")[i];
+											var inner_prefix = new Array();
+											inner_prefix.push(prefix_value.split(":")[0]);
+											inner_prefix.push(prefix_value.split(":")[1]);
+											prefix_array.push(inner_prefix);
+										}
+										
+										var data_array = new Array();
+										var subject = data.get("subject");
+										
+										for (var x in data.getAll())
+										{
+											if(x.indexOf('data-') > -1 && x.indexOf('data-prefix') < 0 && x.indexOf('data-pred') < 0)
+											{
+												var inner_array = new Array();
+												inner_array.push(subject);
+												inner_array.push(data.get(x.replace('data-','data-prefix')));
+												inner_array.push(data.get(x.replace('data-','data-pred')));
+												inner_array.push(data.get(x));
+												data_array.push(inner_array);
+											}
+										}
+										
+										console.log(prefix_array);
+										console.log(data_array);
+									}
 									$(document).ready(
 										function() 
 										{
@@ -310,6 +366,7 @@
 											$( "#plus" ).click(UI.performAdd);
 											$( "#minus" ).click(UI.performSubstract);
 											$( "#bulk-export").click(UI.exportDatabase);
+											$("#submit").click(UI.submit);
 											
 											$( "#custom-search" ).click(
 												function()
@@ -365,7 +422,7 @@
 										</button>
 									</div>
 								</div>
-							</form>
+							<!-- </form> -->
 						</div>
 				</div>
 			</div>
