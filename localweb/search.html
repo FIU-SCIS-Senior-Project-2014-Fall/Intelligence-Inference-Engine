@@ -297,7 +297,7 @@
 											success: function(data)
 											{
 												var pom = document.createElement('a');
-												pom.setAttribute('href', 'data:application/xml;charset=utf-8,' + encodeURIComponent(data));
+												pom.setAttribute('href', 'data:application/xml;charset=utf-8,' + encodeURIComponent(data.trim()));
 												pom.setAttribute('download', "export.xml");
 												pom.click();
 											}

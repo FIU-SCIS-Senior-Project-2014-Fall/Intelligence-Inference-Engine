@@ -489,27 +489,102 @@
 										
 										$("#file").change(function()
 										{
+											var successfulInputs = 0;
+											var failedInputs = 0;
 											file = this.files[0];
 											fr = new FileReader();
-												
+											
 											fr.onload = function(e) 
 											{
 												var contents = fr.result;
 												
-												//Send the contents to a PHP file.
-												$.ajax({
-													type : "POST",
-													url : "http://iie-dev.cs.fiu.edu/scripts/bulk_import.php",
-													data: { data: contents},
-													success: function(data)
+												var UI = new userInterface();
+												var prefix_array = new Array();
+												var data_array = new Array();
+												
+												
+												$(contents).find("result").each(function()
+												{
+													var inner_prefix = new Array();
+													var inner_array = new Array();
+													
+													var shortCode;
+													var predicate;
+													var prefix;
+													var full_predicate;
+													var subject;
+													var object;
+													$(this).find("binding").each(function()
 													{
-														//Return contents to a DIV success label/failure label.
-														$("#returns").html('<div class="alert alert-success" align="center" role="alert" id="raw-output">'+data+'</div>')
-														setTimeout(function () {
-															$("#raw-output").remove();
-														}, 2000);
-													}
-												});
+														var value;
+														if($(this).first().attr("name") == "subject")
+														{
+															value = $(this).first().text().split("/")[$(this).first().text().split("/").length-1].replace("<","").replace(">","").trim();
+															subject = value;
+														}
+														else if($(this).first().attr("name") == "target")	
+														{
+															value = $(this).first().text().split("/")[$(this).first().text().split("/").length-1].replace("<","").replace(">","").trim();
+															object = value;
+														}
+														else if($(this).first().attr("name") == "predicate")
+														{
+															value = $(this).first().text().trim().replace("http://","").replace("https://","");
+															value = value.substring(value.indexOf("/"));
+															full_predicate = value;
+															
+															prefix = value.substring(value.lastIndexOf("/")+1);
+															value = value.substring(0,value.lastIndexOf("/")+1);
+															value = "<" + value + ">";
+															
+															shortCode = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5);
+															predicate = value;
+														}
+													});
+													inner_prefix.push(shortCode);
+													inner_prefix.push(predicate);													
+													prefix_array.push(inner_prefix);
+													
+													inner_array.push(subject);
+													inner_array.push(shortCode);
+													inner_array.push(prefix);
+													inner_array.push(object);
+													data_array.push(inner_array);
+													
+													var generator = BuildGenerator(data_array, prefix_array, "Update");
+													
+													$.ajax({
+														type : "POST",
+														url : "http://iie-dev.cs.fiu.edu/scripts/submit_data.php",
+														data: { reporterName: "IMPORTER", query: generator.getQuery()},
+														success: function(data)
+														{
+															$(data).find("code").each(function()
+															{
+																if($(this).text().indexOf("S") > -1)
+																{
+																	successfulInputs++;
+																}
+																else if($(this).text().indexOf("F") > -1)
+																{
+																	failedInputs++;
+																}
+																
+															});
+															$("#returns").html('<div class="alert alert-success" align="center" role="alert" id="raw-output">Success: '+successfulInputs+' Failed: '+failedInputs+'</div>')
+															setTimeout(function () { 
+																$("#raw-output").remove();
+															}, 5000);
+														}
+													});
+													
+													inner_prefix = new Array();
+													inner_array = new Array();
+													prefix_array = new Array();
+													data_array = new Array();
+													
+													
+												});	
 											};
 										
 											fr.readAsText(file);
