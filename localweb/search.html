@@ -378,11 +378,33 @@
 											data: { query: generator.getQuery()},
 											success: function(data)
 											{
+												var resultCount = 0;
+												var currentRow = 1;
+												$("#returns").html();
+												$("#returns").html('<table class="table table-striped" id="result-table" style="width:100%"></table>');
+												
 												console.log(data);
-												$("#returns").html('<div class="alert alert-success" align="center" role="alert" id="raw-output">'+data+'</div>')
-												setTimeout(function () { 
-													$("#raw-output").remove();
-												}, 5000);
+												var currentString = "";
+												$(data).find("variable").each(function()
+												{
+													currentString+="<th>"+$(this).attr("name")+"</th>";
+													resultCount++;
+													
+												});
+												$("#result-table").append("<tr>"+currentString+"</tr>");
+											
+												currentString="";
+												$(data).find("binding").each(function()
+												{
+													currentRow++;
+													if(currentRow % resultCount == 0)
+													{
+														$("#result-table").append("<tr>"+currentString+"</tr>"); 
+														currentString = "";
+													}
+													currentString += "<td>"+$(this).first().text()+"</td>";
+												});
+												$("#result-table").append("<tr>"+currentString+"</tr>"); 
 											}
 										});
 									}
