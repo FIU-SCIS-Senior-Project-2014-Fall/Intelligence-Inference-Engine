@@ -379,7 +379,7 @@
 											success: function(data)
 											{
 												var resultCount = 0;
-												var currentRow = 1;
+												var currentRow = 0;
 												$("#returns").html();
 												$("#returns").html('<table class="table table-striped" id="result-table" style="width:100%"></table>');
 												
@@ -396,12 +396,12 @@
 												currentString="";
 												$(data).find("binding").each(function()
 												{
-													currentRow++;
 													if(currentRow % resultCount == 0)
 													{
 														$("#result-table").append("<tr>"+currentString+"</tr>"); 
 														currentString = "";
 													}
+													currentRow++;
 													currentString += "<td>"+$(this).first().text()+"</td>";
 												});
 												$("#result-table").append("<tr>"+currentString+"</tr>"); 

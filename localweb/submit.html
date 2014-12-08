@@ -485,6 +485,7 @@
 									}
 									userInterface.prototype.importDatabase = function()
 									{
+										var UI = new userInterface();
 										$("#file").trigger('click');
 										
 										$("#file").change(function()
@@ -545,10 +546,12 @@
 													inner_prefix.push(predicate);													
 													prefix_array.push(inner_prefix);
 													
-													inner_array.push(subject);
+													
+													
+													inner_array.push(UI.sanitizeInput(subject));
 													inner_array.push(shortCode);
 													inner_array.push(prefix);
-													inner_array.push(object);
+													inner_array.push(UI.sanitizeInput(object));
 													data_array.push(inner_array);
 													
 													var generator = BuildGenerator(data_array, prefix_array, "Update");

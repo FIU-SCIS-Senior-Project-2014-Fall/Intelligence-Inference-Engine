@@ -57,7 +57,7 @@
 				<div class="panel panel-default">
 					<div class="panel-heading"><h3 class="panel-title"><strong>Custom Data Search Form</strong></h3></div>
 						<div class="panel-body">
-							<form method = "post" class="form-horizontal" action="scripts/custom_query.php" role="form">
+							<!-- <form method = "post" class="form-horizontal" action="scripts/custom_query.php" role="form"> -->
 								<div id='query-area' class="form-group col-md-12">
 									<textarea id="query" name="query" class="form-control" align="center" rows="5">Your query goes here</textarea>
 								</div>
@@ -86,6 +86,45 @@
 									function()
 									{
 										$("#tags").val("untaggedQuery");
+										$( "#submit" ).click(
+										function()
+										{
+											$.ajax({
+												type : "POST",
+												url : "http://iie-dev.cs.fiu.edu/scripts/custom_query.php",
+												data: { query: $("#query").val()},
+												success: function(data)
+												{
+													var resultCount = 0;
+													var currentRow = 0;
+													$("#returns").html();
+													$("#returns").html('<table class="table table-striped" id="result-table" style="width:100%"></table>');
+												
+													console.log(data);
+													var currentString = "";
+													$(data).find("variable").each(function()
+													{
+														currentString+="<th>"+$(this).attr("name")+"</th>";
+														resultCount++;
+													
+													});
+													$("#result-table").append("<tr>"+currentString+"</tr>");
+											
+													currentString="";
+													$(data).find("binding").each(function()
+													{
+														if(currentRow % resultCount == 0)
+														{
+															$("#result-table").append("<tr>"+currentString+"</tr>"); 
+															currentString = "";
+														}
+														currentRow++;
+														currentString += "<td>"+$(this).first().text()+"</td>";
+													});
+													$("#result-table").append("<tr>"+currentString+"</tr>"); 
+												}
+											});
+										});
 										$( "#add" ).click(
 										
 											//Store the data.
@@ -130,11 +169,11 @@
 												});
 											}
 										);
-									}
-								);
+									});
 								</script>
-							</form>
+							<!-- </form> -->
 						</div>
+						<div id="returns"></div>
 				</div>
 			</div>
 		</div>
