@@ -308,7 +308,7 @@
 										if(str == "")
 											return str;
 										str = str.replace(' ','_');
-										str = str.replace(/[^a-zA-Z0-9:_/ ]/g, "");
+										str = str.replace(/[^a-zA-Z0-9:_!@#$%&*/ ]/g, "");
 										if(str.charAt(0) != '/' && str.indexOf("http") < 0)
 											str = "/" + str;
 										return str.toLowerCase();
