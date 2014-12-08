@@ -148,7 +148,7 @@
 									
 									userInterface.prototype.performAdd =  function()
 									{
-										$("#holder").append('<div class="clearfix" id="xtra-clear'+currentValue+'"></div><div class="col-md-2" id= "xtra-prefix'+currentValue+'"><select class="form-control" name="data-prefix'+currentValue+'"><option selected="selected">iie</option></select></div><div id="xtra-select' + currentValue + '" class="col-md-3"><select class="form-control" name="data-pred'+ currentValue +'"><option value="targets">Targets</option><option value="related">Related To</option><option value="originating">Originating</option><option value="exploits">Exploits</option><option value="text">Text</option></select></div><div id="xtra-text-input'+ currentValue +'" class="col-md-5"><input type="text" class="form-control" style="border-radius:0px" name="data-'+currentValue+'" placeholder="free-form text"></div>');
+										$("#holder").append('<div class="clearfix" id="xtra-clear'+currentValue+'"></div><div class="col-md-2" id= "xtra-prefix'+currentValue+'"><select class="form-control" name="data-prefix'+currentValue+'"><option selected="selected">iie</option></select></div><div id="xtra-select' + currentValue + '" class="col-md-3"><select class="form-control" name="data-pred'+ currentValue +'"><option value="targets">Targets</option><option value="evidence">Evidence</option><option value="related">Related To</option><option value="originating">Originating</option><option value="exploits">Exploits</option><option value="text">Text</option></select></div><div id="xtra-text-input'+ currentValue +'" class="col-md-5"><input type="text" class="form-control" style="border-radius:0px" name="data-'+currentValue+'" placeholder="free-form text"></div>');
 										currentValue++;
 										currentSize++;
 										$("#size").val(currentSize);
@@ -738,12 +738,6 @@
 									);
 									</script>
 								</div>
-								<div id="gauge" class="50x50px" align="center">
-									<label id="wordsMatched"></label>
-									<label id="wordsText"></label>
-									<label id="wordsNotMatched"></label>
-									<label id="confidence"></label>
-								</div>
 								<div class="clearfix" align="center">
 									<button value="Submit" type="submit" class="btn btn-sm btn-success" id="submit" name="submit" >
 										<span class="glyphicon glyphicon-send"></span> Submit Lead
@@ -753,6 +747,12 @@
 									</button>
 									<div id="returns"></div>
 									<input type="file" id="file"  style="visibility:hidden"/>
+								</div>
+								<div id="gauge" class="50x50px" align="center">
+									<label id="wordsMatched"></label>
+									<label id="wordsText"></label>
+									<label id="wordsNotMatched"></label>
+									<label id="confidence"></label>
 								</div>
 							<!-- </form> -->
 						</div>
