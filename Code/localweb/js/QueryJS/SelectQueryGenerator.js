@@ -1,6 +1,6 @@
-var type;
-var prefixes;
-var expressions;
+var type; //the type of the generator, is QueryType enum value
+var prefixes;// an array of Prefix objects
+var expressions;// an array of Expression objects
 
 var SelectQueryGenerator = function  SelectQueryGenerator()
 {
@@ -8,6 +8,11 @@ var SelectQueryGenerator = function  SelectQueryGenerator()
 	this.expressions = new Array();
 	
 }
+//Description : sets the type of the generator
+//Input : QueryType enum value
+//Output : N/A
+//Pre-Condition : QueryJS library must be loaded
+//Post-Condition : The type of the generator isset to the type supplied
 SelectQueryGenerator.prototype.setType = function(type)
 {
 	if(QueryType[type] != null)
@@ -15,6 +20,11 @@ SelectQueryGenerator.prototype.setType = function(type)
 	else
 		throw "Incompatible type given for type";
 }
+//Description : add an expression object to the list of expressions of the generator
+//Input : an Expression object
+//Output : N/A
+//Pre-Condition : QueryJS library must be loaded
+//Post-Condition : expression is added to the generator
 SelectQueryGenerator.prototype.addExpression = function(exp)
 {
 	if(exp instanceof Expression)
@@ -22,6 +32,11 @@ SelectQueryGenerator.prototype.addExpression = function(exp)
 	else
 		throw "Incompatible type given for expression";
 }
+//Description : add a Prefix object to the list of prefixes of the generator
+//Input : a Prefix object
+//Output : N/A
+//Pre-Condition : QueryJS library must be loaded
+//Post-Condition : prefix is added to the generator
 SelectQueryGenerator.prototype.addPrefix = function(prefix) //make sure it is the same prefix object as the one the expression is using
 {
 	if(prefix instanceof Prefix)
@@ -29,7 +44,11 @@ SelectQueryGenerator.prototype.addPrefix = function(prefix) //make sure it is th
 	else
 		throw "Incompatible type given for prefix";
 }
-
+//Description : creates a valid select SPARQL query
+//Input : n/a
+//Output : a string
+//Pre-Condition : prefixes and expressions are not null or expressions is not empty
+//Post-Condition : the string returned is a valid SPARQL select query
 SelectQueryGenerator.prototype.buildQuery = function()
 {
 	if(this.prefixes == null)
@@ -71,6 +90,11 @@ SelectQueryGenerator.prototype.buildQuery = function()
 	
 	return query;
 }
+//Description : returns a valid SPARQL query
+//Input : N/A
+//Output : a string that is a SPARQL query
+//Pre-Condition : buildQuery has been implemented
+//Post-Condition : a valid SPARQL query is returned
 SelectQueryGenerator.prototype.getQuery = function()
 {
 	return this.buildQuery();

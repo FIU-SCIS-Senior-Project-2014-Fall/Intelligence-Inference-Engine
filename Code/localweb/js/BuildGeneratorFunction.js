@@ -1,3 +1,10 @@
+//Description : A function that takes in the parts of a SPARQL query and creates a generator from the parts
+//Input : data : an array whose elements are an array of strings and length 4 with the elements being subject, prefix shortcode, prefix definition, and object in that order
+//		  pref : an array whose elements are an array of strings and length 2 with the elements being prefix shortcode, prefix definition
+//        type : a string or QueryType enum value that determines the type of generator being created
+//Output : A query generator (either SelectQueryGenerator or UpdateQueryGenerator depending on the value of type given)
+//Pre-Condition : The QueryJS.js library has been loaded
+//Post-Condition : The function returns a Query generator
 var BuildGenerator = function(data, pref, type)
 {
 	var generator;

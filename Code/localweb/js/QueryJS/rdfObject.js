@@ -1,6 +1,6 @@
 var uri;
 var literal;
-var isLiteral;
+var isLiteral; // boolean saying if it is a literal or not
 var variable;
 
 var rdfObject = function rdfObject(data, isl)
@@ -17,7 +17,11 @@ var rdfObject = function rdfObject(data, isl)
 	}
 	
 }
-
+//Description : a function that returns the appropriate value of the object
+//Input : n/a
+//Output : a valid SPARQL string
+//Pre-Condition : N/A
+//Post-Condition : the string returned is valid SPARQL
 rdfObject.prototype.getValue = function()								 // recommended way to get that the rdfObject looks like for the query
 {
 	if(this.uri == null && this.literal == null)
@@ -33,6 +37,11 @@ rdfObject.prototype.getValue = function()								 // recommended way to get that
 		return this.getUri();
 	}
 }
+//Description : returns uri
+//Input : n/a
+//Output : a string
+//Pre-Condition : uri is not null
+//Post-Condition : the value returned is the uri of the object
 rdfObject.prototype.getUri = function()
 {
 	//error checking
@@ -42,6 +51,11 @@ rdfObject.prototype.getUri = function()
 		this.uri += ">";
 	return this.uri;
 }
+//Description : returns a valid SPARQL literal
+//Input : n/a
+//Output : a string
+//Pre-Condition : literal is not null
+//Post-Condition : the string returned is a valid SPARQL literal
 rdfObject.prototype.getLiteral = function()
 {
 	//error checking
@@ -51,26 +65,51 @@ rdfObject.prototype.getLiteral = function()
 		this.literal += "\"";
 	return this.literal ;
 }
+//Description : sets the uri of the object
+//Input : a string
+//Output : n/a
+//Pre-Condition : the string given is a valid sparql object uri 
+//Post-Condition : the uri is set to the value given and isLiteral is made false
 rdfObject.prototype.setUri = function(uri)
 {
 	this.uri = uri;
 	this.isLiteral = false;
 }
+//Description : set the literal of the object
+//Input : a string
+//Output : n/a
+//Pre-Condition : the sring given is a valid sparql literal 
+//Post-Condition : the literal is set to the value given and isLiteral is made true
 rdfObject.prototype.setLiteral = function(lit)
 {
 	this.literal = lit;
 	this.isLiteral = true;
 }
+//Description : returns if the object is a literal
+//Input : n/a
+//Output : boolean
+//Pre-Condition : isLiteral is not null and only set functions were used to set the variables
+//Post-Condition : the value return correctly says if the object is a literal or not
 rdfObject.prototype.isLit = function()
 {
 	return this.isLiteral;
 }
+//Description : returns a valid SPARQL variable
+//Input : n/a
+//Output : a string
+//Pre-Condition : variable must be null
+//Post-Condition : variable is set to a value
 rdfObject.prototype.getVariable = function()
 {
 	if(this.variable == null)
 		this.variable = "?"+this.hash();
 	return this.variable;
 }
+//Description : a hashing function
+//Input : N/A
+//Output : returns either a random number or the hash of the literal or uri
+//Pre-Condition : N/A
+//Post-Condition : the value returned is a positive number
 rdfObject.prototype.hash = function()
 {
 	var hash = 0;
