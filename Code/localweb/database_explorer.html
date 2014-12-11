@@ -88,12 +88,22 @@
 				</div>
 			</div>
 			<script type="text/javascript">
+				
+				//Class definition for an empty userInterface;
 				function userInterface(){}
+				
+				/*
+				Description: Draws the entire database graph.
+				Pre-Condition: Page is loaded.
+				Post-Condition: A graph is created on the page.
+				*/
 				userInterface.prototype.drawGraph = function(value)
 				{
+					//Sizing and color data initialization.
 					var width = 900, height = 500;
 					var color = d3.scale.category20();
 
+					//Build the links list from the CSV list.
 					var links = [];
 					for (var i = 0; i < value.split(",").length; i = i + 3)
 					{
@@ -101,6 +111,7 @@
 						links.push(link);
 					}
 					
+					//Build the nodes list from the links list.
 					var nodes = [];
 					links.forEach(function(link) {
 						var sourceExists = false;
@@ -118,6 +129,7 @@
 							nodes.push({"name": link.target});
 					});
 					
+					//Rebuild the links list from the nodes list so that it is index relative (required)
 					links.forEach(function(link)
 					{
 						var sourceExists = false;
@@ -137,16 +149,20 @@
 						});
 					});
 					
+					//Create the initial CSV.
 					var svg = d3.select('div.panel-body').append('svg').attr('width', width).attr('height', height).attr("id","chart");
 					var force = d3.layout.force().charge(-250).size([width, height]).nodes(nodes).links(links);
 					force.linkDistance(width/15);
 					
+					//Initialize the link class.
 					var link = svg.selectAll('.link').data(links).enter().append('line').attr('class', 'link');
 					
+					//Initialize the node class with text and green circles.
 					var node = svg.selectAll('.node').data(nodes).enter().append("g").attr("class", "node");
 					node.append("circle").attr("r", width/200).style("fill", "green");
 					node.append("text").attr("class", "blue").text( function (d) { return d.name } );
 					
+					//Set up the links on the 'tick' method.
 					force.on('tick', function() {
 						link.attr('x1', function(d) { return d.source.x; })
 							.attr('y1', function(d) { return d.source.y; })
@@ -154,14 +170,18 @@
 							.attr('y2', function(d) { return d.target.y; });
 						node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
 					});
+					
+					//Start the simulation.
 					force.start();
 				}
 				$(document).ready(
+					//Get the entire database.
 					$.ajax({
 						type : "GET",
 						url : "http://iie-dev.cs.fiu.edu/scripts/bulk_export.php",
 						success: function(data)
 						{
+							//Parse the XML into CSV format.
 							var value = "";
 							$(data).find("result").each(function()
 							{
@@ -172,6 +192,8 @@
 								});
 								
 							});
+							
+							//Remove extra commas and draw the graph.
 							value = value.substring(0, value.length - 1);
 							var UI = new userInterface();
 							UI.drawGraph(value);

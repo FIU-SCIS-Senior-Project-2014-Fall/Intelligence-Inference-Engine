@@ -99,16 +99,30 @@
 										<span class="glyphicon glyphicon-minus"></span>
 									</button>
 									<script type="text/javascript">
+									//Global variables for autocompletion.
 									var currentValue = 2;
 									var currentSize = 1;
 									var autoComplete_prefix = null;
 									var autoComplete_predicate = null;
 									
+									//Class definition for an empty userInterface;
 									function userInterface(){}
+									
+									/*
+									Description: Initialize the size value on the page.
+									Pre-Condition: The currentSize and the input element with id "size" exists.
+									Post-Condition: The input element with id "size" has the initial UI size.
+									*/
 									userInterface.prototype.initialSetup = function()
 									{
 										$("#size").val(currentSize);
 									}
+									
+									/*
+									Description: Add a modular element to the page for an extra entry.
+									Pre-Condition: The div element with id "holder" exists.
+									Post-Condition: The input element with id "size" has the current UI size and the div element with id "holder" has a new element.
+									*/
 									userInterface.prototype.performAdd = function()
 									{
 										$("#holder").append('<div class="clearfix" id="xtra-clear'+currentValue+'"></div><div class="col-md-2" id= "xtra-prefix'+currentValue+'"><select class="form-control" name="data-prefix'+currentValue+'"><option selected="selected">iie</option></select></div><div id="xtra-select' + currentValue + '" class="col-md-3"><select class="form-control" name="data-pred'+ currentValue +'"><option value="targets">Targets</option><option value="related">Related To</option><option value="originating">Originating</option><option value="exploits">Exploits</option><option value="text">Text</option></select></div><div id="xtra-text-input'+ currentValue +'" class="col-md-5"><input type="text" class="form-control" style="border-radius:0px" name="data-'+currentValue+'" placeholder="free-form text"></div>');
@@ -117,6 +131,12 @@
 										$("#size").val(currentSize);
 									}
 									
+									/*
+									Description: Remove the last modular element from the page (assuming there is more than one)
+									Pre-Condition: The elements with id "xtra-clear, xtra-prefix, x-tra-select,x-tra-text-input, and size" exist.
+									Post-Condition: The elements with id "xtra-clear, xtra-prefix, x-tra-select,x-tra-text-input" no longer exist. 
+													The input element with "size" contains the current UI element count.
+									*/
 									userInterface.prototype.performSubstract = function()
 									{
 										if(currentValue > 2)
@@ -129,36 +149,55 @@
 										$("#xtra-text-input"+(currentValue)+"").last().remove();
 										$("#size").val(currentSize);
 									}
+									
+									/*
+									Description: Handler for change events for input fields.
+									Pre-Condition: Page is loaded.
+									Post-Condition: UI changes ("drop!"/ "short-code:prefix"/ "prefix-split") have occured.
+									*/
 									userInterface.prototype.inputChanged = function()
 									{
 										$("input").each(
 											function(index)
 											{
+												//If the input field's value has changed to "drop!", return the selects to the expected value.
 												if ($(this).val().indexOf('drop!') > -1)
 												{
+													//Ensure that this does not apply to the predicate fields.
 													var tar = $(this).attr("name");
 													if (tar.indexOf('data-pred') < 0)
 														return;
+														
+													//Reset the prefix field and reset the select to the "iie" prefix.
 													$("select[name='"+tar.replace('pred','prefix')+"']").html('<option selected="selected">iie</option>');
+													
+													//Set the default values for the "iie" prefix.
 													$(this).parent().html('<select class="form-control" name="'+ tar +'"><option value="targets">Targets</option><option value="related">Related To</option><option value="originating">Originating</option><option value="exploits">Exploits</option><option value="text">Text</option></select>');
 												}
+												
+												//If the predicate field contains a short-code : prefix pair, handle it quietly.
 												else if ($(this).val().indexOf(':') > -1 &&  $(this).attr("name").indexOf('data-pred') > -1)
 												{
+													//Get the short code : prefix pair and "eliminate redundant spaces.
 													var rawPrefix = $(this).val();
 													while(rawPrefix.indexOf(" :") > -1)
 														rawPrefix = rawPrefix.replace(" :",":");
-														
+													
+													//Get the total list of prefixes.
 													var prefixList = $("input[name='prefixName']").val();
 													while(prefixList.indexOf(" :") > -1)
 														prefixList = prefixList.replace(" :",":");
 													
+													//Split the short-code : prefix and see if it exists.
 													var targs = rawPrefix.split(":");
 													if(prefixList.indexOf(targs[0]+":") > -1)
 													{
+														//If it does exist, remove the short-code.
 														$(this).val(targs[1]);
 													}
 													else
 													{
+														//If it does not exist, push the new prefix to the prefix list.
 														var tar = $("input[name='prefixName']").val();
 														tar += targs[0] + ":, ";
 														
@@ -166,16 +205,21 @@
 														$(this).val(targs[1]);
 													}
 												}
+												
+												//Attempt to update all selects with any new prefix changes.
 												else if ($(this).attr("name").indexOf('prefixName') > -1)
 												{
+													//For each data predicate.
 													$( "input[name*='data-pred']" ).each(function(index)
 													{
+														//Get the current name of the prefix that corresponds to this predicate and the prefix list.
 														var currentTarget = $(this).attr("name").replace("pred","prefix");
 														var rawPrefix = $("input[name='prefixName']").val();
 														while(rawPrefix.indexOf(" :") > -1)
 															rawPrefix = rawPrefix.replace(" :",":");
 														var selections = "";
-															
+														
+														//Get all options for prefix shortcodes that are possible.
 														var commaSeparate = rawPrefix.split(",");
 														for (var i = 0; i < commaSeparate.length; i++)
 														{
@@ -190,6 +234,7 @@
 															}
 														}
 																
+														//If the selections have changed, push the new options to the selects.
 														var curr = $("select[name='"+currentTarget+"']").html();
 														if(curr.indexOf(selections) < 0)
 															$("select[name='"+currentTarget+"']").html(selections);
@@ -198,21 +243,32 @@
 											}
 										);
 									}
+									
+									/*
+									Description: Handler for change events for select fields.
+									Pre-Condition: Page is loaded.
+									Post-Condition: UI changes ("text") has occured.
+									*/
 									userInterface.prototype.selectionChanged = function()
 									{
+										//Go through every select.
 										$("select option:selected").each(
 											function(index)
 											{
+												//If a "text" value has been found.
 												if ($(this).val().indexOf('text') > -1)
 												{
+													//Begin finding the correct name for the swap.
 													var tar = $(this).parent().parent().attr("id");
 													var cleanedTar = tar.replace("xtra-select","");
-																
+													
+													//Get the list of prefixes.
 													var rawPrefix = $("input[name='prefixName']").val();
 													while(rawPrefix.indexOf(" :") > -1)
 													rawPrefix = rawPrefix.replace(" :",":");
 													var selections = "";
 																	
+													//Get the list of valid selections based on the prefixes.
 													var commaSeparate = rawPrefix.split(",");
 													for (var i = 0; i < commaSeparate.length; i++)
 													{
@@ -226,15 +282,18 @@
 															}
 														}
 													}
-																
+													
+													//Change the html selections to the prefix list.
 													$("select[name='"+tar.replace('xtra-select','data-prefix')+"']").html(selections);
 													$("#"+tar).html('<input type="text" class="form-control" style="border-radius:0px" name="data-pred'+ cleanedTar +'" placeholder="free-form text">');
-																
+													
+													//Inform the user that entering "drop!" will return their new input field to a selection dropdown.
 													$("#holder").prepend('<div id="help" class="col-md-12" align="center"><div class="alert alert-success" align="center" role="alert">Info: Enter <b>drop!</b> to undo.</div></div>');
 													setTimeout(function () {
 														$("#help").remove();
 													}, 10000);
-																
+													
+													//If there are no prefixes defined, alert the user that having a custom prefix is a requirement.
 													if ($("#prefixName").val().indexOf(":") < 0)
 													{
 														redirect = "document.getElementById('prefixName').focus()";
@@ -248,12 +307,21 @@
 											}
 										);
 									}
+									
+									/*
+									Description: Extractor for auto-complete data.
+									Pre-Condition: Page is loaded.
+									Post-Condition: autoComplete_prefix and autoComplete_predicate have autocomplete items from the RDF database.
+									*/
 									userInterface.prototype.getAutocomplete = function()
 									{
+										//Variables required for autocomplete requests. 
 										var i = 0;
 										var target = "";
 										var final_set_prefix = "";
 										var final_set_predicate = "";
+										
+										//Ajax request to get all data items.
 										$.ajax({
 											type : "GET",
 											url : "http://iie-dev.cs.fiu.edu/scripts/auto_complete_targets.php",
@@ -268,6 +336,7 @@
 														target += ","+$(this).html(); 
 												});
 												
+												//Create the CSV for each array.
 												var target_array = target.split(",");
 												for (i = 0; i < target_array.length;i++)
 												{
@@ -280,22 +349,32 @@
 													if(final_set_predicate.indexOf(predicate) < 0)
 														final_set_predicate += predicate + ",";
 												}
+												
+												//Remove spare commas.
 												final_set_prefix = final_set_prefix.substring(0, final_set_prefix.length - 1);
 												final_set_predicate = final_set_predicate.substring(0, final_set_predicate.length - 1);
 												
+												//Comma-split the data.
 												autoComplete_prefix = final_set_prefix.split(",");
 												autoComplete_predicate = final_set_predicate.split(",");
 											}
 										});
 									}
 									
+									/*
+									Description: Database exporter.
+									Pre-Condition: Page is loaded and database is online.
+									Post-Condition: XML file should be downloaded.
+									*/
 									userInterface.prototype.exportDatabase = function()
 									{
+										//Request the raw XML data.
 										$.ajax({
 											type : "GET",
 											url : "http://iie-dev.cs.fiu.edu/scripts/bulk_export.php",
 											success: function(data)
 											{
+												//Write the XML data to a link and auto-click it to trigger the download.
 												var pom = document.createElement('a');
 												pom.setAttribute('href', 'data:application/xml;charset=utf-8,' + encodeURIComponent(data.trim()));
 												pom.setAttribute('download', "export.xml");
@@ -303,6 +382,12 @@
 											}
 										});
 									}
+									
+									/*
+									Description: Input Sanitizing
+									Pre-Condition: String is not null.
+									Post-Condition: Sanitized string for query creation.
+									*/
 									userInterface.prototype.sanitizeInput = function(str)
 									{
 										if(str == "")
@@ -313,11 +398,19 @@
 											str = "/" + str;
 										return str.toLowerCase();
 									}
+									
+									/*
+									Description: Submission method.
+									Pre-Condition: Page loaded.
+									Post-Condition: Table created with search results.
+									*/
 									userInterface.prototype.submit = function()
 									{
+										//Create local variables for creating a query.
 										var data = new SimpleMap();
 										var UI = new userInterface();
 										
+										//Get all input types.
 										$("input").each(
 												function(index)
 												{
@@ -327,6 +420,8 @@
 													}
 												}
 										);
+										
+										//Get all select types.
 										$("select").each(
 											function(index)
 											{
@@ -334,13 +429,17 @@
 											}
 										);
 										
+										//Prefix holder arrays.
 										var prefix_array = new Array();
 										var prefix = data.get("prefixName");
 										
+										//Add an implied prefix definition for "iie"
 										var inner_prefix = new Array();
 										inner_prefix.push("iie");
 										inner_prefix.push("</fake/iie/types/>");
 										prefix_array.push(inner_prefix);
+										
+										//Push the other prefixes.
 										for (var i = 0; i < prefix.split(",").length; i++)
 										{
 											var prefix_value = prefix.split(",")[i];
@@ -351,9 +450,11 @@
 											prefix_array.push(inner_prefix);
 										}
 										
+										//Data holder arrays.
 										var data_array = new Array();
 										var subject = data.get("subject");
 										
+										//Push the data values.
 										for (var x in data.getAll())
 										{
 											if(x.indexOf('data-') > -1 && x.indexOf('data-prefix') < 0 && x.indexOf('data-pred') < 0)
@@ -367,24 +468,26 @@
 											}
 										}
 										
-										//console.log(prefix_array);
-										//console.log(data_array);
-										
+										//Instantiate the generator and pass the variables.
 										var generator = BuildGenerator(data_array, prefix_array, "Select");
 										console.log(generator.getQuery());
 										
+										//AJAX POST request for searching.
 										$.ajax({
 											type : "POST",
 											url : "http://iie-dev.cs.fiu.edu/scripts/searchscript.php",
 											data: { query: generator.getQuery()},
 											success: function(data)
 											{
+												//Create a table for showing the data.
 												var resultCount = 0;
 												var currentRow = 1;
 												$("#returns").html();
 												$("#returns").html('<table class="table table-striped" id="result-table" style="width:100%"></table>');
 												
 												console.log(data);
+												
+												//Create the header html code and append.
 												var currentString = "";
 												$(data).find("variable").each(function()
 												{
@@ -394,6 +497,7 @@
 												});
 												$("#result-table").append("<tr>"+currentString+"</tr>");
 											
+												//Create each result html code and append.
 												currentString="";
 												$(data).find("binding").each(function()
 												{
@@ -415,11 +519,13 @@
 											var UI = new userInterface();
 											UI.initialSetup();
 											
+											//Click handlers for the basic actions.
 											$( "#plus" ).click(UI.performAdd);
 											$( "#minus" ).click(UI.performSubstract);
 											$( "#bulk-export").click(UI.exportDatabase);
 											$("#submit").click(UI.submit);
 											
+											//Open the custom-search window.
 											$( "#custom-search" ).click(
 												function()
 												{
@@ -435,6 +541,7 @@
 											$("div").on('change', 'select.form-control', UI.selectionChanged);
 											
 											
+											//Attach auto-complete handlers to each input field on click.
 											UI.getAutocomplete();
 											$( "div" ).on( "click", "input.form-control" , function() {
 												if($(this).attr("name").indexOf("prefix") > -1 && autoComplete_prefix.length > 0)
