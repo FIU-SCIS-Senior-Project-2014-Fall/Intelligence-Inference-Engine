@@ -632,9 +632,8 @@
 										{
 											var prefix_value = prefix.split(",")[i];
 											var inner_prefix = new Array();
-											var length = prefix_value.split(":").length;
-											inner_prefix.push(prefix_value.split(":")[0].trim());										
-											inner_prefix.push(prefix_value.split(":").splice(1,length-1).join(":").trim());
+											inner_prefix.push(prefix_value.split(":")[0]);
+											inner_prefix.push(prefix_value.split(prefix_value.split(":")[0]+":")[1]);
 											prefix_array.push(inner_prefix);
 										}
 										
