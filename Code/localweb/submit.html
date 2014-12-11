@@ -633,7 +633,7 @@
 											var prefix_value = prefix.split(",")[i];
 											var inner_prefix = new Array();
 											inner_prefix.push(prefix_value.split(":")[0]);
-											inner_prefix.push(prefix_value.split(":")[1]);
+											inner_prefix.push(prefix_value.split(prefix_value.split(":")[0]+":")[1]);
 											prefix_array.push(inner_prefix);
 										}
 										
