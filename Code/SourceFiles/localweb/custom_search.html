@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Intelligence Inference Engine</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+
+	<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+	
+    <!-- Custom CSS for the 'Heroic Features' Template -->
+    <link href="css/heroic-features.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <nav class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Intelligence Inference Engine</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav">
+				<li><a href="submit.html">Contribute Now!</a>
+                    </li>
+                    <li><a href="search.html">Search Now!</a>
+                    </li>
+					<li><a href="database_explorer.html">Explore our database!</a>
+                </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <div class="container">
+
+        <div class="jumbotron hero-spacer">
+            <h1 align="center">Intelligence Engine Custom Data Search</h1>
+            <div class="container" style="margin-top:30px">
+			<div class="col-md-8 col-md-offset-2">
+				<div class="panel panel-default">
+					<div class="panel-heading"><h3 class="panel-title"><strong>Custom Data Search Form</strong></h3></div>
+						<div class="panel-body">
+							<form method = "post" class="form-horizontal" action="scripts/custom_query.php" role="form">
+								<div id='query-area' class="form-group col-md-12">
+									<textarea id="query" name="query" class="form-control" align="center" rows="5">Your query goes here</textarea>
+								</div>
+								<style>
+									#query
+									{
+										resize: vertical;
+									}
+								</style>
+								
+								<div class="form-group">
+									<div class="col-md-7">
+										<input type="text" class="form-control" style="border-radius:0px" id="tags">
+									</div>
+									<button type="button" id="add" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-floppy-saved"></span> Add Query</button>
+									<button type="button" id="search" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-search"></span> Find Queries</button>
+								</div>
+								<div class="form-group">
+									<div class="col-md-8 col-md-offset-2" align="center">
+										<button id="submit" name="submit" value="Submit" type="submit" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-cog"></span> Execute Query</button>
+									</div>
+								</div>
+								<script type="text/javascript">
+								$(document).ready(
+									//Basic Functionality.
+									function()
+									{
+										$("#tags").val("untaggedQuery");
+										$( "#add" ).click(
+										
+											//Store the data.
+											function()
+											{
+												var tagData = $("#tags").val();
+												var queryData = $("#query").val();
+												
+												//Ajax call to adding-query to DB.
+												$.ajax({
+													type : "POST",
+													data : {query : queryData, tags : tagData},
+													url : "http://iie-dev.cs.fiu.edu/scripts/add-to-db.php",
+													success: function(data){
+														if(data.indexOf('unsuccessful') < 0)
+														{
+															console.log(data);
+															$("#query-area").append('<div class="alert alert-success" align="center" role="alert">Query Successfully Stored</div>');
+															setTimeout(function () {
+																$("#query-area").children().remove('div');
+															}, 5000);
+														}
+													}
+												});
+											}
+										);
+										
+										$( "#search" ).click(
+											//Retrieve the data.
+											function()
+											{
+												var tagData = $("#tags").val();
+												
+												//Ajax call to retrieve query from DB.
+												$.ajax({
+													type : "POST",
+													data : {tags : tagData},
+													url : "http://iie-dev.cs.fiu.edu/scripts/search-db.php",
+													success: function(data){
+														$("#query").val(data);
+													}
+												});
+											}
+										);
+									}
+								);
+								</script>
+							</form>
+						</div>
+				</div>
+			</div>
+		</div>
+        </div>
+
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright&copy; Team Can't Find A Better Name 2014</p>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+    <!-- /.container -->
+
+    <!-- JavaScript -->
+    <script src="js/bootstrap.js"></script>
+
+</body>
+
+</html>

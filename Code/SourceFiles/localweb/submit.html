@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Intelligence Inference Engine</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+	<link href="css/jquery-ui.css" rel="stylesheet">
+	
+	<script src="js/jquery-1.11.1.min.js"></script>
+	<script src="js/raphael.2.1.0.min.js"></script>
+	<script src="js/justgage.1.0.1.min.js"></script>
+	<script type="text/javascript" src="js/jquery-ui.js"></script>
+	<script src="js/QueryJS.min.js"></script>
+	<script src="js/QueryJS/SimpleMap.js"></script>
+	<script src="js/BuildGeneratorFunction.js"></script>
+
+    <!-- Custom CSS for the 'Heroic Features' Template -->
+    <link href="css/heroic-features.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <nav class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Intelligence Inference Engine</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav">
+				<li><a href="submit.html">Contribute Now!</a>
+                    </li>
+                    <li><a href="search.html">Search Now!</a>
+                    </li>
+					<li><a href="database_explorer.html">Explore our database!</a>
+                </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <div class="container">
+
+        <div class="jumbotron hero-spacer">
+            <h1 align="center">Intelligence Engine Data Input</h1>
+            <div class="container" style="margin-top:30px">
+			<div class="col-md-8 col-md-offset-2">
+				<div class="panel panel-default">
+					<div class="panel-heading"><h3 class="panel-title"><strong>Data Entry Form</strong></h3></div>
+						<div class="panel-body">
+							<!-- <form method = "post" class="form-horizontal" action="scripts/submit_data.php" role="form"> -->
+								<div class="form-group">
+									<div class="col-md-12">
+										<label for="reporterName">Submitter</label>
+										<input type="text" class="form-control" style="border-radius:0px" name="reporterName" placeholder="Your Name/Institution Name">
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-md-12">
+										<label for="prefixName">Prefix</label>
+										<input type="text" class="form-control" style="border-radius:0px" name="prefixName" id="prefixName" placeholder="Separate Prefixes By CSV">
+										<input type="hidden" class="form-control" style="border-radius:0px" id="size" name="size">
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-md-12">
+										<label for="subject">Subject</label>
+										<input type="text" class="form-control" style="border-radius:0px" name="subject" placeholder="Subject of Lead"> 
+									</div>
+								</div>
+								<div class="form-group" id="holder">
+									<div class="col-md-2" id="xtra-prefix1">
+										<select class="form-control" name="data-prefix1">
+											<option selected="selected">iie</option>
+										</select>
+									</div>
+									<div class="col-md-3" id="xtra-select1">
+										<select class="form-control" name="data-pred1">
+											<option value="targets">Targets</option>
+											<option value="related">Related To</option>
+											<option value="originating">Originating</option>
+											<option value="exploits">Exploits</option>
+											<option value="text">Text</option>
+										</select>
+									</div>
+									<div class="col-md-5" id="xtra-text-input1">
+										<input type="text" class="form-control" style="border-radius:0px" name="data-1" placeholder="free-form text">
+									</div>
+									<button type="button" id="plus" class="col-md-1 btn btn-sm btn-success">
+										<span class="glyphicon glyphicon-plus"></span>
+										</button>
+									<button type="button" id="minus" class="col-md-1 btn btn-sm btn-success">
+										<span class="glyphicon glyphicon-minus"></span>
+									</button>
+									<script type="text/javascript">
+									//Global variables for autocompletion and the evidence graph.
+									var currentValue = 2;
+									var currentSize = 1;
+									var autoComplete_prefix = null;
+									var autoComplete_predicate = null;
+									var g;
+									
+									//Global variables for handling confidence intervals.
+									var minimumConfidence = 100;
+									var evidenceExists = false;
+									var evidenceFields = "";
+									var textConcat = "";
+									var textDropDowns = "";
+									var textData = "";	
+									var html;							
+									
+									//Class definition for an empty userInterface;
+									function userInterface(){}
+									
+									/*
+									Description: Initialize the size value on the page and the gauge variable.
+									Pre-Condition: The currentSize, the input element with id "size" exists and the div element with id "gauge" exists.
+									Post-Condition: The input element with id "size" has the initial UI size and the "gauge" id element has basic settings.
+									*/
+									userInterface.prototype.initialSetup = function()
+									{
+										$("#size").val(currentSize);
+											var myColors = [
+															"#ff0000",
+															"#ffe675",
+															"#baff75"
+											]
+											g = new JustGage({
+												id: "gauge",
+												value: 0,
+												min: 0,
+												max: 100,
+												title: "Confidence Ranking",
+												label: "Current Confidence",
+												levelColors: myColors,																	
+												levelColorsGradient: false
+											});
+											$('#gauge').hide();
+									}
+									
+									/*
+									Description: Add a modular element to the page for an extra entry.
+									Pre-Condition: The div element with id "holder" exists.
+									Post-Condition: The input element with id "size" has the current UI size and the div element with id "holder" has a new element.
+									*/
+									userInterface.prototype.performAdd =  function()
+									{
+										$("#holder").append('<div class="clearfix" id="xtra-clear'+currentValue+'"></div><div class="col-md-2" id= "xtra-prefix'+currentValue+'"><select class="form-control" name="data-prefix'+currentValue+'"><option selected="selected">iie</option></select></div><div id="xtra-select' + currentValue + '" class="col-md-3"><select class="form-control" name="data-pred'+ currentValue +'"><option value="targets">Targets</option><option value="related">Related To</option><option value="originating">Originating</option><option value="exploits">Exploits</option><option value="text">Text</option></select></div><div id="xtra-text-input'+ currentValue +'" class="col-md-5"><input type="text" class="form-control" style="border-radius:0px" name="data-'+currentValue+'" placeholder="free-form text"></div>');
+										currentValue++;
+										currentSize++;
+										$("#size").val(currentSize);
+									}
+									
+									/*
+									Description: Remove the last modular element from the page (assuming there is more than one)
+									Pre-Condition: The elements with id "xtra-clear, xtra-prefix, x-tra-select,x-tra-text-input, and size" exist.
+									Post-Condition: The elements with id "xtra-clear, xtra-prefix, x-tra-select,x-tra-text-input" no longer exist. 
+													The input element with "size" contains the current UI element count.
+									*/
+									userInterface.prototype.performSubstract = function()
+									{
+										if(currentValue > 2)
+											currentValue--;
+										if(currentSize > 1)
+											currentSize--;
+										$("#xtra-clear"+(currentValue)+"").last().remove()
+										$("#xtra-prefix"+(currentValue)+"").last().remove()
+										$("#xtra-select"+(currentValue)+"").last().remove()
+										$("#xtra-text-input"+(currentValue)+"").last().remove();
+										$("#size").val(currentSize);
+									}
+									
+									/*
+									Description: Handler for change events for select fields.
+									Pre-Condition: Page is loaded.
+									Post-Condition: UI changes ("drop!"/ "short-code:prefix"/ "prefix-split") have occured.
+									Post-Condition: Confidence evaluation has occured.
+									*/
+									userInterface.prototype.selectionChanged = function()
+									{
+										//Variables required for evidence calculations.
+										g.refresh(minimumConfidence);	
+										evidenceExists = false;
+										evidenceFields = "";
+										textDropDowns = "";
+										textData = "";		
+										textConcat = "";
+										minimumConfidence = 100;
+										
+										//Calculate the confidence and show the gauges if required.
+										$("select option:selected").each(new userInterface().verifySelected);
+										if(evidenceExists)
+										{
+											new userInterface().calculateConfidence();	
+											$('#gauge').show();
+										}
+										else
+										{
+											$('#gauge').hide();
+										}
+										
+										
+										$("input").each(
+											function(index)
+											{
+												//Perform the "drop!" functionality for input fields.
+												if ($(this).val().indexOf('drop!') > -1)
+												{
+													//Only apply this the prefix fields.
+													var tar = $(this).attr("name");
+													if (tar.indexOf('data-pred') < 0)
+														return;
+													
+													//Reset the select to "iie" subset.
+													$("select[name='"+tar.replace('pred','prefix')+"']").html('<option selected="selected">iie</option>');
+													$(this).parent().html('<select class="form-control" name="'+ tar +'"><option value="targets">Targets</option><option value="related">Related To</option><option value="evidence">Evidence</option><option value="originating">Originating</option><option value="exploits">Exploits</option><option value="text">Text</option></select>');
+												}
+												
+												//Handle shortcode:prefix pairs in the predicates.
+												else if ($(this).val().indexOf(':') > -1 &&  $(this).attr("name").indexOf('data-pred') > -1)
+												{
+													//Get all prefixes in the predicates.
+													var rawPrefix = $(this).val();
+													while(rawPrefix.indexOf(" :") > -1)
+														rawPrefix = rawPrefix.replace(" :",":");
+														
+													//Get all prefixes from the prefix list.
+													var prefixList = $("input[name='prefixName']").val();
+													while(prefixList.indexOf(" :") > -1)
+														prefixList = prefixList.replace(" :",":");
+													
+												
+													var targs = rawPrefix.split(":");
+													if(prefixList.indexOf(targs[0]+":") > -1)
+													{
+														//Remove the short code if the prefix exists.
+														$(this).val(targs[1]);
+													}
+													else
+													{
+														//If the short code is unique, add the prefix as expected.
+														var tar = $("input[name='prefixName']").val();
+														tar += targs[0] + ":, ";
+														
+														$("input[name='prefixName']").val(tar);
+														$(this).val(targs[1]);
+													}
+												}
+												//Attempt to update all selects with any new prefix changes.
+												else if ($(this).attr("name") != null && $(this).attr("name").indexOf('prefixName') > -1)
+												{
+													//For each data predicate.
+													$( "input[name*='data-pred']" ).each(function(index)
+													{
+														//Get the current name of the prefix that corresponds to this predicate and the prefix list.
+														var currentTarget = $(this).attr("name").replace("pred","prefix");
+														var rawPrefix = $("input[name='prefixName']").val();
+														while(rawPrefix.indexOf(" :") > -1)
+															rawPrefix = rawPrefix.replace(" :",":");
+														var selections = "";
+																
+														//Get all options for prefix shortcodes that are possible.
+														var commaSeparate = rawPrefix.split(",");
+														for (var i = 0; i < commaSeparate.length; i++)
+														{
+															var spaceSeparate = commaSeparate[i].split(" ");
+															for (var j = 0; j < spaceSeparate.length; j++)
+															{
+																if(spaceSeparate[j].indexOf(":") > -1)
+																{
+																	selections = selections + "<option>" + spaceSeparate[j].replace(":","") + "</option>";
+																	j = spaceSeparate.length;
+																}
+															}
+														}
+														
+														//If the selections have changed, push the new options to the selects.														
+														var curr = $("select[name='"+currentTarget+"']").html();
+														if(curr.indexOf(selections) < 0)
+															 $("select[name='"+currentTarget+"']").html(selections);
+													});
+												}
+											}
+										);											
+									}
+									
+									/*
+									Description: Verifies if evidence is existing. If it is, recalculates the evidence interval.
+									Pre-Condition: Page is loaded.
+									Post-Condition: Evidence data is extracted into variables.
+									Post-Condition: UI changes ("text") has occured.
+									*/
+									userInterface.prototype.verifySelected = function( index ) 
+									{	
+										//Verify that evidence is either selected or not.
+										if( $(this).val().indexOf('evidence') > -1)
+										{
+											evidenceExists = true;
+											//Get the name of the dropdown and find the text box that goes with it.
+											if(evidenceFields == "")
+												evidenceFields += $(this).parent().attr("name").replace("pred",""); 
+											else
+												evidenceFields += "," + $(this).parent().attr("name").replace("pred",""); 
+										}
+										//Set text drop downs to text;
+										else if ($(this).val().indexOf('text') > -1)
+										{
+											//Begin finding the correct name for the swap.
+											var tar = $(this).parent().parent().attr("id");
+											var cleanedTar = tar.replace("xtra-select","");
+											
+											//Get the list of prefixes.
+											var rawPrefix = $("input[name='prefixName']").val();
+											while(rawPrefix.indexOf(" :") > -1)
+												rawPrefix = rawPrefix.replace(" :",":");
+											var selections = "";
+													
+											//Get the list of valid selections based on the prefixes.		
+											var commaSeparate = rawPrefix.split(",");
+											for (var i = 0; i < commaSeparate.length; i++)
+											{
+												var spaceSeparate = commaSeparate[i].split(" ");
+												for (var j = 0; j < spaceSeparate.length; j++)
+												{
+													if(spaceSeparate[j].indexOf(":") > -1)
+													{
+														selections = selections + "<option>" + spaceSeparate[j].replace(":","") + "</option>";
+														j = spaceSeparate.length;
+													}
+												}
+											}
+											
+											//Change the html selections to the prefix list.
+											$("select[name='"+tar.replace('xtra-select','data-prefix')+"']").html(selections);
+											$("#"+tar).html('<input type="text" class="form-control" style="border-radius:0px" name="data-pred'+ cleanedTar +'" placeholder="free-form text">');
+											
+											//Inform the user that entering "drop!" will return their new input field to a selection dropdown.		
+											$("#holder").prepend('<div id="help" class="col-md-12" align="center"><div class="alert alert-success" align="center" role="alert">Info: Enter <b>drop!</b> to undo.</div></div>');
+											setTimeout(function () {
+												$("#help").remove();
+											}, 10000);
+											
+											//If there are no prefixes defined, alert the user that having a custom prefix is a requirement.													
+											if ($("#prefixName").val().indexOf(":") < 0)
+											{
+												redirect = "document.getElementById('prefixName').focus()";
+												$("#holder").prepend('<div id="warning" class="col-md-12" align="center"><div class="alert alert-danger" align="center" role="alert">Warning: Prefixes are Required.</div></div>');
+												setTimeout(function () 
+												{
+													$("#warning").remove();
+												}, 10000);
+											}
+										}
+										
+										//Tally up fields that are not evidence fields in case they are required later.
+										else
+										{
+											//Store the text values;
+											var textField = $(this).parent().attr("name").replace("pred","");
+											if($(this).parent().attr("name").indexOf('prefix') > -1)
+												return;
+											var textValue = $("input[name=" + textField + "]").val();
+											var dropDownValue = $(this).val();
+											
+											//Create CSV list of data being input.
+											if(textData == "")
+											{
+												textData += textValue.replace(" ",",");
+												textDropDowns += dropDownValue;
+												textConcat += dropDownValue + " " + textValue;
+											}
+											else
+											{
+												textData += "," + textValue.replace(" ",",");
+												textDropDowns += "," + dropDownValue;
+												textConcat += "," + dropDownValue + " " + textValue;
+											}			
+										}
+														
+									};
+									
+									/*
+									Description: Extracts page info for confidence intervals.
+									Pre-Condition: Confidence has been found in the page.
+									Post-Condition: Data from page extracted.
+									*/
+									userInterface.prototype.calculateConfidence = function()
+									{
+														
+										//Get the data for every evidence marked field.
+										var evLocs = evidenceFields.split(",");
+										for (var i = 0; i < evLocs.length; i++)
+										{
+											//Print the text of every outgoing domain
+											var target = $("input[name="+evLocs[i]+"]").val();
+															
+											//TODO fix the URL fixer so it doesn't suck.
+											target = target.replace("www.","");
+											target = target.replace("http://","");
+											target = target.replace("https://","");
+											target = "http://www." + target;
+																
+											//Get the files.
+											$.getJSON('http://whateverorigin.org/get?url=' + encodeURIComponent(target) + '&callback=?',
+											function(data)
+											{	
+												html = data.contents; 
+												html = $(html).text();
+												new userInterface().finalizeConfidence();
+												
+											});
+														
+										}
+									}
+
+									/*
+									Description: Calculates confidence ranking.
+									Pre-Condition: Data from page extracted into variables.
+									Post-Condition: Number from 0 to 100 assigned for confidence.
+									*/
+									userInterface.prototype.finalizeConfidence = function()
+									{
+										//Storage for the amount of words matched and the words that must be matched.
+										var matchedWords = 0;
+										var targetWords = html.split(" ");
+										var providedStrings = textConcat.split(",");
+										var providedData = textData.split(",");
+										var providedDropDowns = textDropDowns.split(",");
+										
+										console.log("Sentences: " + providedStrings);
+										console.log("Data: " + providedData);
+										console.log("Dropdowns: " + providedDropDowns);
+																	
+										//Number of words from the form.
+										var formWords = 0;
+										formWords = providedData.length + providedDropDowns.length;
+																	
+										//Number of words from the text.
+										var textWords = 0;
+										textWords = targetWords.length;
+															
+										//Begin verification (2 step - full sentence, word by word)
+										var fullMatch = true;
+										for (var i = 0; i < providedStrings.length; i++)
+										{
+											console.log("Attempt match: " + providedStrings[i]);
+											if(html.toUpperCase().indexOf(providedStrings[i].toUpperCase) <0)
+												fullMatch = false;
+										}
+										if(fullMatch)
+										{
+											minConfidence = 100;
+											$("#wordsMatched").text("PERFECT MATCH");
+											g.refresh(minimumConfidence);
+										}
+										else
+										{
+											//Fallback if first step fails;
+											for (var i = 0; i < textWords; i++)
+											{
+												targetWords[i] = targetWords[i].trim();
+												//Match text data
+												for (var j = 0; j < providedData.length; j++)
+												{
+													//console.log("attempt match: " + providedData[j] + " => " + targetWords[i]);
+													if(providedData[j].indexOf(targetWords[i]) > 0)
+													{
+														matchedWords++;
+													}
+												}
+																		
+												//Match drop downs
+												for (var k = 0; k < providedDropDowns; k++)
+												{
+													//console.log("attempt match: " + providedDropDowns[k] + " => " + targetWords[i]);
+													if(providedDropDowns[k].indexOf(targetWords[i]) > 0)
+													{
+														matchedWords++;
+													}
+												}
+											}
+																	
+											console.log("matchedWords: " + matchedWords);
+																	
+											//Basic formula: Words Matched / Words in Text * log( Words In Text - Words Matched)
+											var finalResult = (matchedWords / textWords) * Math.log( textWords - matchedWords);
+											finalResult = finalResult * 100;
+											if(finalResult < minimumConfidence)
+											{
+												minimumConfidence = finalResult;
+												$("#wordsMatched").text("wordsMatched: " + matchedWords);
+												$("#wordsText").text("wordsText: " + textWords);
+												$("#wordsNotMatched").text("wordsNotMatched: " + (textWords - matchedWords));
+												$("#confidence").text("confidence: " + finalResult);
+												g.refresh(minimumConfidence);
+											}
+										}
+									}
+									/*
+									Description: Extractor for auto-complete data.
+									Pre-Condition: Page is loaded.
+									Post-Condition: autoComplete_prefix and autoComplete_predicate have autocomplete items from the RDF database.
+									*/
+									userInterface.prototype.getAutocomplete = function()
+									{
+										//Variables required for autocomplete requests. 
+										var i = 0;
+										var target = "";
+										var final_set_prefix = "";
+										var final_set_predicate = "";
+										
+										//Ajax request to get all data items.
+										$.ajax({
+											type : "GET",
+											url : "http://iie-dev.cs.fiu.edu/scripts/auto_complete_targets.php",
+											success: function(data)
+											{
+												var elements = $(data);
+												$('uri', elements).each( function() 
+												{ 
+													if(target == "")
+														target = $(this).html();
+													else
+														target += ","+$(this).html(); 
+												});
+												
+												//Create the CSV for each array.
+												var target_array = target.split(",");
+												for (i = 0; i < target_array.length;i++)
+												{
+													var target_objects = target_array[i].split("/");
+													var prefix = target;
+													var predicate = target_array[i].split("/")[target_array[i].split("/").length-1];
+
+													if(final_set_prefix.indexOf(prefix) < 0)
+														final_set_prefix += prefix + ",";
+													if(final_set_predicate.indexOf(predicate) < 0)
+														final_set_predicate += predicate + ",";
+												}
+												
+												//Remove spare commas.
+												final_set_prefix = final_set_prefix.substring(0, final_set_prefix.length - 1);
+												final_set_predicate = final_set_predicate.substring(0, final_set_predicate.length - 1);
+												
+												//Comma-split the data.
+												autoComplete_prefix = final_set_prefix.split(",");
+												autoComplete_predicate = final_set_predicate.split(",");
+											}
+										});
+									}
+									
+									/*
+									Description: Imports database from XML.
+									Pre-Condition: Page is loaded and database 
+									Post-Condition: autoComplete_prefix and autoComplete_predicate have autocomplete items from the RDF database.
+									*/
+									userInterface.prototype.importDatabase = function()
+									{
+										//Trigger the file upload window to appear.
+										$("#file").trigger('click');
+										
+										//When the file is selected.
+										$("#file").change(function()
+										{
+											//Get the file and read it.
+											var successfulInputs = 0;
+											var failedInputs = 0;
+											file = this.files[0];
+											fr = new FileReader();
+											
+											
+											fr.onload = function(e) 
+											{
+											
+												//Get the contents.
+												var contents = fr.result;
+												
+												//Initialize global variable for creating a query.
+												var UI = new userInterface();
+												var prefix_array = new Array();
+												var data_array = new Array();
+												
+												
+												//Parse the XML file.
+												$(contents).find("result").each(function()
+												{
+													
+													//Create the inner-prefix and inner-array for query generation.
+													var inner_prefix = new Array();
+													var inner_array = new Array();
+													
+													//Initialize all of the required variables.
+													var shortCode;
+													var predicate;
+													var prefix;
+													var full_predicate;
+													var subject;
+													var object;
+													$(this).find("binding").each(function()
+													{
+														//Extract the subject or the target or the predicate being used.
+														var value;
+														if($(this).first().attr("name") == "subject")
+														{
+															value = $(this).first().text().split("/")[$(this).first().text().split("/").length-1].replace("<","").replace(">","").trim();
+															subject = value;
+														}
+														else if($(this).first().attr("name") == "target")	
+														{
+															value = $(this).first().text().split("/")[$(this).first().text().split("/").length-1].replace("<","").replace(">","").trim();
+															object = value;
+														}
+														else if($(this).first().attr("name") == "predicate")
+														{
+															value = $(this).first().text().trim().replace("http://","").replace("https://","");
+															value = value.substring(value.indexOf("/"));
+															full_predicate = value;
+															
+															prefix = value.substring(value.lastIndexOf("/")+1);
+															value = value.substring(0,value.lastIndexOf("/")+1);
+															value = "<" + value + ">";
+															
+															shortCode = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5);
+															predicate = value;
+														}
+													});
+													
+													//Build the array required and push them.
+													inner_prefix.push(shortCode);
+													inner_prefix.push(predicate);													
+													prefix_array.push(inner_prefix);
+													inner_array.push(subject);
+													inner_array.push(shortCode);
+													inner_array.push(prefix);
+													inner_array.push(object);
+													data_array.push(inner_array);
+													
+													//Generate the query.
+													var generator = BuildGenerator(data_array, prefix_array, "Update");
+													
+													//POST the query to the submission endpoint.
+													$.ajax({
+														type : "POST",
+														url : "http://iie-dev.cs.fiu.edu/scripts/submit_data.php",
+														data: { reporterName: "IMPORTER", query: generator.getQuery()},
+														success: function(data)
+														{
+															//Keep track of successful/failed transactions.
+															$(data).find("code").each(function()
+															{
+																if($(this).text().indexOf("S") > -1)
+																{
+																	successfulInputs++;
+																}
+																else if($(this).text().indexOf("F") > -1)
+																{
+																	failedInputs++;
+																}
+																
+															});
+															
+															//Keep the user up to date on the state of the import.
+															$("#returns").html('<div class="alert alert-success" align="center" role="alert" id="raw-output">Success: '+successfulInputs+' Failed: '+failedInputs+'</div>')
+															setTimeout(function () { 
+																$("#raw-output").remove();
+															}, 5000);
+														}
+													});
+													
+													
+													//Refresh the arrays for the next query.
+													inner_prefix = new Array();
+													inner_array = new Array();
+													prefix_array = new Array();
+													data_array = new Array();
+													
+													
+												});	
+											};
+										
+											//Trigger the initial read of the XML file.
+											fr.readAsText(file);
+										});
+									}
+									/*
+									Description: Input Sanitizing
+									Pre-Condition: String is not null.
+									Post-Condition: Sanitized string for query creation.
+									*/
+									userInterface.prototype.sanitizeInput = function(str)
+									{
+										if(str == "")
+											return str;
+										str = str.replace(' ','_');
+										str = str.replace(/[^a-zA-Z0-9:_/ ]/g, "");
+										if(str.charAt(0) != '/' && str.indexOf("http") < 0)
+											str = "/" + str;
+										return str.toLowerCase();
+									}
+									
+									/*
+									Description: Submission method.
+									Pre-Condition: Page loaded.
+									Post-Condition: Table created with search results.
+									*/
+									userInterface.prototype.submit = function()
+									{
+										//Create local variables for creating a query.
+										var data = new SimpleMap();
+										var UI = new userInterface();
+										
+										//Get all input types.
+										$("input").each(
+												function(index)
+												{
+													if($(this).attr("type") != "file" && $(this).attr("name") != "size")
+													{
+														data.put($(this).attr("name"), $(this).val());
+													}
+												}
+										);
+										
+										//Get all select types.
+										$("select").each(
+											function(index)
+											{
+												data.put($(this).attr("name"), $(this).val());
+											}
+										);
+										
+										//Prefix holder arrays.
+										var prefix_array = new Array();
+										var prefix = data.get("prefixName");
+										
+										//Add an implied prefix definition for "iie"
+										var inner_prefix = new Array();
+										inner_prefix.push("iie");
+										inner_prefix.push("</fake/iie/types/>");
+										prefix_array.push(inner_prefix);
+										
+										//Push the other prefixes.
+										for (var i = 0; i < prefix.split(",").length; i++)
+										{
+											var prefix_value = prefix.split(",")[i];
+											var inner_prefix = new Array();
+											var length = prefix_value.split(":").length;
+											inner_prefix.push(prefix_value.split(":")[0].trim());										
+											inner_prefix.push(prefix_value.split(":").splice(1,length-1).join(":").trim());
+											prefix_array.push(inner_prefix);
+										}
+										
+										//Data holder arrays.
+										var data_array = new Array();
+										var subject = data.get("subject");
+										
+										//Push the data values.
+										for (var x in data.getAll())
+										{
+											if(x.indexOf('data-') > -1 && x.indexOf('data-prefix') < 0 && x.indexOf('data-pred') < 0)
+											{
+												var inner_array = new Array();
+												inner_array.push(UI.sanitizeInput(subject));
+												inner_array.push(data.get(x.replace('data-','data-prefix')));
+												inner_array.push(data.get(x.replace('data-','data-pred')));
+												inner_array.push(UI.sanitizeInput(data.get(x)));
+												data_array.push(inner_array);
+											}
+										}
+										
+										//Instantiate the generator and pass the variables.
+										var generator = BuildGenerator(data_array, prefix_array, "Update");
+										
+										//AJAX POST request for searching.
+										$.ajax({
+											type : "POST",
+											url : "http://iie-dev.cs.fiu.edu/scripts/submit_data.php",
+											data: { reporterName: data.get("reporterName"), query: generator.getQuery()},
+											success: function(data)
+											{
+												console.log(data);
+												$(data).find("code").each(function()
+												{
+														//Show the outcome of the query (sucess/fail)
+														if($(this).text().indexOf("S") > -1)
+														{
+															$("#returns").html('<div class="alert alert-success" align="center" role="alert" id="raw-output">Data Successfully Stored</div>')
+															setTimeout(function () { 
+																$("#raw-output").remove();
+															}, 5000);
+														}
+														else if($(this).text().indexOf("F") > -1)
+														{
+															$("#returns").html('<div class="alert alert-danger" align="center" role="alert" id="raw-output">Data Could Not Be Stored</div>')
+															setTimeout(function () { 
+																$("#raw-output").remove();
+															}, 5000);
+														}
+												});
+											}
+										});
+									}
+									$(document).ready(
+										function() 
+										{	
+											var UI = new userInterface();
+											UI.initialSetup();
+											
+											//Deal with adds.
+											$( "#plus" ).click(UI.performAdd);
+											
+											//Deal with removals.
+											$( "#minus" ).click(UI.performSubstract);
+											
+											$("#submit").click(UI.submit);
+											
+											//Deals with bulk import disabling if it's not supported in other browsers.
+											if (typeof window.FileReader !== 'function') {
+												$("#bulk-import").attr("disabled","true");
+											}
+											else
+											{
+												$("#bulk-import").click(UI.importDatabase);
+											}
+											
+											//Get all selected values to be printed.
+											$("div").on('change', 'select.form-control', UI.selectionChanged);
+											$("div").on('change', 'input.form-control', UI.selectionChanged);
+											
+											//Attach auto-complete handlers to each input field on click.
+											UI.getAutocomplete();
+											$( "div" ).on( "click", "input.form-control" , function() {
+												if($(this).attr("name").indexOf("prefix") > -1 && autoComplete_prefix.length > 0)
+													$(this).autocomplete({
+														source: autoComplete_prefix,
+														select: function(event, ui) {
+															setTimeout(function() {
+																UI.inputChanged();
+															}, 500);
+														}
+													});
+												if($(this).attr("name").indexOf("data") > -1 && autoComplete_predicate.length > 0)
+													$(this).autocomplete({
+														source: autoComplete_predicate,
+														select: function(event, ui) {
+															setTimeout(function() {
+																UI.inputChanged();
+														}, 500);
+													}
+												});
+											});	
+										}
+									);
+									</script>
+								</div>
+								<div id="gauge" class="50x50px" align="center">
+									<label id="wordsMatched"></label>
+									<label id="wordsText"></label>
+									<label id="wordsNotMatched"></label>
+									<label id="confidence"></label>
+								</div>
+								<div class="clearfix" align="center">
+									<button value="Submit" type="submit" class="btn btn-sm btn-success" id="submit" name="submit" >
+										<span class="glyphicon glyphicon-send"></span> Submit Lead
+									</button>
+									<button type="button" class="btn btn-sm btn-success" id="bulk-import" >
+										<span class="glyphicon glyphicon-cloud-upload"></span> Bulk Import Data
+									</button>
+									<div id="returns"></div>
+									<input type="file" id="file"  style="visibility:hidden"/>
+								</div>
+							<!-- </form> -->
+						</div>
+				</div>
+			</div>
+		</div>
+        </div>
+
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright&copy; Team Can't Find A Better Name 2014</p>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+    <!-- /.container -->
+
+    <!-- JavaScript -->
+    <script src="js/bootstrap.js"></script>
+
+</body>
+
+</html>
